@@ -1,0 +1,84 @@
+{
+	"data": [
+		{
+			"content": "João Buscapé",
+			"value": 42342342,
+			"additional": [
+				{
+					"label": "Mãe",
+					"content": "Maria"
+				},
+				{
+					"label": "Pai",
+					"content": "Fulano"
+				}
+			],
+			"others": [
+				{
+					"field": "idade",
+					"value": 30
+				},
+				{
+					"field": "id_municipio",
+					"content": "Ibiam",
+					"value": 2342342423
+				}
+			]
+		},
+		{
+			"content": "Beltrano",
+			"value": 42342343,
+			"additional": [
+				{
+					"label": "Mãe",
+					"content": "Clotildes"
+				},
+				{
+					"label": "Pai",
+					"content": "Ciclano"
+				}
+			],
+			"others": [
+				{
+					"field": "idade",
+					"value": 30
+				},
+				{
+					"field": "id_municipio",
+					"content": "Ibicaré",
+					"value": 2342342423
+				}
+			]
+		},
+		{
+			"content": "Chuck Norris",
+			"value": 9999999,
+			"additional": [
+				{
+					"label": "Mãe",
+					"content": "Sra. Norris"
+				},
+				{
+					"label": "Pai",
+					"content": "Sr. Norris"
+				}
+			],
+			"others": [
+				{
+					"field": "idade",
+					"value": 76
+				},
+				{
+					"field": "id_municipio",
+					"content": "Everywhere",
+					"value": 999999
+				}
+			]
+		}
+	],
+	"pagination": {
+		"total": 50,
+		"per_page": 15,
+		"current_page": 1
+	}
+}
