@@ -6,11 +6,20 @@
     <title>Autocomplete Example</title>
     <meta name="description" content="ES7 Autocomplete Example">
     <meta name="author" content="Inovadora Sistemas">
+    <link rel="stylesheet" href="/example/style.css" media="screen" title="no title" charset="utf-8">
 </head>
 
 <body>
-
+    <h1>ES7 Autocomplete</h1>
+    <input id="user_id" name="user_id" type="hidden">
     <script src="/dist/index.js"></script>
+    <script>
+        autocomplete({
+            hiddenInput: autocomplete.byId('user_id'),
+            source: autocomplete.ajax('/example/source.json')
+        });
+    </script>
+    <script src="https://use.fontawesome.com/b8f550cebc.js"></script>
     <script id="__bs_script__">
     //<![CDATA[
         document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.2.13.0.js'><\/script>".replace("HOST", location.hostname));

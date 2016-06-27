@@ -5,7 +5,7 @@
   "main": "src/autocomplete.js",
   "scripts": {
     "dev": "concurrently --kill-others \"npm run connect\" \"webpack -w\"",
-    "connect": "browser-sync start --dev --server --index='example/index.html' --files='example/index.html,dist/index.js'",
+    "connect": "browser-sync start --dev --server --index='example/index.html' --files='example/*.*,dist/index.js'",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -50,5 +50,8 @@
     "concurrently": "^2.1.0",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
+  },
+  "dependencies": {
+    "extend": "^3.0.0"
   }
 }
