@@ -1,11 +1,12 @@
 import extend from 'extend';
 import PresentText from './PresentText';
 import Icon from './Icon';
+import Panel from './Panel';
 import SelectSource from '../sources/SelectSource';
 import { div } from '../util/dom';
 
 export default class AutoComplete {
-    constructor({ hiddenInput, source, style = {} }) {
+    constructor({ hiddenInput, source, style = {}, sizing = {} }) {
         // Initial
         this.finding = false;
         this.open = false;
@@ -17,8 +18,10 @@ export default class AutoComplete {
         this.style = extend({
             hiddenInput: 'ac-hidden-input',
             searchInput: 'ac-search-input',
+            searchInputWrapper: 'ac-search-input-wrapper',
             presentText: 'ac-present-text',
             wrapper: 'ac-wrapper',
+            panel: 'ac-panel',
             openWrapper: 'ac-wrapper ac-open-wrapper',
             rightIcon: 'fa fa-search ac-icon',
             loadingRightIcon: 'fa fa-spinner ac-loading-icon'
@@ -35,7 +38,8 @@ export default class AutoComplete {
         // Set relative components
         this.components = {
             presentText: new PresentText({ style: this.style }),
-            icon: new Icon({ style: this.style })
+            icon: new Icon({ style: this.style }),
+            panel: new Panel({ style: this.style })
         };
 
         // Prepare elements
@@ -59,6 +63,7 @@ export default class AutoComplete {
         this.elements.wrapper.appendChild(this.elements.hiddenInput);
         this.elements.wrapper.appendChild(this.components.presentText.element);
         this.elements.wrapper.appendChild(this.components.icon.element);
+        this.elements.wrapper.appendChild(this.components.panel.element);
     }
 
     prepareEvents() {
@@ -85,9 +90,12 @@ export default class AutoComplete {
         if(!this.open){ // Then open
             this.open = true;
             this.elements.wrapper.className = this.style.openWrapper;
+            this.components.panel.element.style.display = 'inline-block';
+            this.components.panel.components.searchInput.element.focus();
         } else {
             this.open = false;
             this.elements.wrapper.className = this.style.wrapper;
+            this.components.panel.element.style.display = 'none';
         }
     }
 

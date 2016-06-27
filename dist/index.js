@@ -127,6 +127,10 @@
 
 	var _Icon2 = _interopRequireDefault(_Icon);
 
+	var _Panel = __webpack_require__(312);
+
+	var _Panel2 = _interopRequireDefault(_Panel);
+
 	var _SelectSource = __webpack_require__(305);
 
 	var _SelectSource2 = _interopRequireDefault(_SelectSource);
@@ -143,6 +147,8 @@
 	        var source = _ref.source;
 	        var _ref$style = _ref.style;
 	        var style = _ref$style === undefined ? {} : _ref$style;
+	        var _ref$sizing = _ref.sizing;
+	        var sizing = _ref$sizing === undefined ? {} : _ref$sizing;
 
 	        _classCallCheck(this, AutoComplete);
 
@@ -157,8 +163,10 @@
 	        this.style = (0, _extend2.default)({
 	            hiddenInput: 'ac-hidden-input',
 	            searchInput: 'ac-search-input',
+	            searchInputWrapper: 'ac-search-input-wrapper',
 	            presentText: 'ac-present-text',
 	            wrapper: 'ac-wrapper',
+	            panel: 'ac-panel',
 	            openWrapper: 'ac-wrapper ac-open-wrapper',
 	            rightIcon: 'fa fa-search ac-icon',
 	            loadingRightIcon: 'fa fa-spinner ac-loading-icon'
@@ -175,7 +183,8 @@
 	        // Set relative components
 	        this.components = {
 	            presentText: new _PresentText2.default({ style: this.style }),
-	            icon: new _Icon2.default({ style: this.style })
+	            icon: new _Icon2.default({ style: this.style }),
+	            panel: new _Panel2.default({ style: this.style })
 	        };
 
 	        // Prepare elements
@@ -201,6 +210,7 @@
 	            this.elements.wrapper.appendChild(this.elements.hiddenInput);
 	            this.elements.wrapper.appendChild(this.components.presentText.element);
 	            this.elements.wrapper.appendChild(this.components.icon.element);
+	            this.elements.wrapper.appendChild(this.components.panel.element);
 	        }
 	    }, {
 	        key: 'prepareEvents',
@@ -232,9 +242,12 @@
 	                // Then open
 	                this.open = true;
 	                this.elements.wrapper.className = this.style.openWrapper;
+	                this.components.panel.element.style.display = 'inline-block';
+	                this.components.panel.components.searchInput.element.focus();
 	            } else {
 	                this.open = false;
 	                this.elements.wrapper.className = this.style.wrapper;
+	                this.components.panel.element.style.display = 'none';
 	            }
 	        }
 	    }]);
@@ -8691,31 +8704,59 @@
 	};
 
 	function div(props) {
-	    return elem('div', props);
+	    for (var _len2 = arguments.length, children = Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+	        children[_key2 - 1] = arguments[_key2];
+	    }
+
+	    return elem.apply(undefined, ['div', props].concat(children));
 	};
 
 	function ul(props) {
-	    return elem('ul', props);
+	    for (var _len3 = arguments.length, children = Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+	        children[_key3 - 1] = arguments[_key3];
+	    }
+
+	    return elem.apply(undefined, ['ul', props].concat(children));
 	};
 
 	function li(props) {
-	    return elem('li', props);
+	    for (var _len4 = arguments.length, children = Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+	        children[_key4 - 1] = arguments[_key4];
+	    }
+
+	    return elem.apply(undefined, ['li', props].concat(children));
 	};
 
 	function strong(props) {
-	    return elem('strong', props);
+	    for (var _len5 = arguments.length, children = Array(_len5 > 1 ? _len5 - 1 : 0), _key5 = 1; _key5 < _len5; _key5++) {
+	        children[_key5 - 1] = arguments[_key5];
+	    }
+
+	    return elem.apply(undefined, ['strong', props].concat(children));
 	};
 
 	function a(props) {
-	    return elem('a', props);
+	    for (var _len6 = arguments.length, children = Array(_len6 > 1 ? _len6 - 1 : 0), _key6 = 1; _key6 < _len6; _key6++) {
+	        children[_key6 - 1] = arguments[_key6];
+	    }
+
+	    return elem.apply(undefined, ['a', props].concat(children));
 	};
 
 	function i(props) {
-	    return elem('i', props);
+	    for (var _len7 = arguments.length, children = Array(_len7 > 1 ? _len7 - 1 : 0), _key7 = 1; _key7 < _len7; _key7++) {
+	        children[_key7 - 1] = arguments[_key7];
+	    }
+
+	    return elem.apply(undefined, ['i', props].concat(children));
 	};
 
 	function span(props) {
-	    return elem('span', props);
+	    for (var _len8 = arguments.length, children = Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {
+	        children[_key8 - 1] = arguments[_key8];
+	    }
+
+	    return elem.apply(undefined, ['span', props].concat(children));
 	};
 
 /***/ },
@@ -8832,6 +8873,87 @@
 	}();
 
 	exports.default = Icon;
+
+/***/ },
+/* 312 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extend = __webpack_require__(304);
+
+	var _extend2 = _interopRequireDefault(_extend);
+
+	var _SelectSource = __webpack_require__(305);
+
+	var _SelectSource2 = _interopRequireDefault(_SelectSource);
+
+	var _SearchInput = __webpack_require__(313);
+
+	var _SearchInput2 = _interopRequireDefault(_SearchInput);
+
+	var _dom = __webpack_require__(309);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Panel = function Panel(_ref) {
+	    var style = _ref.style;
+
+	    _classCallCheck(this, Panel);
+
+	    this.components = {
+	        searchInput: new _SearchInput2.default({ style: style })
+	    };
+
+	    this.element = (0, _dom.div)({
+	        className: style.panel
+	    }, this.components.searchInput.element);
+	};
+
+	exports.default = Panel;
+
+/***/ },
+/* 313 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extend = __webpack_require__(304);
+
+	var _extend2 = _interopRequireDefault(_extend);
+
+	var _SelectSource = __webpack_require__(305);
+
+	var _SelectSource2 = _interopRequireDefault(_SelectSource);
+
+	var _dom = __webpack_require__(309);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var SearchInput = function SearchInput(_ref) {
+	    var style = _ref.style;
+
+	    _classCallCheck(this, SearchInput);
+
+	    this.element = (0, _dom.div)({ className: style.searchInputWrapper }, (0, _dom.input)({
+	        className: style.searchInput,
+	        placeholder: 'Search...'
+	    }));
+	};
+
+	exports.default = SearchInput;
 
 /***/ }
 /******/ ]);

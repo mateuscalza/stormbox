@@ -15,30 +15,30 @@ export function input(props) {
     return elem('input', props);
 };
 
-export function div(props) {
-    return elem('div', props);
+export function div(props, ...children) {
+    return elem('div', props, ...children);
 };
 
-export function ul(props) {
-    return elem('ul', props);
+export function ul(props, ...children) {
+    return elem('ul', props, ...children);
 };
 
-export function li(props) {
-    return elem('li', props);
+export function li(props, ...children) {
+    return elem('li', props, ...children);
 };
 
-export function strong(props) {
-    return elem('strong', props);
+export function strong(props, ...children) {
+    return elem('strong', props, ...children);
 };
 
-export function a(props) {
-    return elem('a', props);
+export function a(props, ...children) {
+    return elem('a', props, ...children);
 };
 
-export function i(props) {
-    return elem('i', props);
+export function i(props, ...children) {
+    return elem('i', props, ...children);
 };
 
-export function span(props) {
-    return elem('span', props);
+export function span(props, ...children) {
+    return elem('span', props, ...children);
 };
