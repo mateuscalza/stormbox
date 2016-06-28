@@ -10,7 +10,6 @@
  * @version 1.0.0
  */
 
-import 'babel-polyfill';
 import AutoComplete from './components/AutoComplete';
 
 import AjaxSource from './sources/AjaxSource';

@@ -36,7 +36,6 @@
   },
   "homepage": "https://github.com/mateuscalza/es7-autocomplete#readme",
   "devDependencies": {
-    "browser-sync": "^2.13.0",
     "babel-cli": "^6.10.1",
     "babel-core": "^6.10.4",
     "babel-loader": "^6.2.4",
@@ -47,6 +46,8 @@
     "babel-preset-stage-1": "^6.5.0",
     "babel-preset-stage-2": "^6.5.0",
     "babel-preset-stage-3": "^6.5.0",
+    "babel-regenerator-runtime": "^6.5.0",
+    "browser-sync": "^2.13.0",
     "concurrently": "^2.1.0",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"

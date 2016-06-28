@@ -1,13 +1,11 @@
+import extend from 'extend';
+
 export function elem(tag, props, ...children) {
     var domElem = document.createElement(tag);
-    Object.assign(domElem, props);
+    extend(domElem, props);
     children.forEach(child => {
         domElem.appendChild(child);
     });
-    domElem.on = function(eventName, callback) {
-        console.log(domElem, eventName, callback);
-        return domElem.addEventListener(eventName, callback);
-    };
     return domElem;
 };
 

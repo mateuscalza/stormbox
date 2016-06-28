@@ -27,12 +27,19 @@ body {
     transition: all ease-in-out 0.25;
     cursor: pointer;
 }
+.ac-present-crop-text {
+    width: 94%;
+    overflow: hidden;
+}
+.ac-present-inner-text {
+    display: inline-block;
+    white-space: nowrap;
+}
 .ac-panel {
     position: absolute;
     top: 34px;
     left: 0;
     width: 100%;
-    height: 300px;
     display: none;
     border: 1px solid #ccc;
     background: #ecf0f1;
@@ -40,11 +47,25 @@ body {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
     border-radius: 0 0 4px 4px;
 }
+.ac-list-wrapper {
+    padding: 0 10px 10px 10px;
+}
+.ac-list-wrapper ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.ac-list-wrapper ul li {
+    margin: 0;
+    padding: 0;
+}
+.ac-list-wrapper ul li a {
+}
 .ac-search-input-wrapper {
     padding: 10px;
 }
 .ac-search-input {
-    display: inline-block;;
+    display: inline-block;
     width: 100%;
     height: 35px;
     padding: 0 12px;
@@ -62,16 +83,73 @@ body {
     transition: all ease-in-out 0.25;
     cursor: text;
 }
+.ac-error-view {
+    width: 100%;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: #555555;
+    background-color: #fcc;
+    background-image: none;
+    border: 1px solid rgba(255, 50, 50, 0.1);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+.ac-error-view-wrapper {
+    padding: 0 10px 10px 10px;
+}
 .ac-open-wrapper .ac-present-text {
     border-radius: 4px 4px 0 0;
 }
 i.fa.ac-icon {
     position: absolute;
+    top: 5px;
     right: 5px;
     width: 20px;
-    height: 35px;
-    line-height: 35px;
+    height: 25px;
+    line-height: 25px;
     text-align: center;
     color: #444;
     cursor: pointer;
+    box-shadow: -6px 0px 5px #fff;
+}
+i.fa.ac-icon.ac-loading-icon {
+    -webkit-animation: rotating 500ms linear infinite;
+    -moz-animation: rotating 500ms linear infinite;
+    -ms-animation: rotating 500ms linear infinite;
+    -o-animation: rotating 500ms linear infinite;
+    animation: rotating 500ms linear infinite;
+    box-shadow: none;
+}
+@-webkit-keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotating {
+    from {
+        -ms-transform: rotate(0deg);
+        -moz-transform: rotate(0deg);
+        -webkit-transform: rotate(0deg);
+        -o-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -ms-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -webkit-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
 }

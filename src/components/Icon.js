@@ -1,6 +1,7 @@
 import extend from 'extend';
 import SelectSource from '../sources/SelectSource';
 import { i } from '../util/dom';
+import { on } from '../util/events';
 
 export default class Icon {
     constructor({ style }) {
@@ -9,10 +10,6 @@ export default class Icon {
         this.element = i({
             className: style.rightIcon
         });
-    }
-
-    onClick(callback) {
-        this.element.on('click', callback);
     }
 
     loadingStart() {

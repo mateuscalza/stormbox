@@ -2,7 +2,7 @@ const webpack = require('webpack');
 
 module.exports = [
     {
-        entry: './src/index.js',
+        entry: ['babel-regenerator-runtime', './src/index.js'],
         output: {
             path: './dist',
             filename: 'index.js',
@@ -25,7 +25,7 @@ module.exports = [
             }]
         }
     },{
-        entry: './src/index.js',
+        entry: ['babel-regenerator-runtime', './src/index.js'],
         output: {
             path: './dist',
             filename: 'index.min.js',

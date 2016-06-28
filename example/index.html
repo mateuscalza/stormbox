@@ -12,12 +12,23 @@
 <body>
     <h1>ES7 Autocomplete</h1>
     <input id="user_id" name="user_id" type="hidden">
+    <input id="text_user_id" name="text_user_id" type="text" value="Meu Usuário Salvo da Silva Pereira Buscapé de Tal">
     <script src="/dist/index.js"></script>
     <script>
+
+        autocomplete.byId('text_user_id').addEventListener('blur', function(event){
+            console.log('blur working');
+        });
+        autocomplete.byId('text_user_id').addEventListener('change', function(event){
+            console.log('change working');
+        });
+
         autocomplete({
             hiddenInput: autocomplete.byId('user_id'),
+            textInput: autocomplete.byId('text_user_id'),
             source: autocomplete.ajax('/example/source.json')
         });
+
     </script>
     <script src="https://use.fontawesome.com/b8f550cebc.js"></script>
     <script id="__bs_script__">

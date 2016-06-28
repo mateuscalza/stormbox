@@ -1,19 +1,26 @@
 import extend from 'extend';
 import SelectSource from '../sources/SelectSource';
-import { span } from '../util/dom';
+import { div } from '../util/dom';
+import { on } from '../util/events';
 
 export default class PresentText {
-    constructor({ style: { presentText } }) {
-        this.element = span({
-            className: presentText
+    constructor({ style: { presentText, presentInnerText, presentCropText } }) {
+        this.elements = {};
+
+        this.elements.inner = div({
+            className: presentInnerText
         });
+
+        this.elements.crop = div({
+            className: presentCropText
+        }, this.elements.inner);
+
+        this.element = div({
+            className: presentText
+        }, this.elements.crop);
     }
 
     text(text) {
-        this.element.innerText = text;
-    }
-
-    onClick(callback) {
-        this.element.on('click', callback);
+        this.elements.inner.innerText = text;
     }
 }
