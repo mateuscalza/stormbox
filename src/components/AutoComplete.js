@@ -28,16 +28,17 @@ export default class AutoComplete {
         queryParam = 'q', // Query param to filter sources
         clearOnType = false, // Clear current value and content when user type
         autoFind = false, // Find when user enter on element
-        autoSelectWhenOneResult = true // When return just one result, select it
+        autoSelectWhenOneResult = true, // When return just one result, select it
+        emptyItem // Create a empty item to set values as null
     }) {
         // Environment
         this.finding = false;
         this.open = false;
         this.typing = false;
         this.ignoreFocus = false;
-        this.ignoreFocusOut = false;
-        this.ignoreSearchBlur = false;
+        this.ignoreBlur = false;
         this.valueOnOpen = undefined;
+        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (!hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required'));
 
         // Initial
         this.queryParam = queryParam;
@@ -54,6 +55,8 @@ export default class AutoComplete {
             textInput: 'ac-text-input',
             panel: 'ac-panel',
             listWrapper: 'ac-list-wrapper',
+            item: 'ac-item',
+            emptyItem: 'ac-empty-item',
             searchInput: 'ac-search-input',
             searchInputWrapper: 'ac-search-input-wrapper',
             presentText: 'ac-present-text',
@@ -124,24 +127,26 @@ export default class AutoComplete {
         this.components.icon.element::on('click', ::this.iconOrTextClick);
         this.elements.wrapper::on('keyup', ::this.keyUp);
         this.elements.wrapper::on('focus', ::this.wrapperFocus);
-        this.elements.wrapper::on('focusout', ::this.wrapperFocusout);
         this.elements.wrapper::on('mousedown', ::this.wrapperMouseDown);
-        this.elements.wrapper::on('keydown', ::this.wrapperKeyDown);
-        this.components.panel.components.searchInput.elements.input::on('blur', ::this.searchBlur);
+        this.elements.wrapper::on('blur', ::this.blur);
+        this.components.panel.components.searchInput.elements.input::on('blur', ::this.blur);
     }
 
     keyUp(event) {
-        console.log(event.keyCode);
-
         if(event.keyCode === ESC) {
             this.closePanel();
             this.ignoreFocus = true;
             this.elements.wrapper.focus();
         } else if(event.target === this.elements.wrapper && keysThatOpen.indexOf(event.keyCode) != -1) {
             this.togglePanel();
+        } else if (event.keyCode == ARROW_UP) {
+            this.components.panel.components.list.up();
+        } else if (event.keyCode == ARROW_DOWN) {
+            this.components.panel.components.list.down();
+        } else if (event.keyCode == ENTER) {
+            this.components.panel.components.list.selectCurrent();
         } else if(ignoredKeysOnSearch.indexOf(event.keyCode) == -1) {
             if(!this.typing) {
-                //console.log('Start typing');
                 this.typing = true;
                 if(this.clearOnType) {
                     this.select({
@@ -164,15 +169,12 @@ export default class AutoComplete {
     wrapperFocus(event) {
         if(!event.isTrigger && !this.ignoreFocus) {
             this.openPanel();
-        } else {
-            //console.log('not opening the panel on', { 'event.isTrigger': event.isTrigger, 'this.ignoreFocus': this.ignoreFocus });
         }
         this.ignoreFocus = false;
     }
 
-    wrapperFocusout(event) {
-        if(!this.ignoreFocusOut) {
-            console.log('real-focusout');
+    blur(event) {
+        if(!this.ignoreBlur) {
             if(this.value !== this.valueOnOpen) {
                 this.valueOnOpen = this.value;
                 this.elements.hiddenInput::trigger('change');
@@ -180,45 +182,22 @@ export default class AutoComplete {
             }
             this.elements.hiddenInput::trigger('blur');
             this.elements.textInput::trigger('blur');
-            this.closePanel();
-        } else {
-            //console.log('focusout ignored');
+            //this.closePanel();
         }
-        this.ignoreFocusOut = false;
+        this.ignoreBlur = false;
     }
 
     wrapperMouseDown(event) {
-        this.ignoreSearchBlur = true;
-
-        // If already is focused (or your children) and panel is not open
         if(!this.open && document.activeElement === this.elements.wrapper) {
             this.openPanel();
         } else if(this.open && document.activeElement === this.elements.wrapper) {
-            //console.log('ignore focusout');
-            this.ignoreFocusOut = true;
-            //console.log('wrapper is focused, focusing on search...');
+            this.ignoreBlur = true;
             this.components.panel.components.searchInput.elements.input.focus();
             this.ignoreFocus = true;
         } else if(document.activeElement === this.components.panel.components.searchInput.elements.input) {
-            //console.log('focus-ignored because panel is open and active element is search input');
             this.ignoreFocus = true;
-            //console.log('ignore focusout');
-            this.ignoreFocusOut = true;
-        } else {
-            //console.log('focus-NOT-ignored', document.activeElement, this.components.panel.components.searchInput.elements.input);
+            this.ignoreBlur = true;
         }
-    }
-
-    wrapperKeyDown(event) {
-        //this.ignoreFocusOut = true;
-    }
-
-    searchBlur() {/*
-        if(!this.ignoreSearchBlur) {
-            console.log('search-blur');
-            this.closePanel();
-        }
-        this.ignoreSearchBlur = false; */
     }
 
     select({ content, value }) {
@@ -284,7 +263,7 @@ export default class AutoComplete {
         this.elements.wrapper.className = this.style.openWrapper;
         this.components.panel.element.style.display = 'inline-block';
         //console.log('ignore focus out');
-        this.ignoreFocusOut = true;
+        this.ignoreBlur = true;
         this.components.panel.components.searchInput.elements.input.focus();
         this.components.panel.components.searchInput.elements.input.setSelectionRange(0, this.components.panel.components.searchInput.elements.input.value.length);
 

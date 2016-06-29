@@ -971,6 +971,7 @@
 	        var autoFind = _ref$autoFind === undefined ? false : _ref$autoFind;
 	        var _ref$autoSelectWhenOn = _ref.autoSelectWhenOneResult;
 	        var autoSelectWhenOneResult = _ref$autoSelectWhenOn === undefined ? true : _ref$autoSelectWhenOn;
+	        var emptyItem = _ref.emptyItem;
 
 	        _classCallCheck(this, AutoComplete);
 
@@ -979,9 +980,9 @@
 	        this.open = false;
 	        this.typing = false;
 	        this.ignoreFocus = false;
-	        this.ignoreFocusOut = false;
-	        this.ignoreSearchBlur = false;
+	        this.ignoreBlur = false;
 	        this.valueOnOpen = undefined;
+	        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
 
 	        // Initial
 	        this.queryParam = queryParam;
@@ -998,6 +999,8 @@
 	            textInput: 'ac-text-input',
 	            panel: 'ac-panel',
 	            listWrapper: 'ac-list-wrapper',
+	            item: 'ac-item',
+	            emptyItem: 'ac-empty-item',
 	            searchInput: 'ac-search-input',
 	            searchInputWrapper: 'ac-search-input-wrapper',
 	            presentText: 'ac-present-text',
@@ -1073,25 +1076,27 @@
 	            (_context = this.components.icon.element, _events.on).call(_context, 'click', this.iconOrTextClick.bind(this));
 	            (_context = this.elements.wrapper, _events.on).call(_context, 'keyup', this.keyUp.bind(this));
 	            (_context = this.elements.wrapper, _events.on).call(_context, 'focus', this.wrapperFocus.bind(this));
-	            (_context = this.elements.wrapper, _events.on).call(_context, 'focusout', this.wrapperFocusout.bind(this));
 	            (_context = this.elements.wrapper, _events.on).call(_context, 'mousedown', this.wrapperMouseDown.bind(this));
-	            (_context = this.elements.wrapper, _events.on).call(_context, 'keydown', this.wrapperKeyDown.bind(this));
-	            (_context = this.components.panel.components.searchInput.elements.input, _events.on).call(_context, 'blur', this.searchBlur.bind(this));
+	            (_context = this.elements.wrapper, _events.on).call(_context, 'blur', this.blur.bind(this));
+	            (_context = this.components.panel.components.searchInput.elements.input, _events.on).call(_context, 'blur', this.blur.bind(this));
 	        }
 	    }, {
 	        key: 'keyUp',
 	        value: function keyUp(event) {
-	            console.log(event.keyCode);
-
 	            if (event.keyCode === _keys.ESC) {
 	                this.closePanel();
 	                this.ignoreFocus = true;
 	                this.elements.wrapper.focus();
 	            } else if (event.target === this.elements.wrapper && keysThatOpen.indexOf(event.keyCode) != -1) {
 	                this.togglePanel();
+	            } else if (event.keyCode == _keys.ARROW_UP) {
+	                this.components.panel.components.list.up();
+	            } else if (event.keyCode == _keys.ARROW_DOWN) {
+	                this.components.panel.components.list.down();
+	            } else if (event.keyCode == _keys.ENTER) {
+	                this.components.panel.components.list.selectCurrent();
 	            } else if (ignoredKeysOnSearch.indexOf(event.keyCode) == -1) {
 	                if (!this.typing) {
-	                    //console.log('Start typing');
 	                    this.typing = true;
 	                    if (this.clearOnType) {
 	                        this.select({
@@ -1116,18 +1121,15 @@
 	        value: function wrapperFocus(event) {
 	            if (!event.isTrigger && !this.ignoreFocus) {
 	                this.openPanel();
-	            } else {
-	                //console.log('not opening the panel on', { 'event.isTrigger': event.isTrigger, 'this.ignoreFocus': this.ignoreFocus });
 	            }
 	            this.ignoreFocus = false;
 	        }
 	    }, {
-	        key: 'wrapperFocusout',
-	        value: function wrapperFocusout(event) {
-	            if (!this.ignoreFocusOut) {
+	        key: 'blur',
+	        value: function blur(event) {
+	            if (!this.ignoreBlur) {
 	                var _context3;
 
-	                console.log('real-focusout');
 	                if (this.value !== this.valueOnOpen) {
 	                    var _context2;
 
@@ -1137,48 +1139,23 @@
 	                }
 	                (_context3 = this.elements.hiddenInput, _events.trigger).call(_context3, 'blur');
 	                (_context3 = this.elements.textInput, _events.trigger).call(_context3, 'blur');
-	                this.closePanel();
-	            } else {
-	                //console.log('focusout ignored');
+	                //this.closePanel();
 	            }
-	            this.ignoreFocusOut = false;
+	            this.ignoreBlur = false;
 	        }
 	    }, {
 	        key: 'wrapperMouseDown',
 	        value: function wrapperMouseDown(event) {
-	            this.ignoreSearchBlur = true;
-
-	            // If already is focused (or your children) and panel is not open
 	            if (!this.open && document.activeElement === this.elements.wrapper) {
 	                this.openPanel();
 	            } else if (this.open && document.activeElement === this.elements.wrapper) {
-	                //console.log('ignore focusout');
-	                this.ignoreFocusOut = true;
-	                //console.log('wrapper is focused, focusing on search...');
+	                this.ignoreBlur = true;
 	                this.components.panel.components.searchInput.elements.input.focus();
 	                this.ignoreFocus = true;
 	            } else if (document.activeElement === this.components.panel.components.searchInput.elements.input) {
-	                //console.log('focus-ignored because panel is open and active element is search input');
 	                this.ignoreFocus = true;
-	                //console.log('ignore focusout');
-	                this.ignoreFocusOut = true;
-	            } else {
-	                //console.log('focus-NOT-ignored', document.activeElement, this.components.panel.components.searchInput.elements.input);
+	                this.ignoreBlur = true;
 	            }
-	        }
-	    }, {
-	        key: 'wrapperKeyDown',
-	        value: function wrapperKeyDown(event) {
-	            //this.ignoreFocusOut = true;
-	        }
-	    }, {
-	        key: 'searchBlur',
-	        value: function searchBlur() {/*
-	                                      if(!this.ignoreSearchBlur) {
-	                                      console.log('search-blur');
-	                                      this.closePanel();
-	                                      }
-	                                      this.ignoreSearchBlur = false; */
 	        }
 	    }, {
 	        key: 'select',
@@ -1283,7 +1260,7 @@
 	            this.elements.wrapper.className = this.style.openWrapper;
 	            this.components.panel.element.style.display = 'inline-block';
 	            //console.log('ignore focus out');
-	            this.ignoreFocusOut = true;
+	            this.ignoreBlur = true;
 	            this.components.panel.components.searchInput.elements.input.focus();
 	            this.components.panel.components.searchInput.elements.input.setSelectionRange(0, this.components.panel.components.searchInput.elements.input.value.length);
 
@@ -2006,6 +1983,9 @@
 	        this.elements = {};
 	        this.onSelect = onSelect;
 	        this.autocomplete = autocomplete;
+	        this.style = style;
+	        this.items = [];
+	        this.selectedIndex = 0;
 
 	        this.elements.wrapper = (0, _dom.div)({ className: style.listWrapper }, this.elements.ul = (0, _dom.ul)());
 
@@ -2014,39 +1994,89 @@
 
 	    _createClass(List, [{
 	        key: 'show',
-	        value: function show(items) {
-	            this.elements.ul.innerHTML = '';
-	            var length = items.length;
+	        value: function show() {
+	            var items = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
-	            var childForEmpty = (0, _dom.div)({
-	                innerText: 'Empty'
-	            });
-	            childForEmpty.style.fontStyle = 'italic';
-	            this.prepareItemEvents(childForEmpty, { content: null, value: null });
-	            var liChildForEmpty = (0, _dom.li)({}, childForEmpty);
-	            this.elements.ul.appendChild(liChildForEmpty);
+	            this.items = items;
+	            this.elements.ul.innerHTML = '';
+
+	            var length = items.length;
+	            var elementIndex = 0;
+
+	            if (this.autocomplete.emptyItem) {
+	                var childForEmpty = (0, _dom.div)({
+	                    className: this.style.item + ' ' + this.style.emptyItem,
+	                    innerText: 'Empty'
+	                });
+	                this.prepareItemEvents(childForEmpty, { content: null, value: null }, elementIndex);
+	                var liChildForEmpty = (0, _dom.li)({}, childForEmpty);
+	                this.elements.ul.appendChild(liChildForEmpty);
+	                elementIndex++;
+	            }
 
 	            for (var index = 0; index < length; index++) {
 	                var innerChild = (0, _dom.div)({
+	                    className: this.style.item,
 	                    innerText: items[index].content
 	                });
-	                this.prepareItemEvents(innerChild, items[index]);
+	                this.prepareItemEvents(innerChild, items[index], elementIndex);
 	                var liChild = (0, _dom.li)({}, innerChild);
 	                this.elements.ul.appendChild(liChild);
+	                elementIndex++;
 	            }
 	            this.elements.wrapper.style.display = 'block';
+	            this.updateSelection(0);
 	        }
 	    }, {
 	        key: 'prepareItemEvents',
-	        value: function prepareItemEvents(element, data) {
+	        value: function prepareItemEvents(element, data, elementIndex) {
 	            var _this = this;
 
+	            element.addEventListener('mouseenter', function (event) {
+	                _this.updateSelection(elementIndex);
+	            });
 	            element.addEventListener('mousedown', function (event) {
-	                //event.preventDefault();
-	                //event.stopPropagation();
 	                _this.onSelect(data);
 	                _this.autocomplete.closePanel();
 	            });
+	        }
+	    }, {
+	        key: 'up',
+	        value: function up() {
+	            if (this.elements.ul.children.length) {
+	                this.updateSelection(this.selectedIndex - 1);
+	            }
+	        }
+	    }, {
+	        key: 'down',
+	        value: function down() {
+	            if (this.elements.ul.children.length) {
+	                this.updateSelection(this.selectedIndex + 1);
+	            }
+	        }
+	    }, {
+	        key: 'selectCurrent',
+	        value: function selectCurrent() {
+	            if (this.autocomplete.emptyItem) {
+	                this.onSelect(this.items[this.selectedIndex - 1] || {
+	                    content: null,
+	                    value: null
+	                });
+	            } else {
+	                this.onSelect(this.items[this.selectedIndex]);
+	            }
+
+	            this.autocomplete.closePanel();
+	        }
+	    }, {
+	        key: 'updateSelection',
+	        value: function updateSelection(index) {
+	            var currentIndex = this.selectedIndex;
+	            var children = this.elements.ul.children;
+	            this.selectedIndex = Math.max(0, Math.min(children.length - 1, index));
+	            var active = children[currentIndex];
+	            active && active.children[0].classList.remove('active');
+	            children[this.selectedIndex].children[0].classList.add('active');
 	        }
 	    }, {
 	        key: 'hide',

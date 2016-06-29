@@ -1,5 +1,5 @@
 body {
-    font-family: sans-serif;
+    font-family: Helvetica, arial, sans-serif;
 }
 .ac-wrapper {
     position: relative;
@@ -9,7 +9,7 @@ body {
     box-sizing: border-box;
 }
 .ac-present-text {
-    display: inline-block;;
+    display: inline-block;
     width: 100%;
     height: 35px;
     padding: 0 12px;
@@ -54,12 +54,43 @@ body {
     margin: 0;
     padding: 0;
     list-style: none;
+    color: #555555;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    -webkit-transition: all ease-in-out 0.25;
+    -o-transition: all ease-in-out 0.25s;
+    transition: all ease-in-out 0.25;
+    cursor: pointer;
 }
 .ac-list-wrapper ul li {
     margin: 0;
     padding: 0;
 }
-.ac-list-wrapper ul li a {
+.ac-list-wrapper ul li .ac-item {
+    height: 26px;
+    padding: 0 6px;
+    line-height: 26px;
+}
+.ac-list-wrapper ul li:nth-child(even) .ac-item {
+    background: #F0F4F5;
+}
+.ac-list-wrapper ul li:first-child .ac-item {
+    border-radius: 4px 4px 0 0;
+}
+.ac-list-wrapper ul li:last-child .ac-item {
+    border-radius: 0 0 4px 4px;
+}
+.ac-list-wrapper ul li .ac-item.ac-empty-item {
+    font-size: 13px;
+    font-style: italic;
+}
+.ac-list-wrapper ul li .ac-item.active {
+    background: #1abc9c;
+    color: #fff;
 }
 .ac-search-input-wrapper {
     padding: 10px;
