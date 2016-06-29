@@ -12,7 +12,11 @@ export default class SearchInput {
         }));
     }
 
-    value() {
+    value(setValue) {
+        if(typeof setValue !== 'undefined') {
+            this.elements.input.value = setValue;
+            return this;
+        }
         return this.elements.input.value;
     }
 }

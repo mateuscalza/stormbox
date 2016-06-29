@@ -6,7 +6,16 @@ import SelectSource from '../sources/SelectSource';
 import debounce from '../util/debounce';
 import { div } from '../util/dom';
 import { trigger, on } from '../util/events';
-import { ENTER, SPACE, ESC } from '../util/keys';
+import { ENTER, SPACE, ESC, SHIFT, TAB, ARROW_UP, ARROW_DOWN } from '../util/keys';
+
+const keysThatOpen = [
+    ENTER,
+    SPACE
+];
+const ignoredKeysOnSearch = [
+    SHIFT,
+    TAB
+];
 
 export default class AutoComplete {
     constructor({
@@ -26,6 +35,9 @@ export default class AutoComplete {
         this.open = false;
         this.typing = false;
         this.ignoreFocus = false;
+        this.ignoreFocusOut = false;
+        this.ignoreSearchBlur = false;
+        this.valueOnOpen = undefined;
 
         // Initial
         this.queryParam = queryParam;
@@ -71,7 +83,7 @@ export default class AutoComplete {
         this.components = {
             presentText: new PresentText({ style: this.style }),
             icon: new Icon({ style: this.style }),
-            panel: new Panel({ style: this.style })
+            panel: new Panel({ style: this.style }, { onSelect: ::this.select }, this)
         };
 
         // Prepare elements
@@ -112,7 +124,10 @@ export default class AutoComplete {
         this.components.icon.element::on('click', ::this.iconOrTextClick);
         this.elements.wrapper::on('keyup', ::this.keyUp);
         this.elements.wrapper::on('focus', ::this.wrapperFocus);
-        this.components.panel.components.searchInput.elements.input::on('blur', ::this.wrapperBlur);
+        this.elements.wrapper::on('focusout', ::this.wrapperFocusout);
+        this.elements.wrapper::on('mousedown', ::this.wrapperMouseDown);
+        this.elements.wrapper::on('keydown', ::this.wrapperKeyDown);
+        this.components.panel.components.searchInput.elements.input::on('blur', ::this.searchBlur);
     }
 
     keyUp(event) {
@@ -122,14 +137,17 @@ export default class AutoComplete {
             this.closePanel();
             this.ignoreFocus = true;
             this.elements.wrapper.focus();
-        } else if(event.target === this.elements.wrapper && [ ENTER, SPACE ].indexOf(event.keyCode) != -1) {
+        } else if(event.target === this.elements.wrapper && keysThatOpen.indexOf(event.keyCode) != -1) {
             this.togglePanel();
-        } else {
+        } else if(ignoredKeysOnSearch.indexOf(event.keyCode) == -1) {
             if(!this.typing) {
-                console.log('Start typing');
+                //console.log('Start typing');
                 this.typing = true;
                 if(this.clearOnType) {
-                    this.select(null, null);
+                    this.select({
+                        content: null,
+                        value: null
+                    });
                 }
                 this.components.panel.clear();
             }
@@ -139,30 +157,77 @@ export default class AutoComplete {
 
     iconOrTextClick(event) {
         if(document.activeElement === this.elements.wrapper) {
-            this.togglePanel();
+            //this.togglePanel();
         }
     }
 
     wrapperFocus(event) {
         if(!event.isTrigger && !this.ignoreFocus) {
             this.openPanel();
+        } else {
+            //console.log('not opening the panel on', { 'event.isTrigger': event.isTrigger, 'this.ignoreFocus': this.ignoreFocus });
         }
         this.ignoreFocus = false;
     }
 
-    wrapperBlur(event) {
-        //this.closePanel();
-        this.elements.hiddenInput::trigger('blur');
-        this.elements.textInput::trigger('blur');
+    wrapperFocusout(event) {
+        if(!this.ignoreFocusOut) {
+            console.log('real-focusout');
+            if(this.value !== this.valueOnOpen) {
+                this.valueOnOpen = this.value;
+                this.elements.hiddenInput::trigger('change');
+                this.elements.textInput::trigger('change');
+            }
+            this.elements.hiddenInput::trigger('blur');
+            this.elements.textInput::trigger('blur');
+            this.closePanel();
+        } else {
+            //console.log('focusout ignored');
+        }
+        this.ignoreFocusOut = false;
     }
 
-    select(content, value) {
+    wrapperMouseDown(event) {
+        this.ignoreSearchBlur = true;
+
+        // If already is focused (or your children) and panel is not open
+        if(!this.open && document.activeElement === this.elements.wrapper) {
+            this.openPanel();
+        } else if(this.open && document.activeElement === this.elements.wrapper) {
+            //console.log('ignore focusout');
+            this.ignoreFocusOut = true;
+            //console.log('wrapper is focused, focusing on search...');
+            this.components.panel.components.searchInput.elements.input.focus();
+            this.ignoreFocus = true;
+        } else if(document.activeElement === this.components.panel.components.searchInput.elements.input) {
+            //console.log('focus-ignored because panel is open and active element is search input');
+            this.ignoreFocus = true;
+            //console.log('ignore focusout');
+            this.ignoreFocusOut = true;
+        } else {
+            //console.log('focus-NOT-ignored', document.activeElement, this.components.panel.components.searchInput.elements.input);
+        }
+    }
+
+    wrapperKeyDown(event) {
+        //this.ignoreFocusOut = true;
+    }
+
+    searchBlur() {/*
+        if(!this.ignoreSearchBlur) {
+            console.log('search-blur');
+            this.closePanel();
+        }
+        this.ignoreSearchBlur = false; */
+    }
+
+    select({ content, value }) {
         this.value = value;
         this.content = content;
 
         this.elements.hiddenInput.value = value || '';
         this.elements.textInput.value = content || '';
-        this.components.searchInput.value(content || '');
+        this.components.panel.components.searchInput.value('');
         this.components.presentText.text(content || ' ');
     }
 
@@ -185,9 +250,12 @@ export default class AutoComplete {
             this.components.panel.error(error);
         } finally {
             if(this.autoSelectWhenOneResult && results && results.data && results.data.length == 1) {
-                this.select(results.data[0].content, results.data[0].value);
+                this.select({
+                    content: results.data[0].content,
+                    value: results.data[0].value
+                });
             } else if(!this.open && (!this.autoFind || (results && results.data && results.data.length > 1))) {
-                this.openPanel();
+                !this.open && this.openPanel();
             }
             this.findingEnd();
         }
@@ -209,9 +277,14 @@ export default class AutoComplete {
     }
 
     openPanel() {
+        //console.log('open-panel');
+        //console.trace();
         this.open = true;
+        this.valueOnOpen = this.value;
         this.elements.wrapper.className = this.style.openWrapper;
         this.components.panel.element.style.display = 'inline-block';
+        //console.log('ignore focus out');
+        this.ignoreFocusOut = true;
         this.components.panel.components.searchInput.elements.input.focus();
         this.components.panel.components.searchInput.elements.input.setSelectionRange(0, this.components.panel.components.searchInput.elements.input.value.length);
 
@@ -221,7 +294,7 @@ export default class AutoComplete {
     }
 
     closePanel() {
-        this.components.panel.clear();
+        //console.log('close-panel');
         this.open = false;
         this.elements.wrapper.className = this.style.wrapper;
         this.components.panel.element.style.display = 'none';

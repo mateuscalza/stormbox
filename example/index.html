@@ -16,12 +16,19 @@
     <script src="/dist/index.js"></script>
     <script>
 
-        autocomplete.byId('text_user_id').addEventListener('blur', function(event){
-            console.log('blur working');
-        });
-        autocomplete.byId('text_user_id').addEventListener('change', function(event){
-            console.log('change working');
-        });
+        // autocomplete.byId('text_user_id').addEventListener('blur', function(event){
+        //     console.log('text blur working', event.target.value);
+        // });
+        // autocomplete.byId('text_user_id').addEventListener('change', function(event){
+        //     console.log('text change working', event.target.value);
+        // });
+        //
+        // autocomplete.byId('user_id').addEventListener('blur', function(event){
+        //     console.log('value blur working', event.target.value);
+        // });
+        // autocomplete.byId('user_id').addEventListener('change', function(event){
+        //     console.log('value change working', event.target.value);
+        // });
 
         autocomplete({
             hiddenInput: autocomplete.byId('user_id'),

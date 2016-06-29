@@ -851,7 +851,7 @@
 
 	var _AutoComplete2 = _interopRequireDefault(_AutoComplete);
 
-	var _AjaxSource = __webpack_require__(17);
+	var _AjaxSource = __webpack_require__(18);
 
 	var _AjaxSource2 = _interopRequireDefault(_AjaxSource);
 
@@ -859,7 +859,7 @@
 
 	var _SelectSource2 = _interopRequireDefault(_SelectSource);
 
-	var _ArraySource = __webpack_require__(18);
+	var _ArraySource = __webpack_require__(19);
 
 	var _ArraySource2 = _interopRequireDefault(_ArraySource);
 
@@ -931,7 +931,7 @@
 
 	var _SelectSource2 = _interopRequireDefault(_SelectSource);
 
-	var _debounce = __webpack_require__(15);
+	var _debounce = __webpack_require__(16);
 
 	var _debounce2 = _interopRequireDefault(_debounce);
 
@@ -939,7 +939,7 @@
 
 	var _events = __webpack_require__(10);
 
-	var _keys = __webpack_require__(16);
+	var _keys = __webpack_require__(17);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -948,6 +948,9 @@
 	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var keysThatOpen = [_keys.ENTER, _keys.SPACE];
+	var ignoredKeysOnSearch = [_keys.SHIFT, _keys.TAB];
 
 	var AutoComplete = function () {
 	    function AutoComplete(_ref) {
@@ -976,6 +979,9 @@
 	        this.open = false;
 	        this.typing = false;
 	        this.ignoreFocus = false;
+	        this.ignoreFocusOut = false;
+	        this.ignoreSearchBlur = false;
+	        this.valueOnOpen = undefined;
 
 	        // Initial
 	        this.queryParam = queryParam;
@@ -1021,7 +1027,7 @@
 	        this.components = {
 	            presentText: new _PresentText2.default({ style: this.style }),
 	            icon: new _Icon2.default({ style: this.style }),
-	            panel: new _Panel2.default({ style: this.style })
+	            panel: new _Panel2.default({ style: this.style }, { onSelect: this.select.bind(this) }, this)
 	        };
 
 	        // Prepare elements
@@ -1067,7 +1073,10 @@
 	            (_context = this.components.icon.element, _events.on).call(_context, 'click', this.iconOrTextClick.bind(this));
 	            (_context = this.elements.wrapper, _events.on).call(_context, 'keyup', this.keyUp.bind(this));
 	            (_context = this.elements.wrapper, _events.on).call(_context, 'focus', this.wrapperFocus.bind(this));
-	            (_context = this.components.panel.components.searchInput.elements.input, _events.on).call(_context, 'blur', this.wrapperBlur.bind(this));
+	            (_context = this.elements.wrapper, _events.on).call(_context, 'focusout', this.wrapperFocusout.bind(this));
+	            (_context = this.elements.wrapper, _events.on).call(_context, 'mousedown', this.wrapperMouseDown.bind(this));
+	            (_context = this.elements.wrapper, _events.on).call(_context, 'keydown', this.wrapperKeyDown.bind(this));
+	            (_context = this.components.panel.components.searchInput.elements.input, _events.on).call(_context, 'blur', this.searchBlur.bind(this));
 	        }
 	    }, {
 	        key: 'keyUp',
@@ -1078,14 +1087,17 @@
 	                this.closePanel();
 	                this.ignoreFocus = true;
 	                this.elements.wrapper.focus();
-	            } else if (event.target === this.elements.wrapper && [_keys.ENTER, _keys.SPACE].indexOf(event.keyCode) != -1) {
+	            } else if (event.target === this.elements.wrapper && keysThatOpen.indexOf(event.keyCode) != -1) {
 	                this.togglePanel();
-	            } else {
+	            } else if (ignoredKeysOnSearch.indexOf(event.keyCode) == -1) {
 	                if (!this.typing) {
-	                    console.log('Start typing');
+	                    //console.log('Start typing');
 	                    this.typing = true;
 	                    if (this.clearOnType) {
-	                        this.select(null, null);
+	                        this.select({
+	                            content: null,
+	                            value: null
+	                        });
 	                    }
 	                    this.components.panel.clear();
 	                }
@@ -1096,7 +1108,7 @@
 	        key: 'iconOrTextClick',
 	        value: function iconOrTextClick(event) {
 	            if (document.activeElement === this.elements.wrapper) {
-	                this.togglePanel();
+	                //this.togglePanel();
 	            }
 	        }
 	    }, {
@@ -1104,27 +1116,82 @@
 	        value: function wrapperFocus(event) {
 	            if (!event.isTrigger && !this.ignoreFocus) {
 	                this.openPanel();
+	            } else {
+	                //console.log('not opening the panel on', { 'event.isTrigger': event.isTrigger, 'this.ignoreFocus': this.ignoreFocus });
 	            }
 	            this.ignoreFocus = false;
 	        }
 	    }, {
-	        key: 'wrapperBlur',
-	        value: function wrapperBlur(event) {
-	            var _context2;
+	        key: 'wrapperFocusout',
+	        value: function wrapperFocusout(event) {
+	            if (!this.ignoreFocusOut) {
+	                var _context3;
 
-	            //this.closePanel();
-	            (_context2 = this.elements.hiddenInput, _events.trigger).call(_context2, 'blur');
-	            (_context2 = this.elements.textInput, _events.trigger).call(_context2, 'blur');
+	                console.log('real-focusout');
+	                if (this.value !== this.valueOnOpen) {
+	                    var _context2;
+
+	                    this.valueOnOpen = this.value;
+	                    (_context2 = this.elements.hiddenInput, _events.trigger).call(_context2, 'change');
+	                    (_context2 = this.elements.textInput, _events.trigger).call(_context2, 'change');
+	                }
+	                (_context3 = this.elements.hiddenInput, _events.trigger).call(_context3, 'blur');
+	                (_context3 = this.elements.textInput, _events.trigger).call(_context3, 'blur');
+	                this.closePanel();
+	            } else {
+	                //console.log('focusout ignored');
+	            }
+	            this.ignoreFocusOut = false;
+	        }
+	    }, {
+	        key: 'wrapperMouseDown',
+	        value: function wrapperMouseDown(event) {
+	            this.ignoreSearchBlur = true;
+
+	            // If already is focused (or your children) and panel is not open
+	            if (!this.open && document.activeElement === this.elements.wrapper) {
+	                this.openPanel();
+	            } else if (this.open && document.activeElement === this.elements.wrapper) {
+	                //console.log('ignore focusout');
+	                this.ignoreFocusOut = true;
+	                //console.log('wrapper is focused, focusing on search...');
+	                this.components.panel.components.searchInput.elements.input.focus();
+	                this.ignoreFocus = true;
+	            } else if (document.activeElement === this.components.panel.components.searchInput.elements.input) {
+	                //console.log('focus-ignored because panel is open and active element is search input');
+	                this.ignoreFocus = true;
+	                //console.log('ignore focusout');
+	                this.ignoreFocusOut = true;
+	            } else {
+	                //console.log('focus-NOT-ignored', document.activeElement, this.components.panel.components.searchInput.elements.input);
+	            }
+	        }
+	    }, {
+	        key: 'wrapperKeyDown',
+	        value: function wrapperKeyDown(event) {
+	            //this.ignoreFocusOut = true;
+	        }
+	    }, {
+	        key: 'searchBlur',
+	        value: function searchBlur() {/*
+	                                      if(!this.ignoreSearchBlur) {
+	                                      console.log('search-blur');
+	                                      this.closePanel();
+	                                      }
+	                                      this.ignoreSearchBlur = false; */
 	        }
 	    }, {
 	        key: 'select',
-	        value: function select(content, value) {
+	        value: function select(_ref2) {
+	            var content = _ref2.content;
+	            var value = _ref2.value;
+
 	            this.value = value;
 	            this.content = content;
 
 	            this.elements.hiddenInput.value = value || '';
 	            this.elements.textInput.value = content || '';
-	            this.components.searchInput.value(content || '');
+	            this.components.panel.components.searchInput.value('');
 	            this.components.presentText.text(content || ' ');
 	        }
 	    }, {
@@ -1132,9 +1199,9 @@
 	        value: function () {
 	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
 	                var query, results;
-	                return regeneratorRuntime.wrap(function _callee$(_context3) {
+	                return regeneratorRuntime.wrap(function _callee$(_context4) {
 	                    while (1) {
-	                        switch (_context3.prev = _context3.next) {
+	                        switch (_context4.prev = _context4.next) {
 	                            case 0:
 	                                if (this.finding) {
 	                                    console.log('Let`s abort!');
@@ -1144,37 +1211,40 @@
 	                                this.findingStart();
 	                                query = this.components.panel.components.searchInput.value();
 	                                results = { data: [] };
-	                                _context3.prev = 4;
-	                                _context3.next = 7;
+	                                _context4.prev = 4;
+	                                _context4.next = 7;
 	                                return this.source.find(_defineProperty({}, this.queryParam, query));
 
 	                            case 7:
-	                                results = _context3.sent;
+	                                results = _context4.sent;
 
 	                                this.components.panel.show(results);
-	                                _context3.next = 14;
+	                                _context4.next = 14;
 	                                break;
 
 	                            case 11:
-	                                _context3.prev = 11;
-	                                _context3.t0 = _context3['catch'](4);
+	                                _context4.prev = 11;
+	                                _context4.t0 = _context4['catch'](4);
 
-	                                this.components.panel.error(_context3.t0);
+	                                this.components.panel.error(_context4.t0);
 
 	                            case 14:
-	                                _context3.prev = 14;
+	                                _context4.prev = 14;
 
 	                                if (this.autoSelectWhenOneResult && results && results.data && results.data.length == 1) {
-	                                    this.select(results.data[0].content, results.data[0].value);
+	                                    this.select({
+	                                        content: results.data[0].content,
+	                                        value: results.data[0].value
+	                                    });
 	                                } else if (!this.open && (!this.autoFind || results && results.data && results.data.length > 1)) {
-	                                    this.openPanel();
+	                                    !this.open && this.openPanel();
 	                                }
 	                                this.findingEnd();
-	                                return _context3.finish(14);
+	                                return _context4.finish(14);
 
 	                            case 18:
 	                            case 'end':
-	                                return _context3.stop();
+	                                return _context4.stop();
 	                        }
 	                    }
 	                }, _callee, this, [[4, 11, 14, 18]]);
@@ -1206,9 +1276,14 @@
 	    }, {
 	        key: 'openPanel',
 	        value: function openPanel() {
+	            //console.log('open-panel');
+	            //console.trace();
 	            this.open = true;
+	            this.valueOnOpen = this.value;
 	            this.elements.wrapper.className = this.style.openWrapper;
 	            this.components.panel.element.style.display = 'inline-block';
+	            //console.log('ignore focus out');
+	            this.ignoreFocusOut = true;
 	            this.components.panel.components.searchInput.elements.input.focus();
 	            this.components.panel.components.searchInput.elements.input.setSelectionRange(0, this.components.panel.components.searchInput.elements.input.value.length);
 
@@ -1219,7 +1294,7 @@
 	    }, {
 	        key: 'closePanel',
 	        value: function closePanel() {
-	            this.components.panel.clear();
+	            //console.log('close-panel');
 	            this.open = false;
 	            this.elements.wrapper.className = this.style.wrapper;
 	            this.components.panel.element.style.display = 'none';
@@ -1726,7 +1801,7 @@
 
 	var _ErrorView2 = _interopRequireDefault(_ErrorView);
 
-	var _List = __webpack_require__(19);
+	var _List = __webpack_require__(15);
 
 	var _List2 = _interopRequireDefault(_List);
 
@@ -1737,15 +1812,16 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Panel = function () {
-	    function Panel(_ref) {
+	    function Panel(_ref, _ref2, autocomplete) {
 	        var style = _ref.style;
+	        var onSelect = _ref2.onSelect;
 
 	        _classCallCheck(this, Panel);
 
 	        this.components = {
 	            searchInput: new _SearchInput2.default({ style: style }),
 	            errorView: new _ErrorView2.default({ style: style }),
-	            list: new _List2.default({ style: style })
+	            list: new _List2.default({ style: style }, { onSelect: onSelect }, autocomplete)
 	        };
 
 	        this.element = (0, _dom.div)({
@@ -1760,8 +1836,8 @@
 	        }
 	    }, {
 	        key: 'error',
-	        value: function error(_ref2) {
-	            var message = _ref2.message;
+	        value: function error(_ref3) {
+	            var message = _ref3.message;
 
 	            this.components.errorView.show(message);
 	        }
@@ -1820,7 +1896,11 @@
 
 	    _createClass(SearchInput, [{
 	        key: 'value',
-	        value: function value() {
+	        value: function value(setValue) {
+	            if (typeof setValue !== 'undefined') {
+	                this.elements.input.value = setValue;
+	                return this;
+	            }
 	            return this.elements.input.value;
 	        }
 	    }]);
@@ -1891,6 +1971,97 @@
 
 /***/ },
 /* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _extend = __webpack_require__(5);
+
+	var _extend2 = _interopRequireDefault(_extend);
+
+	var _SelectSource = __webpack_require__(7);
+
+	var _SelectSource2 = _interopRequireDefault(_SelectSource);
+
+	var _dom = __webpack_require__(9);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var List = function () {
+	    function List(_ref, _ref2, autocomplete) {
+	        var style = _ref.style;
+	        var onSelect = _ref2.onSelect;
+
+	        _classCallCheck(this, List);
+
+	        // Initial value
+	        this.elements = {};
+	        this.onSelect = onSelect;
+	        this.autocomplete = autocomplete;
+
+	        this.elements.wrapper = (0, _dom.div)({ className: style.listWrapper }, this.elements.ul = (0, _dom.ul)());
+
+	        this.hide();
+	    }
+
+	    _createClass(List, [{
+	        key: 'show',
+	        value: function show(items) {
+	            this.elements.ul.innerHTML = '';
+	            var length = items.length;
+
+	            var childForEmpty = (0, _dom.div)({
+	                innerText: 'Empty'
+	            });
+	            childForEmpty.style.fontStyle = 'italic';
+	            this.prepareItemEvents(childForEmpty, { content: null, value: null });
+	            var liChildForEmpty = (0, _dom.li)({}, childForEmpty);
+	            this.elements.ul.appendChild(liChildForEmpty);
+
+	            for (var index = 0; index < length; index++) {
+	                var innerChild = (0, _dom.div)({
+	                    innerText: items[index].content
+	                });
+	                this.prepareItemEvents(innerChild, items[index]);
+	                var liChild = (0, _dom.li)({}, innerChild);
+	                this.elements.ul.appendChild(liChild);
+	            }
+	            this.elements.wrapper.style.display = 'block';
+	        }
+	    }, {
+	        key: 'prepareItemEvents',
+	        value: function prepareItemEvents(element, data) {
+	            var _this = this;
+
+	            element.addEventListener('mousedown', function (event) {
+	                //event.preventDefault();
+	                //event.stopPropagation();
+	                _this.onSelect(data);
+	                _this.autocomplete.closePanel();
+	            });
+	        }
+	    }, {
+	        key: 'hide',
+	        value: function hide() {
+	            this.elements.wrapper.style.display = 'none';
+	        }
+	    }]);
+
+	    return List;
+	}();
+
+	exports.default = List;
+
+/***/ },
+/* 16 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1916,7 +2087,7 @@
 	};
 
 /***/ },
-/* 16 */
+/* 17 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1931,9 +2102,11 @@
 	var ARROW_DOWN = exports.ARROW_DOWN = 40;
 	var ARROW_RIGHT = exports.ARROW_RIGHT = 39;
 	var ARROW_LEFT = exports.ARROW_LEFT = 37;
+	var TAB = exports.TAB = 9;
+	var SHIFT = exports.SHIFT = 16;
 
 /***/ },
-/* 17 */
+/* 18 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2032,7 +2205,7 @@
 	exports.default = AjaxSource;
 
 /***/ },
-/* 18 */
+/* 19 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2055,7 +2228,11 @@
 
 	var ArraySource = function () {
 	    function ArraySource() {
+	        var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+
 	        _classCallCheck(this, ArraySource);
+
+	        this.data = data;
 	    }
 
 	    _createClass(ArraySource, [{
@@ -2067,7 +2244,9 @@
 	                    while (1) {
 	                        switch (_context.prev = _context.next) {
 	                            case 0:
-	                                return _context.abrupt('return', []);
+	                                return _context.abrupt('return', {
+	                                    data: this.data
+	                                });
 
 	                            case 1:
 	                            case 'end':
@@ -2077,7 +2256,7 @@
 	                }, _callee, this);
 	            }));
 
-	            function find(_x) {
+	            function find(_x2) {
 	                return ref.apply(this, arguments);
 	            }
 
@@ -2089,70 +2268,6 @@
 	}();
 
 	exports.default = ArraySource;
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _extend = __webpack_require__(5);
-
-	var _extend2 = _interopRequireDefault(_extend);
-
-	var _SelectSource = __webpack_require__(7);
-
-	var _SelectSource2 = _interopRequireDefault(_SelectSource);
-
-	var _dom = __webpack_require__(9);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var List = function () {
-	    function List(_ref) {
-	        var style = _ref.style;
-
-	        _classCallCheck(this, List);
-
-	        this.elements = {};
-
-	        this.elements.wrapper = (0, _dom.div)({ className: style.listWrapper }, this.elements.ul = (0, _dom.ul)());
-
-	        this.hide();
-	    }
-
-	    _createClass(List, [{
-	        key: 'show',
-	        value: function show(items) {
-	            this.elements.ul.innerHTML = '';
-	            var length = items.length;
-	            for (var index = 0; index < length; index++) {
-	                var liChild = (0, _dom.li)({
-	                    innerText: items[index].content
-	                });
-	                this.elements.ul.appendChild(liChild);
-	            }
-	            this.elements.wrapper.style.display = 'block';
-	        }
-	    }, {
-	        key: 'hide',
-	        value: function hide() {
-	            this.elements.wrapper.style.display = 'none';
-	        }
-	    }]);
-
-	    return List;
-	}();
-
-	exports.default = List;
 
 /***/ }
 /******/ ]);

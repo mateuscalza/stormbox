@@ -6,11 +6,11 @@ import List from './List';
 import { div } from '../util/dom';
 
 export default class Panel {
-    constructor({ style }) {
+    constructor({ style }, { onSelect }, autocomplete) {
         this.components = {
             searchInput: new SearchInput({ style }),
             errorView: new ErrorView({ style }),
-            list: new List({ style })
+            list: new List({ style }, { onSelect }, autocomplete)
         };
 
         this.element = div(
