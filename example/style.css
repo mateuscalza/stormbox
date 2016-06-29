@@ -1,9 +1,15 @@
 body {
-    font-family: Helvetica, arial, sans-serif;
+    font-family: 'Open Sans', 'Helvetica Neue', helvetica, arial, sans-serif;
 }
 label {
-    padding: 20px 0;
     display: block;
+}
+fieldset {
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
 }
 input {
     display: inline-block;

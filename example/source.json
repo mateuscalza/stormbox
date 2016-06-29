@@ -15,13 +15,13 @@
 			],
 			"others": [
 				{
-					"field": "idade",
+					"field": "age",
 					"value": 30
 				},
 				{
-					"field": "id_municipio",
-					"content": "Ibiam",
-					"value": 2342342423
+					"field": "occupation",
+					"content": "CEO",
+					"value": 3123213
 				}
 			]
 		},
@@ -40,12 +40,12 @@
 			],
 			"others": [
 				{
-					"field": "idade",
+					"field": "age",
 					"value": 30
 				},
 				{
-					"field": "id_municipio",
-					"content": "Ibicaré",
+					"field": "occupation",
+					"content": "Programmer",
 					"value": 2342342423
 				}
 			]
@@ -65,13 +65,13 @@
 			],
 			"others": [
 				{
-					"field": "idade",
+					"field": "age",
 					"value": 76
 				},
 				{
-					"field": "id_municipio",
-					"content": "Everywhere",
-					"value": 999999
+					"field": "occupation",
+					"content": "Designer",
+					"value": 26677777
 				}
 			]
 		}

@@ -894,6 +894,7 @@
 	};
 
 	if (typeof window !== 'undefined') {
+	  window.__autocomplete_serial_key = 0;
 	  window.autocomplete = autocomplete;
 	}
 
@@ -983,6 +984,9 @@
 
 	        _classCallCheck(this, AutoComplete);
 
+	        // Key
+	        this.key = window.__autocomplete_serial_key++;
+
 	        // Environment
 	        this.finding = false;
 	        this.open = false;
@@ -1070,9 +1074,11 @@
 	            // Prepare hiddenInput
 	            this.elements.hiddenInput.type = 'hidden';
 	            this.elements.hiddenInput.className = this.style.hiddenInput;
-	            // Prepare hiddenInput
+	            this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
+	            // Prepare textInput
 	            this.elements.textInput.type = 'hidden';
 	            this.elements.textInput.className = this.style.textInput;
+	            this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
 	            // Set initial text
 	            this.components.presentText.text(this.content);
 	            // Append wrapper's children
@@ -1177,6 +1183,8 @@
 	        value: function select(_ref2) {
 	            var content = _ref2.content;
 	            var value = _ref2.value;
+	            var additional = _ref2.additional;
+	            var others = _ref2.others;
 
 	            this.value = value;
 	            this.content = content;
@@ -1185,17 +1193,87 @@
 	            this.elements.textInput.value = content || '';
 	            this.components.panel.components.searchInput.value('');
 	            this.components.presentText.text(content || ' ');
+
+	            this.setValueInOthers(others);
 	        }
 	    }, {
-	        key: 'find',
+	        key: 'setValueInOthers',
 	        value: function () {
 	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-	                var _this = this;
-
-	                var query, params, results;
+	                var others = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	                var length, index, element, fieldAutocompleteKey, textElement;
 	                return regeneratorRuntime.wrap(function _callee$(_context4) {
 	                    while (1) {
 	                        switch (_context4.prev = _context4.next) {
+	                            case 0:
+	                                length = others.length;
+	                                index = 0;
+
+	                            case 2:
+	                                if (!(index < length)) {
+	                                    _context4.next = 16;
+	                                    break;
+	                                }
+
+	                                element = document.querySelector('[name="' + others[index].field + '"]');
+
+	                                if (element) {
+	                                    _context4.next = 6;
+	                                    break;
+	                                }
+
+	                                throw new Error('Field ' + others[index].field + ' not found to set value!');
+
+	                            case 6:
+	                                element.value = others[index].value;
+
+	                                if (!(typeof element.content !== 'undefined')) {
+	                                    _context4.next = 13;
+	                                    break;
+	                                }
+
+	                                fieldAutocompleteKey = element.dataset['autocompleteKey'];
+	                                textElement = document.querySelector('[data-autocomplete-text-key="' + fieldAutocompleteKey + '"]');
+
+	                                if (textElement) {
+	                                    _context4.next = 12;
+	                                    break;
+	                                }
+
+	                                throw new Error('AutoComplete text ' + others[index].field + ' not found to set value!');
+
+	                            case 12:
+	                                textElement.value = element.content;
+
+	                            case 13:
+	                                index++;
+	                                _context4.next = 2;
+	                                break;
+
+	                            case 16:
+	                            case 'end':
+	                                return _context4.stop();
+	                        }
+	                    }
+	                }, _callee, this);
+	            }));
+
+	            function setValueInOthers(_x) {
+	                return ref.apply(this, arguments);
+	            }
+
+	            return setValueInOthers;
+	        }()
+	    }, {
+	        key: 'find',
+	        value: function () {
+	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+	                var _this = this;
+
+	                var query, params, results;
+	                return regeneratorRuntime.wrap(function _callee2$(_context5) {
+	                    while (1) {
+	                        switch (_context5.prev = _context5.next) {
 	                            case 0:
 	                                if (this.finding) {
 	                                    console.log('Let`s abort!');
@@ -1213,25 +1291,25 @@
 	                                    params[key] = _this.references[key].value;
 	                                });
 	                                results = { data: [] };
-	                                _context4.prev = 6;
-	                                _context4.next = 9;
+	                                _context5.prev = 6;
+	                                _context5.next = 9;
 	                                return this.source.find(params);
 
 	                            case 9:
-	                                results = _context4.sent;
+	                                results = _context5.sent;
 
 	                                this.components.panel.show(results);
-	                                _context4.next = 16;
+	                                _context5.next = 16;
 	                                break;
 
 	                            case 13:
-	                                _context4.prev = 13;
-	                                _context4.t0 = _context4['catch'](6);
+	                                _context5.prev = 13;
+	                                _context5.t0 = _context5['catch'](6);
 
-	                                this.components.panel.error(_context4.t0);
+	                                this.components.panel.error(_context5.t0);
 
 	                            case 16:
-	                                _context4.prev = 16;
+	                                _context5.prev = 16;
 
 	                                if (this.autoSelectWhenOneResult && results && results.data && results.data.length == 1) {
 	                                    this.select({
@@ -1242,14 +1320,14 @@
 	                                    !this.open && this.openPanel();
 	                                }
 	                                this.findingEnd();
-	                                return _context4.finish(16);
+	                                return _context5.finish(16);
 
 	                            case 20:
 	                            case 'end':
-	                                return _context4.stop();
+	                                return _context5.stop();
 	                        }
 	                    }
-	                }, _callee, this, [[6, 13, 16, 20]]);
+	                }, _callee2, this, [[6, 13, 16, 20]]);
 	            }));
 
 	            function find() {

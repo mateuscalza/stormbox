@@ -23,6 +23,7 @@ autocomplete.array = array => new ArraySource(array);
 autocomplete.byId = id => document.getElementById(id);
 
 if(typeof window !== 'undefined') {
+    window.__autocomplete_serial_key = 0;
     window.autocomplete = autocomplete;
 }
 

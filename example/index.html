@@ -11,13 +11,27 @@
 
 <body>
     <h1>ES7 Autocomplete</h1>
-    <label>
-        City<br>
-        <input id="city" name="city" placeholder="Default input for reference">
-    </label>
+    <fieldset>
+        <legend>References</legend>
+        <p>Fields that follow as param to sources.</p>
+        <input id="city" name="city" placeholder="City">
+    </fieldset>
 
-    <input id="user_id" name="user_id" type="hidden">
-    <input id="text_user_id" name="text_user_id" type="text" value="Meu Usuário Salvo da Silva Pereira Buscapé de Tal">
+    <fieldset>
+        <legend>Autocomplete</legend>
+        <p>The ultra super mega ultra autocomplete.</p>
+        <input id="user_id" name="user_id" type="hidden">
+        <input id="text_user_id" name="text_user_id" type="text" value="Meu Usuário Salvo da Silva Pereira Buscapé de Tal">
+    </fieldset>
+
+    <fieldset>
+        <legend>Other Fields</legend>
+        <p>Fields that will receive value from autocomplete response.</p>
+        <input id="age" name="age" placeholder="Age">
+    </fieldset>
+
+
+
     <script src="/dist/index.js"></script>
     <script>
 

@@ -34,6 +34,9 @@ export default class AutoComplete {
         references = {}, // Carry other fields value as param
         otherParams = {} // Set more params to be passed to sources
     }) {
+        // Key
+        this.key = window.__autocomplete_serial_key++;
+
         // Environment
         this.finding = false;
         this.open = false;
@@ -119,9 +122,11 @@ export default class AutoComplete {
         // Prepare hiddenInput
         this.elements.hiddenInput.type = 'hidden';
         this.elements.hiddenInput.className = this.style.hiddenInput;
-        // Prepare hiddenInput
+        this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
+        // Prepare textInput
         this.elements.textInput.type = 'hidden';
         this.elements.textInput.className = this.style.textInput;
+        this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
         // Set initial text
         this.components.presentText.text(this.content);
         // Append wrapper's children
@@ -210,7 +215,7 @@ export default class AutoComplete {
         }
     }
 
-    select({ content, value }) {
+    select({ content, value, additional, others }) {
         this.value = value;
         this.content = content;
 
@@ -218,6 +223,27 @@ export default class AutoComplete {
         this.elements.textInput.value = content || '';
         this.components.panel.components.searchInput.value('');
         this.components.presentText.text(content || ' ');
+
+        this.setValueInOthers(others);
+    }
+
+    async setValueInOthers(others = []) {
+        let length = others.length;
+        for(let index = 0; index < length; index++) {
+            let element = document.querySelector(`[name="${others[index].field}"]`);
+            if(!element) {
+                throw new Error(`Field ${others[index].field} not found to set value!`);
+            }
+            element.value = others[index].value;
+            if(typeof element.content !== 'undefined') {
+                let fieldAutocompleteKey = element.dataset['autocompleteKey'];
+                let textElement = document.querySelector(`[data-autocomplete-text-key="${fieldAutocompleteKey}"]`);
+                if(!textElement) {
+                    throw new Error(`AutoComplete text ${others[index].field} not found to set value!`);
+                }
+                textElement.value = element.content;
+            }
+        }
     }
 
     async find() {
