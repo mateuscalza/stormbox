@@ -27,7 +27,7 @@ export default class List {
         if(this.autocomplete.emptyItem) {
             let childForEmpty = div({
                 className: `${this.style.item} ${this.style.emptyItem}`,
-                innerText: 'Empty'
+                innerText: this.autocomplete.messages.emptyItemName
             });
             this.prepareItemEvents(childForEmpty, { content: null, value: null }, elementIndex);
             let liChildForEmpty = li({}, childForEmpty);

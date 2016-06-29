@@ -8,7 +8,7 @@ import { div } from '../util/dom';
 export default class Panel {
     constructor({ style }, { onSelect }, autocomplete) {
         this.components = {
-            searchInput: new SearchInput({ style }),
+            searchInput: new SearchInput({ style }, undefined, autocomplete),
             errorView: new ErrorView({ style }),
             list: new List({ style }, { onSelect }, autocomplete)
         };

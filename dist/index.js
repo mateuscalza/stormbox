@@ -909,6 +909,8 @@
 	    value: true
 	});
 
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _extend = __webpack_require__(5);
@@ -972,6 +974,12 @@
 	        var _ref$autoSelectWhenOn = _ref.autoSelectWhenOneResult;
 	        var autoSelectWhenOneResult = _ref$autoSelectWhenOn === undefined ? true : _ref$autoSelectWhenOn;
 	        var emptyItem = _ref.emptyItem;
+	        var _ref$messages = _ref.messages;
+	        var messages = _ref$messages === undefined ? {} : _ref$messages;
+	        var _ref$references = _ref.references;
+	        var references = _ref$references === undefined ? {} : _ref$references;
+	        var _ref$otherParams = _ref.otherParams;
+	        var otherParams = _ref$otherParams === undefined ? {} : _ref$otherParams;
 
 	        _classCallCheck(this, AutoComplete);
 
@@ -982,13 +990,15 @@
 	        this.ignoreFocus = false;
 	        this.ignoreBlur = false;
 	        this.valueOnOpen = undefined;
-	        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
 
 	        // Initial
+	        this.references = references;
+	        this.otherParams = otherParams;
 	        this.queryParam = queryParam;
 	        this.clearOnType = clearOnType;
 	        this.autoFind = autoFind;
 	        this.autoSelectWhenOneResult = autoSelectWhenOneResult;
+	        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
 
 	        // Set data source
 	        this.source = source || new _SelectSource2.default(input);
@@ -1013,6 +1023,11 @@
 	            rightIcon: 'fa fa-search ac-icon',
 	            loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon'
 	        }, style);
+
+	        this.messages = (0, _extend2.default)({
+	            searchPlaceholder: 'Search...',
+	            emptyItemName: 'Empty'
+	        }, messages);
 
 	        // Set AutoComplete's elements
 	        this.elements = {
@@ -1139,7 +1154,7 @@
 	                }
 	                (_context3 = this.elements.hiddenInput, _events.trigger).call(_context3, 'blur');
 	                (_context3 = this.elements.textInput, _events.trigger).call(_context3, 'blur');
-	                //this.closePanel();
+	                this.closePanel();
 	            }
 	            this.ignoreBlur = false;
 	        }
@@ -1175,7 +1190,9 @@
 	        key: 'find',
 	        value: function () {
 	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-	                var query, results;
+	                var _this = this;
+
+	                var query, params, results;
 	                return regeneratorRuntime.wrap(function _callee$(_context4) {
 	                    while (1) {
 	                        switch (_context4.prev = _context4.next) {
@@ -1187,26 +1204,34 @@
 	                                }
 	                                this.findingStart();
 	                                query = this.components.panel.components.searchInput.value();
-	                                results = { data: [] };
-	                                _context4.prev = 4;
-	                                _context4.next = 7;
-	                                return this.source.find(_defineProperty({}, this.queryParam, query));
+	                                params = _extends({}, this.otherParams, _defineProperty({}, this.queryParam, query));
 
-	                            case 7:
+	                                Object.keys(this.references).forEach(function (key) {
+	                                    if (!_this.references[key]) {
+	                                        throw new Error('Reference ' + key + ' is not valid!');
+	                                    }
+	                                    params[key] = _this.references[key].value;
+	                                });
+	                                results = { data: [] };
+	                                _context4.prev = 6;
+	                                _context4.next = 9;
+	                                return this.source.find(params);
+
+	                            case 9:
 	                                results = _context4.sent;
 
 	                                this.components.panel.show(results);
-	                                _context4.next = 14;
+	                                _context4.next = 16;
 	                                break;
 
-	                            case 11:
-	                                _context4.prev = 11;
-	                                _context4.t0 = _context4['catch'](4);
+	                            case 13:
+	                                _context4.prev = 13;
+	                                _context4.t0 = _context4['catch'](6);
 
 	                                this.components.panel.error(_context4.t0);
 
-	                            case 14:
-	                                _context4.prev = 14;
+	                            case 16:
+	                                _context4.prev = 16;
 
 	                                if (this.autoSelectWhenOneResult && results && results.data && results.data.length == 1) {
 	                                    this.select({
@@ -1217,14 +1242,14 @@
 	                                    !this.open && this.openPanel();
 	                                }
 	                                this.findingEnd();
-	                                return _context4.finish(14);
+	                                return _context4.finish(16);
 
-	                            case 18:
+	                            case 20:
 	                            case 'end':
 	                                return _context4.stop();
 	                        }
 	                    }
-	                }, _callee, this, [[4, 11, 14, 18]]);
+	                }, _callee, this, [[6, 13, 16, 20]]);
 	            }));
 
 	            function find() {
@@ -1796,7 +1821,7 @@
 	        _classCallCheck(this, Panel);
 
 	        this.components = {
-	            searchInput: new _SearchInput2.default({ style: style }),
+	            searchInput: new _SearchInput2.default({ style: style }, undefined, autocomplete),
 	            errorView: new _ErrorView2.default({ style: style }),
 	            list: new _List2.default({ style: style }, { onSelect: onSelect }, autocomplete)
 	        };
@@ -1858,7 +1883,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var SearchInput = function () {
-	    function SearchInput(_ref) {
+	    function SearchInput(_ref, undefined, autocomplete) {
 	        var style = _ref.style;
 
 	        _classCallCheck(this, SearchInput);
@@ -1867,7 +1892,7 @@
 
 	        this.elements.wrapper = (0, _dom.div)({ className: style.searchInputWrapper }, this.elements.input = (0, _dom.input)({
 	            className: style.searchInput,
-	            placeholder: 'Search...'
+	            placeholder: autocomplete.messages.searchPlaceholder
 	        }));
 	    }
 
@@ -2006,7 +2031,7 @@
 	            if (this.autocomplete.emptyItem) {
 	                var childForEmpty = (0, _dom.div)({
 	                    className: this.style.item + ' ' + this.style.emptyItem,
-	                    innerText: 'Empty'
+	                    innerText: this.autocomplete.messages.emptyItemName
 	                });
 	                this.prepareItemEvents(childForEmpty, { content: null, value: null }, elementIndex);
 	                var liChildForEmpty = (0, _dom.li)({}, childForEmpty);

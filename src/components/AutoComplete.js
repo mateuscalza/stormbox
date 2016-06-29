@@ -29,7 +29,10 @@ export default class AutoComplete {
         clearOnType = false, // Clear current value and content when user type
         autoFind = false, // Find when user enter on element
         autoSelectWhenOneResult = true, // When return just one result, select it
-        emptyItem // Create a empty item to set values as null
+        emptyItem, // Create a empty item to set values as null
+        messages = {}, // Custom presentation messages
+        references = {}, // Carry other fields value as param
+        otherParams = {} // Set more params to be passed to sources
     }) {
         // Environment
         this.finding = false;
@@ -38,13 +41,15 @@ export default class AutoComplete {
         this.ignoreFocus = false;
         this.ignoreBlur = false;
         this.valueOnOpen = undefined;
-        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (!hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required'));
 
         // Initial
+        this.references = references;
+        this.otherParams = otherParams;
         this.queryParam = queryParam;
         this.clearOnType = clearOnType;
         this.autoFind = autoFind;
         this.autoSelectWhenOneResult = autoSelectWhenOneResult;
+        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (!hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required'));
 
         // Set data source
         this.source = source || new SelectSource(input);
@@ -69,6 +74,11 @@ export default class AutoComplete {
             rightIcon: 'fa fa-search ac-icon',
             loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon'
         }, style);
+
+        this.messages = extend({
+            searchPlaceholder: 'Search...',
+            emptyItemName: 'Empty'
+        }, messages);
 
         // Set AutoComplete's elements
         this.elements = {
@@ -182,7 +192,7 @@ export default class AutoComplete {
             }
             this.elements.hiddenInput::trigger('blur');
             this.elements.textInput::trigger('blur');
-            //this.closePanel();
+            this.closePanel();
         }
         this.ignoreBlur = false;
     }
@@ -218,12 +228,20 @@ export default class AutoComplete {
         }
         this.findingStart();
         const query = this.components.panel.components.searchInput.value();
+        const params = {
+            ...this.otherParams,
+            [this.queryParam]: query
+        };
+        Object.keys(this.references).forEach(key => {
+            if(!this.references[key]) {
+                throw new Error(`Reference ${key} is not valid!`);
+            }
+            params[key] = this.references[key].value;
+        });
         let results = { data: [] };
 
         try {
-            results = await this.source.find({
-                [this.queryParam]: query
-            });
+            results = await this.source.find(params);
             this.components.panel.show(results);
         } catch (error) {
             this.components.panel.error(error);

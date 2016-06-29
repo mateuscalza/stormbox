@@ -3,12 +3,12 @@ import SelectSource from '../sources/SelectSource';
 import { div, input } from '../util/dom';
 
 export default class SearchInput {
-    constructor({ style }) {
+    constructor({ style }, undefined, autocomplete) {
         this.elements = {};
 
         this.elements.wrapper = div({ className: style.searchInputWrapper }, this.elements.input = input({
             className: style.searchInput,
-            placeholder: 'Search...'
+            placeholder: autocomplete.messages.searchPlaceholder
         }));
     }
 
