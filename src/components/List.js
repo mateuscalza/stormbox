@@ -108,10 +108,7 @@ export default class List {
                 value: null,
                 content: this.searchInput.value().trim()
             });
-        } else if ({
-            content: searchBarValue,
-            value: null
-        }) {
+        } else if (this.autocomplete.emptyItem) {
             this.onSelect(this.items[this.selectedIndex - 1]);
         } else {
             this.onSelect(this.items[this.selectedIndex]);

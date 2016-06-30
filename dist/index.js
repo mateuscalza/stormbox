@@ -2356,12 +2356,12 @@
 	            }
 
 	            if (this.autocomplete.customText && this.searchInput.value().trim().length) {
-	                var _searchBarValue = this.searchInput.value().trim();
+	                var searchBarValue = this.searchInput.value().trim();
 	                var _childForEmpty = (0, _dom.div)({
 	                    className: this.style.item + ' ' + this.style.customTextItem,
-	                    innerText: _searchBarValue
+	                    innerText: searchBarValue
 	                });
-	                this.prepareItemEvents(_childForEmpty, { content: _searchBarValue, value: null }, elementIndex);
+	                this.prepareItemEvents(_childForEmpty, { content: searchBarValue, value: null }, elementIndex);
 	                var _liChildForEmpty = (0, _dom.li)({}, _childForEmpty);
 	                this.elements.ul.appendChild(_liChildForEmpty);
 	                elementIndex++;
@@ -2410,10 +2410,7 @@
 	                    value: null,
 	                    content: this.searchInput.value().trim()
 	                });
-	            } else if ({
-	                content: searchBarValue,
-	                value: null
-	            }) {
+	            } else if (this.autocomplete.emptyItem) {
 	                this.onSelect(this.items[this.selectedIndex - 1]);
 	            } else {
 	                this.onSelect(this.items[this.selectedIndex]);
