@@ -25,7 +25,7 @@ export default class AutoComplete {
         source, // Data source (Source instance)
         selectInput, // If selectInput then hiddenInput, textInput and source are unnecessary
         style = {}, // Styles
-        customText = true, // Users can type a custom text without value
+        customText = false, // Users can type a custom text without value
         searchOnFocus = false, // When focus immediatly search
         debounceTime = 600, // Time for wait key up
         queryParam = 'q', // Query param to filter sources
@@ -76,6 +76,7 @@ export default class AutoComplete {
             listWrapper: 'ac-list-wrapper',
             item: 'ac-item',
             emptyItem: 'ac-empty-item',
+            customTextItem: 'ac-custom-text-item',
             additional: 'ac-additional',
             searchInput: 'ac-search-input',
             searchInputWrapper: 'ac-search-input-wrapper',

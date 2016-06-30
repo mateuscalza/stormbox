@@ -11,6 +11,7 @@ export default class List {
         this.style = style;
         this.items = [];
         this.selectedIndex = 0;
+        this.searchInput = null;
 
         this.elements.wrapper = div({ className: style.listWrapper }, this.elements.ul = ul());
 
@@ -20,6 +21,7 @@ export default class List {
     show(items = []) {
         this.items = items;
         this.elements.ul.innerHTML = '';
+        this.searchInput = this.autocomplete.components.panel.components.searchInput;
 
         let length = items.length;
         let elementIndex = 0;
@@ -56,6 +58,19 @@ export default class List {
             this.elements.ul.appendChild(liChild);
             elementIndex++;
         }
+
+        if(this.autocomplete.customText && this.searchInput.value().trim().length) {
+            let searchBarValue = this.searchInput.value().trim();
+            let childForEmpty = div({
+                className: `${this.style.item} ${this.style.customTextItem}`,
+                innerText: searchBarValue
+            });
+            this.prepareItemEvents(childForEmpty, { content: searchBarValue, value: null }, elementIndex);
+            let liChildForEmpty = li({}, childForEmpty);
+            this.elements.ul.appendChild(liChildForEmpty);
+            elementIndex++;
+        }
+
         this.elements.wrapper.style.display = 'block';
         this.updateSelection(0);
     }
@@ -83,11 +98,21 @@ export default class List {
     }
 
     selectCurrent() {
-        if(this.autocomplete.emptyItem) {
-            this.onSelect(this.items[this.selectedIndex - 1] || {
+        if(this.autocomplete.emptyItem && this.selectedIndex == 0) {
+            this.onSelect({
                 content: null,
                 value: null
             });
+        } else if (this.autocomplete.customText && this.selectedIndex == this.elements.ul.children.length - 1 && this.searchInput.value().trim().length) {
+            this.onSelect({
+                value: null,
+                content: this.searchInput.value().trim()
+            });
+        } else if ({
+            content: searchBarValue,
+            value: null
+        }) {
+            this.onSelect(this.items[this.selectedIndex - 1]);
         } else {
             this.onSelect(this.items[this.selectedIndex]);
         }

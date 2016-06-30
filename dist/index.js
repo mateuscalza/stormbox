@@ -958,7 +958,7 @@
 	        var _ref$style = _ref.style;
 	        var style = _ref$style === undefined ? {} : _ref$style;
 	        var _ref$customText = _ref.customText;
-	        var customText = _ref$customText === undefined ? true : _ref$customText;
+	        var customText = _ref$customText === undefined ? false : _ref$customText;
 	        var _ref$searchOnFocus = _ref.searchOnFocus;
 	        var searchOnFocus = _ref$searchOnFocus === undefined ? false : _ref$searchOnFocus;
 	        var _ref$debounceTime = _ref.debounceTime;
@@ -1021,6 +1021,7 @@
 	            listWrapper: 'ac-list-wrapper',
 	            item: 'ac-item',
 	            emptyItem: 'ac-empty-item',
+	            customTextItem: 'ac-custom-text-item',
 	            additional: 'ac-additional',
 	            searchInput: 'ac-search-input',
 	            searchInputWrapper: 'ac-search-input-wrapper',
@@ -2297,6 +2298,7 @@
 	        this.style = style;
 	        this.items = [];
 	        this.selectedIndex = 0;
+	        this.searchInput = null;
 
 	        this.elements.wrapper = (0, _dom.div)({ className: style.listWrapper }, this.elements.ul = (0, _dom.ul)());
 
@@ -2312,6 +2314,7 @@
 
 	            this.items = items;
 	            this.elements.ul.innerHTML = '';
+	            this.searchInput = this.autocomplete.components.panel.components.searchInput;
 
 	            var length = items.length;
 	            var elementIndex = 0;
@@ -2351,6 +2354,19 @@
 	                this.elements.ul.appendChild(liChild);
 	                elementIndex++;
 	            }
+
+	            if (this.autocomplete.customText && this.searchInput.value().trim().length) {
+	                var _searchBarValue = this.searchInput.value().trim();
+	                var _childForEmpty = (0, _dom.div)({
+	                    className: this.style.item + ' ' + this.style.customTextItem,
+	                    innerText: _searchBarValue
+	                });
+	                this.prepareItemEvents(_childForEmpty, { content: _searchBarValue, value: null }, elementIndex);
+	                var _liChildForEmpty = (0, _dom.li)({}, _childForEmpty);
+	                this.elements.ul.appendChild(_liChildForEmpty);
+	                elementIndex++;
+	            }
+
 	            this.elements.wrapper.style.display = 'block';
 	            this.updateSelection(0);
 	        }
@@ -2384,11 +2400,21 @@
 	    }, {
 	        key: 'selectCurrent',
 	        value: function selectCurrent() {
-	            if (this.autocomplete.emptyItem) {
-	                this.onSelect(this.items[this.selectedIndex - 1] || {
+	            if (this.autocomplete.emptyItem && this.selectedIndex == 0) {
+	                this.onSelect({
 	                    content: null,
 	                    value: null
 	                });
+	            } else if (this.autocomplete.customText && this.selectedIndex == this.elements.ul.children.length - 1 && this.searchInput.value().trim().length) {
+	                this.onSelect({
+	                    value: null,
+	                    content: this.searchInput.value().trim()
+	                });
+	            } else if ({
+	                content: searchBarValue,
+	                value: null
+	            }) {
+	                this.onSelect(this.items[this.selectedIndex - 1]);
 	            } else {
 	                this.onSelect(this.items[this.selectedIndex]);
 	            }

@@ -138,7 +138,7 @@ input[type="button"], input[type="submit"] {
 .ac-list-wrapper ul li:only-child .ac-item {
     border-radius: 4px;
 }
-.ac-list-wrapper ul li .ac-item.ac-empty-item {
+.ac-list-wrapper ul li .ac-item.ac-empty-item, .ac-list-wrapper ul li .ac-item.ac-custom-text-item {
     padding: 6px;
     font-size: 13px;
     font-style: italic;
