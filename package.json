@@ -6,8 +6,9 @@
   "scripts": {
     "build": "webpack",
     "dev": "concurrently --kill-others \"npm run connect\" \"webpack -w\"",
+    "build": "webpack",
     "connect": "browser-sync start --dev --server --index='example/index.html' --files='example/*.*,dist/index.js'",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified yet :`( they are comming\" && exit 1"
   },
   "repository": {
     "type": "git",
