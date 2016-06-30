@@ -51,6 +51,9 @@ input[type="button"], input[type="submit"] {
     width: 250px;
     display: inline-block;
 }
+.ac-wrapper:focus {
+    outline: none;
+}
 .ac-wrapper, .ac-wrapper *, .ac-wrapper *:before, .ac-wrapper *:after {
     box-sizing: border-box;
 }
@@ -72,6 +75,9 @@ input[type="button"], input[type="submit"] {
     -o-transition: all ease-in-out 0.25s;
     transition: all ease-in-out 0.25;
     cursor: pointer;
+}
+.ac-wrapper:focus .ac-present-text {
+    border-color: #f8ac59;
 }
 .ac-present-crop-text {
     width: 94%;
@@ -168,6 +174,10 @@ input[type="button"], input[type="submit"] {
     -o-transition: all ease-in-out 0.25s;
     transition: all ease-in-out 0.25;
     cursor: text;
+}
+.ac-search-input:focus {
+    outline: none;
+    border-color: #f8ac59;
 }
 .ac-error-view {
     width: 100%;
