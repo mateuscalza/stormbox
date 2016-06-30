@@ -75,6 +75,11 @@
 			"additional": [],
 			"others": [
 				{
+					"field": "age",
+					"value": "",
+					"disabled": true
+				},
+				{
 					"field": "occupation",
 					"content": "Programmer",
 					"value": 1111,
@@ -98,7 +103,7 @@
 			"others": [
 				{
 					"field": "age",
-					"value": 76,
+					"value": 347,
 					"disabled": true
 				},
 				{

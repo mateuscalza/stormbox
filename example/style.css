@@ -30,6 +30,10 @@ input {
     transition: all ease-in-out 0.25;
     cursor: text;
 }
+input[disabled] {
+    background-color: #ecf0f1;
+    cursor: not-allowed;
+}
 *, *:before, *:after {
     box-sizing: border-box;
 }
@@ -39,14 +43,15 @@ input {
 .ac-wrapper {
     position: relative;
     width: 250px;
+    display: inline-block;
 }
 .ac-wrapper, .ac-wrapper *, .ac-wrapper *:before, .ac-wrapper *:after {
     box-sizing: border-box;
 }
 .ac-present-text {
-    display: inline-block;
     width: 100%;
     height: 35px;
+    display: inline-block;
     padding: 0 12px;
     font-size: 14px;
     line-height: 35px;
@@ -81,6 +86,7 @@ input {
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
     border-radius: 0 0 4px 4px;
+    z-index: 9999;
 }
 .ac-list-wrapper {
     padding: 0 10px 10px 10px;
@@ -106,9 +112,13 @@ input {
     padding: 0;
 }
 .ac-list-wrapper ul li .ac-item {
-    height: 26px;
-    padding: 0 6px;
-    line-height: 26px;
+    font-size: 13px;
+    padding: 4px 6px;
+}
+.ac-list-wrapper ul li .ac-item .ac-additional {
+    font-size: 11px;
+    display: inline-block;
+    margin: 5px 5px 5px 0;
 }
 .ac-list-wrapper ul li:nth-child(even) .ac-item {
     background: #F0F4F5;
@@ -119,7 +129,11 @@ input {
 .ac-list-wrapper ul li:last-child .ac-item {
     border-radius: 0 0 4px 4px;
 }
+.ac-list-wrapper ul li:only-child .ac-item {
+    border-radius: 4px;
+}
 .ac-list-wrapper ul li .ac-item.ac-empty-item {
+    padding: 6px;
     font-size: 13px;
     font-style: italic;
 }

@@ -1,6 +1,6 @@
 import extend from 'extend';
 import SelectSource from '../sources/SelectSource';
-import { div, input, ul, li, a } from '../util/dom';
+import { div, input, ul, li, a, strong, span } from '../util/dom';
 
 export default class List {
     constructor({ style }, { onSelect }, autocomplete) {
@@ -36,10 +36,21 @@ export default class List {
         }
 
         for(let index = 0; index < length; index++) {
-            let innerChild = div({
-                className: this.style.item,
+            let mainText = span({
                 innerText: items[index].content
             });
+            let additionalChild = null;
+            if(items[index].additional && items[index].additional.length) {
+                additionalChild = div.call(null, {}, ...items[index].additional.map(({ label, content }) => {
+                    return div({ className: this.style.additional }, strong({ innerText: `${label}: ` }), span({ innerText: content }));
+                }));
+            }
+            let innerChild = div({
+                className: this.style.item
+            }, mainText);
+            if(additionalChild) {
+                innerChild.appendChild(additionalChild);
+            }
             this.prepareItemEvents(innerChild, items[index], elementIndex);
             let liChild = li({}, innerChild);
             this.elements.ul.appendChild(liChild);

@@ -27,6 +27,7 @@ export default class AutoComplete {
         searchOnFocus = false, // When focus immediatly search
         debounceTime = 600, // Time for wait key up
         queryParam = 'q', // Query param to filter sources
+        minLength = 1, // The minimum number of characters a user must type before a search is performed
         clearOnType = false, // Clear current value and content when user type
         autoFind = false, // Find when user enter on element
         autoSelectWhenOneResult = true, // When return just one result, select it
@@ -52,6 +53,7 @@ export default class AutoComplete {
         this.queryParam = queryParam;
         this.clearOnType = clearOnType;
         this.autoFind = autoFind;
+        this.minLength = minLength;
         this.autoSelectWhenOneResult = autoSelectWhenOneResult;
         this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (!hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required'));
 
@@ -71,6 +73,7 @@ export default class AutoComplete {
             listWrapper: 'ac-list-wrapper',
             item: 'ac-item',
             emptyItem: 'ac-empty-item',
+            additional: 'ac-additional',
             searchInput: 'ac-search-input',
             searchInputWrapper: 'ac-search-input-wrapper',
             presentText: 'ac-present-text',
@@ -232,24 +235,24 @@ export default class AutoComplete {
         this.components.panel.components.searchInput.value('');
         this.components.presentText.text(content || ' ');
 
-        this.setValueInOthers(others);
+        others && this.setOtherFields(others);
     }
 
-    async setValueInOthers(others = []) {
+    async setOtherFields(others = []) {
         let length = others.length;
         for(let index = 0; index < length; index++) {
-            if(typeof element.content !== 'undefined') {
+            let element = document.querySelector(`[name="${others[index].field}"]`);
+            if(!element) {
+                throw new Error(`Field ${others[index].field} not found to set value!`);
+            }
+            if(typeof others[index].content !== 'undefined') {
                 let autoComplete = AutoComplete.autoCompleteByName(others[index].field);
                 if(!autoComplete) {
                     throw new Error(`Field ${others[index].field} not found to set value!`);
                 }
                 autoComplete.select(others[index]);
             } else {
-                let element = document.querySelector(`[name="${others[index].field}"]`);
-                if(!element) {
-                    throw new Error(`Field ${others[index].field} not found to set value!`);
-                }
-                element.value = others[index].value;
+                AutoComplete.projectElementSettings(element, others[index]);
             }
         }
     }
@@ -260,8 +263,11 @@ export default class AutoComplete {
             this.source.abort();
             this.findingEnd();
         }
-        this.findingStart();
         const query = this.components.panel.components.searchInput.value();
+        if(query.length < this.minLength) {
+            return;
+        }
+        this.findingStart();
         const params = {
             ...this.otherParams,
             [this.queryParam]: query
@@ -345,8 +351,12 @@ export default class AutoComplete {
         return document.getElementById(id);
     }
 
-    static byName(name) {
-        return document.getElementsByName(name);
+    static byName(name, index = 0) {
+        let nodeListWithName = (this instanceof HTMLElement ? this : document).getElementsByName(name);
+        if(!nodeListWithName.length || !nodeListWithName[index]) {
+            return null;
+        }
+        return nodeListWithName[index];
     }
 
     static autoCompleteByKey(autocompleteKey) {
@@ -383,15 +393,15 @@ export default class AutoComplete {
         }
     }
 
-    static projectElementSettings(element, { value, disabled, readonly, required, visibility, removed, label }, { defaultDisplayShow = 'inline-block' }) {
+    static projectElementSettings(element, { value, disabled, readonly, required, visibility, removed, label }, { defaultDisplayShow = 'inline-block' } = {}) {
         // Label
         if(typeof label === 'undefined' && typeof element.dataset['oldLabel'] !== 'undefined') {
             label = element.dataset['oldLabel'];
         }
-        if(!element.previousSibling) {
-            throw new Error('Unknow label node for ', element);
-        }
         if(typeof label !== 'undefined') {
+            if(!element.previousSibling) {
+                throw new Error('Unknow label node for ', element);
+            }
             if(typeof element.dataset['oldLabel'] === 'undefined') {
                 element.dataset['oldLabel'] = element.previousSibling.innerText;
             }

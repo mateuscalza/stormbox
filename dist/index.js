@@ -964,6 +964,8 @@
 	        var debounceTime = _ref$debounceTime === undefined ? 600 : _ref$debounceTime;
 	        var _ref$queryParam = _ref.queryParam;
 	        var queryParam = _ref$queryParam === undefined ? 'q' : _ref$queryParam;
+	        var _ref$minLength = _ref.minLength;
+	        var minLength = _ref$minLength === undefined ? 1 : _ref$minLength;
 	        var _ref$clearOnType = _ref.clearOnType;
 	        var clearOnType = _ref$clearOnType === undefined ? false : _ref$clearOnType;
 	        var _ref$autoFind = _ref.autoFind;
@@ -997,6 +999,7 @@
 	        this.queryParam = queryParam;
 	        this.clearOnType = clearOnType;
 	        this.autoFind = autoFind;
+	        this.minLength = minLength;
 	        this.autoSelectWhenOneResult = autoSelectWhenOneResult;
 	        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
 
@@ -1016,6 +1019,7 @@
 	            listWrapper: 'ac-list-wrapper',
 	            item: 'ac-item',
 	            emptyItem: 'ac-empty-item',
+	            additional: 'ac-additional',
 	            searchInput: 'ac-search-input',
 	            searchInputWrapper: 'ac-search-input-wrapper',
 	            presentText: 'ac-present-text',
@@ -1197,16 +1201,14 @@
 	            this.components.panel.components.searchInput.value('');
 	            this.components.presentText.text(content || ' ');
 
-	            this.setValueInOthers(others);
+	            others && this.setOtherFields(others);
 	        }
 	    }, {
-	        key: 'setValueInOthers',
+	        key: 'setOtherFields',
 	        value: function () {
 	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
 	                var others = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-
-	                var length, index, autoComplete, _element;
-
+	                var length, index, element, autoComplete;
 	                return regeneratorRuntime.wrap(function _callee$(_context4) {
 	                    while (1) {
 	                        switch (_context4.prev = _context4.next) {
@@ -1220,37 +1222,37 @@
 	                                    break;
 	                                }
 
-	                                if (!(typeof element.content !== 'undefined')) {
-	                                    _context4.next = 10;
+	                                element = document.querySelector('[name="' + others[index].field + '"]');
+
+	                                if (element) {
+	                                    _context4.next = 6;
+	                                    break;
+	                                }
+
+	                                throw new Error('Field ' + others[index].field + ' not found to set value!');
+
+	                            case 6:
+	                                if (!(typeof others[index].content !== 'undefined')) {
+	                                    _context4.next = 13;
 	                                    break;
 	                                }
 
 	                                autoComplete = AutoComplete.autoCompleteByName(others[index].field);
 
 	                                if (autoComplete) {
-	                                    _context4.next = 7;
+	                                    _context4.next = 10;
 	                                    break;
 	                                }
 
 	                                throw new Error('Field ' + others[index].field + ' not found to set value!');
 
-	                            case 7:
+	                            case 10:
 	                                autoComplete.select(others[index]);
 	                                _context4.next = 14;
 	                                break;
 
-	                            case 10:
-	                                _element = document.querySelector('[name="' + others[index].field + '"]');
-
-	                                if (_element) {
-	                                    _context4.next = 13;
-	                                    break;
-	                                }
-
-	                                throw new Error('Field ' + others[index].field + ' not found to set value!');
-
 	                            case 13:
-	                                _element.value = others[index].value;
+	                                AutoComplete.projectElementSettings(element, others[index]);
 
 	                            case 14:
 	                                index++;
@@ -1265,11 +1267,11 @@
 	                }, _callee, this);
 	            }));
 
-	            function setValueInOthers(_x) {
+	            function setOtherFields(_x) {
 	                return ref.apply(this, arguments);
 	            }
 
-	            return setValueInOthers;
+	            return setOtherFields;
 	        }()
 	    }, {
 	        key: 'find',
@@ -1287,8 +1289,17 @@
 	                                    this.source.abort();
 	                                    this.findingEnd();
 	                                }
-	                                this.findingStart();
 	                                query = this.components.panel.components.searchInput.value();
+
+	                                if (!(query.length < this.minLength)) {
+	                                    _context5.next = 4;
+	                                    break;
+	                                }
+
+	                                return _context5.abrupt('return');
+
+	                            case 4:
+	                                this.findingStart();
 	                                params = _extends({}, this.otherParams, _defineProperty({}, this.queryParam, query));
 
 	                                Object.keys(this.references).forEach(function (key) {
@@ -1298,25 +1309,25 @@
 	                                    params[key] = _this.references[key].value;
 	                                });
 	                                results = { data: [] };
-	                                _context5.prev = 6;
-	                                _context5.next = 9;
+	                                _context5.prev = 8;
+	                                _context5.next = 11;
 	                                return this.source.find(params);
 
-	                            case 9:
+	                            case 11:
 	                                results = _context5.sent;
 
 	                                this.components.panel.show(results);
-	                                _context5.next = 16;
+	                                _context5.next = 18;
 	                                break;
 
-	                            case 13:
-	                                _context5.prev = 13;
-	                                _context5.t0 = _context5['catch'](6);
+	                            case 15:
+	                                _context5.prev = 15;
+	                                _context5.t0 = _context5['catch'](8);
 
 	                                this.components.panel.error(_context5.t0);
 
-	                            case 16:
-	                                _context5.prev = 16;
+	                            case 18:
+	                                _context5.prev = 18;
 
 	                                if (this.autoSelectWhenOneResult && results && results.data && results.data.length == 1) {
 	                                    this.select({
@@ -1327,14 +1338,14 @@
 	                                    !this.open && this.openPanel();
 	                                }
 	                                this.findingEnd();
-	                                return _context5.finish(16);
+	                                return _context5.finish(18);
 
-	                            case 20:
+	                            case 22:
 	                            case 'end':
 	                                return _context5.stop();
 	                        }
 	                    }
-	                }, _callee2, this, [[6, 13, 16, 20]]);
+	                }, _callee2, this, [[8, 15, 18, 22]]);
 	            }));
 
 	            function find() {
@@ -1403,7 +1414,13 @@
 	    }, {
 	        key: 'byName',
 	        value: function byName(name) {
-	            return document.getElementsByName(name);
+	            var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+	            var nodeListWithName = (this instanceof HTMLElement ? this : document).getElementsByName(name);
+	            if (!nodeListWithName.length || !nodeListWithName[index]) {
+	                return null;
+	            }
+	            return nodeListWithName[index];
 	        }
 	    }, {
 	        key: 'autoCompleteByKey',
@@ -1444,7 +1461,7 @@
 	        }
 	    }, {
 	        key: 'projectElementSettings',
-	        value: function projectElementSettings(element, _ref3, _ref4) {
+	        value: function projectElementSettings(element, _ref3) {
 	            var value = _ref3.value;
 	            var disabled = _ref3.disabled;
 	            var readonly = _ref3.readonly;
@@ -1452,6 +1469,9 @@
 	            var visibility = _ref3.visibility;
 	            var removed = _ref3.removed;
 	            var label = _ref3.label;
+
+	            var _ref4 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
 	            var _ref4$defaultDisplayS = _ref4.defaultDisplayShow;
 	            var defaultDisplayShow = _ref4$defaultDisplayS === undefined ? 'inline-block' : _ref4$defaultDisplayS;
 
@@ -1459,10 +1479,10 @@
 	            if (typeof label === 'undefined' && typeof element.dataset['oldLabel'] !== 'undefined') {
 	                label = element.dataset['oldLabel'];
 	            }
-	            if (!element.previousSibling) {
-	                throw new Error('Unknow label node for ', element);
-	            }
 	            if (typeof label !== 'undefined') {
+	                if (!element.previousSibling) {
+	                    throw new Error('Unknow label node for ', element);
+	                }
 	                if (typeof element.dataset['oldLabel'] === 'undefined') {
 	                    element.dataset['oldLabel'] = element.previousSibling.innerText;
 	                }
@@ -1825,6 +1845,7 @@
 	exports.strong = strong;
 	exports.a = a;
 	exports.i = i;
+	exports.strong = strong;
 	exports.span = span;
 
 	var _extend = __webpack_require__(5);
@@ -1899,9 +1920,17 @@
 	    return elem.apply(undefined, ['i', props].concat(children));
 	};
 
-	function span(props) {
+	function strong(props) {
 	    for (var _len8 = arguments.length, children = Array(_len8 > 1 ? _len8 - 1 : 0), _key8 = 1; _key8 < _len8; _key8++) {
 	        children[_key8 - 1] = arguments[_key8];
+	    }
+
+	    return elem.apply(undefined, ['strong', props].concat(children));
+	};
+
+	function span(props) {
+	    for (var _len9 = arguments.length, children = Array(_len9 > 1 ? _len9 - 1 : 0), _key9 = 1; _key9 < _len9; _key9++) {
+	        children[_key9 - 1] = arguments[_key9];
 	    }
 
 	    return elem.apply(undefined, ['span', props].concat(children));
@@ -2215,6 +2244,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var List = function () {
@@ -2240,6 +2271,8 @@
 	    _createClass(List, [{
 	        key: 'show',
 	        value: function show() {
+	            var _this = this;
+
 	            var items = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
 	            this.items = items;
@@ -2260,10 +2293,24 @@
 	            }
 
 	            for (var index = 0; index < length; index++) {
-	                var innerChild = (0, _dom.div)({
-	                    className: this.style.item,
+	                var mainText = (0, _dom.span)({
 	                    innerText: items[index].content
 	                });
+	                var additionalChild = null;
+	                if (items[index].additional && items[index].additional.length) {
+	                    additionalChild = _dom.div.call.apply(_dom.div, [null, {}].concat(_toConsumableArray(items[index].additional.map(function (_ref3) {
+	                        var label = _ref3.label;
+	                        var content = _ref3.content;
+
+	                        return (0, _dom.div)({ className: _this.style.additional }, (0, _dom.strong)({ innerText: label + ': ' }), (0, _dom.span)({ innerText: content }));
+	                    }))));
+	                }
+	                var innerChild = (0, _dom.div)({
+	                    className: this.style.item
+	                }, mainText);
+	                if (additionalChild) {
+	                    innerChild.appendChild(additionalChild);
+	                }
 	                this.prepareItemEvents(innerChild, items[index], elementIndex);
 	                var liChild = (0, _dom.li)({}, innerChild);
 	                this.elements.ul.appendChild(liChild);
@@ -2275,14 +2322,14 @@
 	    }, {
 	        key: 'prepareItemEvents',
 	        value: function prepareItemEvents(element, data, elementIndex) {
-	            var _this = this;
+	            var _this2 = this;
 
 	            element.addEventListener('mouseenter', function (event) {
-	                _this.updateSelection(elementIndex);
+	                _this2.updateSelection(elementIndex);
 	            });
 	            element.addEventListener('mousedown', function (event) {
-	                _this.onSelect(data);
-	                _this.autocomplete.closePanel();
+	                _this2.onSelect(data);
+	                _this2.autocomplete.closePanel();
 	            });
 	        }
 	    }, {

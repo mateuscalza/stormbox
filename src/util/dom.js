@@ -37,6 +37,10 @@ export function i(props, ...children) {
     return elem('i', props, ...children);
 };
 
+export function strong(props, ...children) {
+    return elem('strong', props, ...children);
+};
+
 export function span(props, ...children) {
     return elem('span', props, ...children);
 };
