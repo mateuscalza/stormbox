@@ -12,19 +12,23 @@
 
 import AutoComplete from './components/AutoComplete';
 
+import Source from './sources/Source';
 import AjaxSource from './sources/AjaxSource';
 import SelectSource from './sources/SelectSource';
 import ArraySource from './sources/ArraySource';
 
-const autocomplete = options => new AutoComplete(options);
-autocomplete.ajax = url => new AjaxSource(url);
-autocomplete.select = select => new SelectSource(select);
-autocomplete.array = array => new ArraySource(array);
-autocomplete.byId = id => document.getElementById(id);
+AutoComplete.sources = {
+    AjaxSource,
+    SelectSource,
+    ArraySource
+};
+
+AutoComplete.abstracts = {
+    Source
+};
 
 if(typeof window !== 'undefined') {
-    window.__autocomplete_serial_key = 0;
-    window.autocomplete = autocomplete;
+    window.AutoComplete = AutoComplete;
 }
 
-export default autocomplete;
+export default AutoComplete;

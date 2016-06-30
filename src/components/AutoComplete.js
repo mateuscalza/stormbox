@@ -22,6 +22,7 @@ export default class AutoComplete {
         hiddenInput, // Input with value, ID
         textInput, // Input with content
         source, // Data source (Source instance)
+        selectInput, // If selectInput then hiddenInput, textInput and source are unnecessary
         style = {}, // Styles
         searchOnFocus = false, // When focus immediatly search
         debounceTime = 600, // Time for wait key up
@@ -35,7 +36,7 @@ export default class AutoComplete {
         otherParams = {} // Set more params to be passed to sources
     }) {
         // Key
-        this.key = window.__autocomplete_serial_key++;
+        this.key = AutoComplete.currentSerialKey++;
 
         // Environment
         this.finding = false;
@@ -54,8 +55,13 @@ export default class AutoComplete {
         this.autoSelectWhenOneResult = autoSelectWhenOneResult;
         this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (!hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required'));
 
+        // Source validation
+        if(!source  && !selectInput) {
+            throw new Error('Set a source or a selectInput.');
+        }
+
         // Set data source
-        this.source = source || new SelectSource(input);
+        this.source = source || new SelectSource(selectInput);
 
         // Set style props
         this.style = extend({
@@ -120,10 +126,12 @@ export default class AutoComplete {
         this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
         this.elements.textInput.parentNode.removeChild(this.elements.textInput);
         // Prepare hiddenInput
+        this.elements.hiddenInput.autoComplete = this;
         this.elements.hiddenInput.type = 'hidden';
         this.elements.hiddenInput.className = this.style.hiddenInput;
         this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
         // Prepare textInput
+        this.elements.textInput.autoComplete = this;
         this.elements.textInput.type = 'hidden';
         this.elements.textInput.className = this.style.textInput;
         this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
@@ -230,18 +238,18 @@ export default class AutoComplete {
     async setValueInOthers(others = []) {
         let length = others.length;
         for(let index = 0; index < length; index++) {
-            let element = document.querySelector(`[name="${others[index].field}"]`);
-            if(!element) {
-                throw new Error(`Field ${others[index].field} not found to set value!`);
-            }
-            element.value = others[index].value;
             if(typeof element.content !== 'undefined') {
-                let fieldAutocompleteKey = element.dataset['autocompleteKey'];
-                let textElement = document.querySelector(`[data-autocomplete-text-key="${fieldAutocompleteKey}"]`);
-                if(!textElement) {
-                    throw new Error(`AutoComplete text ${others[index].field} not found to set value!`);
+                let autoComplete = AutoComplete.autoCompleteByName(others[index].field);
+                if(!autoComplete) {
+                    throw new Error(`Field ${others[index].field} not found to set value!`);
                 }
-                textElement.value = element.content;
+                autoComplete.select(others[index]);
+            } else {
+                let element = document.querySelector(`[name="${others[index].field}"]`);
+                if(!element) {
+                    throw new Error(`Field ${others[index].field} not found to set value!`);
+                }
+                element.value = others[index].value;
             }
         }
     }
@@ -328,6 +336,126 @@ export default class AutoComplete {
             this.openPanel();
         } else {
             this.closePanel();
+        }
+    }
+
+    static currentSerialKey = 0
+
+    static byId(id) {
+        return document.getElementById(id);
+    }
+
+    static byName(name) {
+        return document.getElementsByName(name);
+    }
+
+    static autoCompleteByKey(autocompleteKey) {
+        let element = document.querySelector(`[data-autocomplete-key="${autocompleteKey}"]`);
+        if(!element) {
+            return null;
+        }
+        if(!element.autoComplete) {
+            throw new Error('Field is not an autocomplete!', element);
+        }
+        return element.autoComplete;
+    }
+
+    static autoCompleteByName(name) {
+        let element = AutoComplete.byName(name);
+        if(!element) {
+            return null;
+        }
+        if(!element.autoComplete) {
+            throw new Error('Field is not an autocomplete!', element);
+        }
+        return element.autoComplete;
+    }
+
+    static interpret(mixedValue) {
+        if(mixedValue === 'true') {
+            return true;
+        } else if (mixedValue === 'false') {
+            return false;
+        } else if (!isNaN(mixedValue)) {
+            return +mixedValue;
+        } else {
+            return mixedValue;
+        }
+    }
+
+    static projectElementSettings(element, { value, disabled, readonly, required, visibility, removed, label }, { defaultDisplayShow = 'inline-block' }) {
+        // Label
+        if(typeof label === 'undefined' && typeof element.dataset['oldLabel'] !== 'undefined') {
+            label = element.dataset['oldLabel'];
+        }
+        if(!element.previousSibling) {
+            throw new Error('Unknow label node for ', element);
+        }
+        if(typeof label !== 'undefined') {
+            if(typeof element.dataset['oldLabel'] === 'undefined') {
+                element.dataset['oldLabel'] = element.previousSibling.innerText;
+            }
+            element.previousSibling.innerText = label;
+        }
+
+        // Value
+        if(typeof value === 'undefined' && typeof element.dataset['oldValue'] !== 'undefined') {
+            value = element.dataset['oldValue'];
+        }
+        if(typeof value !== 'undefined') {
+            if(typeof element.dataset['oldValue'] === 'undefined') {
+                element.dataset['oldValue'] = element.value;
+            }
+            element.value = value;
+        }
+
+        // Disabled
+        if(typeof disabled === 'undefined' && typeof element.dataset['oldDisabled'] !== 'undefined') {
+            disabled = AutoComplete.interpret(element.dataset['oldDisabled']);
+        }
+        if(typeof disabled !== 'undefined') {
+            if(typeof element.dataset['oldDisabled'] === 'undefined') {
+                element.dataset['oldDisabled'] = element.disabled;
+            }
+            element.disabled = disabled;
+        }
+
+        // ReadOnly
+        if(typeof readonly === 'undefined' && typeof element.dataset['oldReadOnly'] !== 'undefined') {
+            readonly = AutoComplete.interpret(element.dataset['oldReadOnly']);
+        }
+        if(typeof readonly !== 'undefined') {
+            if(typeof element.dataset['oldReadOnly'] === 'undefined') {
+                element.dataset['oldReadOnly'] = element.readonly;
+            }
+            element.readonly = readonly;
+        }
+
+        // Required
+        if(typeof required === 'undefined' && typeof element.dataset['oldRequired'] !== 'undefined') {
+            required = AutoComplete.interpret(element.dataset['oldRequired']);
+        }
+        if(typeof required !== 'undefined') {
+            if(typeof element.dataset['oldRequired'] === 'undefined') {
+                element.dataset['oldRequired'] = element.required;
+            }
+            element.required = required;
+        }
+
+        // Visibility
+        if(typeof visibility === 'undefined' && typeof element.dataset['oldVisibility'] !== 'undefined') {
+            visibility = AutoComplete.interpret(element.dataset['oldVisibility']);
+        }
+        if(typeof visibility !== 'undefined') {
+            if(typeof element.dataset['oldVisibility'] === 'undefined') {
+                element.dataset['oldVisibility'] = element.style.display !== 'none';
+            }
+            element.style.display = visibility ? defaultDisplayShow : 'none';
+        }
+
+        // Remove (irreversible)
+        if(removed == true) {
+            element.parentNode.removeChild(element);
         }
     }
 

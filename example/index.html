@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <h1>ES7 Autocomplete</h1>
+    <h1>ES7 AutoComplete</h1>
     <fieldset>
         <legend>References</legend>
         <p>Fields that follow as param to sources.</p>
@@ -18,7 +18,7 @@
     </fieldset>
 
     <fieldset>
-        <legend>Autocomplete</legend>
+        <legend>AutoComplete</legend>
         <p>The ultra super mega ultra autocomplete.</p>
         <input id="user_id" name="user_id" type="hidden">
         <input id="text_user_id" name="text_user_id" type="text" value="Meu Usuário Salvo da Silva Pereira Buscapé de Tal">
@@ -27,7 +27,15 @@
     <fieldset>
         <legend>Other Fields</legend>
         <p>Fields that will receive value from autocomplete response.</p>
-        <input id="age" name="age" placeholder="Age">
+        <label>
+            <p>Age</p>
+            <input id="age" name="age" placeholder="Age">
+        </label>
+        <label>
+            <p>Occupation</p>
+            <input id="occupation" name="occupation" placeholder="Occupation" type="hidden">
+            <input id="text_occupation" name="text_occupation" placeholder="Occupation"type="text">
+        </label>
     </fieldset>
 
 
@@ -49,17 +57,23 @@
         //     console.log('value change working', event.target.value);
         // });
 
-        autocomplete({
-            hiddenInput: autocomplete.byId('user_id'),
-            textInput: autocomplete.byId('text_user_id'),
-            source: autocomplete.ajax('/example/source.json'),
+        var userAc = new AutoComplete({
+            hiddenInput: AutoComplete.byId('user_id'),
+            textInput: AutoComplete.byId('text_user_id'),
+            source: new AutoComplete.sources.AjaxSource('/example/source.json'),
             messages: {
                 emptyItemName: 'Nenhum',
                 searchPlaceholder: 'Digite para buscar...'
             },
             references: {
-                city: autocomplete.byId('city')
+                city: AutoComplete.byId('city')
             }
+        });
+
+        new AutoComplete({
+            hiddenInput: AutoComplete.byId('occupation'),
+            textInput: AutoComplete.byId('text_occupation'),
+            source: new AutoComplete.sources.ArraySource([])
         });
 
     </script>

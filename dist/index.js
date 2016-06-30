@@ -844,12 +844,16 @@
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
-	  value: true
+	    value: true
 	});
 
 	var _AutoComplete = __webpack_require__(4);
 
 	var _AutoComplete2 = _interopRequireDefault(_AutoComplete);
+
+	var _Source = __webpack_require__(8);
+
+	var _Source2 = _interopRequireDefault(_Source);
 
 	var _AjaxSource = __webpack_require__(18);
 
@@ -865,40 +869,31 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	/**
-	 * ES7 AutoComplete
-	 *
-	 * @author Jackson Veroneze <jackson@inovadora.com.br>
-	 * @author Ladislau Perrony <ladislau.perrony@inovadora.com.br>
-	 * @author Mario Mendonça <mario@inovadora.com.br>
-	 * @author Mateus Calza <mateus@inovadora.com.br>
-	 * @author Patrick Nascimento <patrick@inovadora.com.br>
-	 * @license MIT
-	 * @version 1.0.0
-	 */
+	_AutoComplete2.default.sources = {
+	    AjaxSource: _AjaxSource2.default,
+	    SelectSource: _SelectSource2.default,
+	    ArraySource: _ArraySource2.default
+	}; /**
+	    * ES7 AutoComplete
+	    *
+	    * @author Jackson Veroneze <jackson@inovadora.com.br>
+	    * @author Ladislau Perrony <ladislau.perrony@inovadora.com.br>
+	    * @author Mario Mendonça <mario@inovadora.com.br>
+	    * @author Mateus Calza <mateus@inovadora.com.br>
+	    * @author Patrick Nascimento <patrick@inovadora.com.br>
+	    * @license MIT
+	    * @version 1.0.0
+	    */
 
-	var autocomplete = function autocomplete(options) {
-	  return new _AutoComplete2.default(options);
-	};
-	autocomplete.ajax = function (url) {
-	  return new _AjaxSource2.default(url);
-	};
-	autocomplete.select = function (select) {
-	  return new _SelectSource2.default(select);
-	};
-	autocomplete.array = function (array) {
-	  return new _ArraySource2.default(array);
-	};
-	autocomplete.byId = function (id) {
-	  return document.getElementById(id);
+	_AutoComplete2.default.abstracts = {
+	    Source: _Source2.default
 	};
 
 	if (typeof window !== 'undefined') {
-	  window.__autocomplete_serial_key = 0;
-	  window.autocomplete = autocomplete;
+	    window.AutoComplete = _AutoComplete2.default;
 	}
 
-	exports.default = autocomplete;
+	exports.default = _AutoComplete2.default;
 
 /***/ },
 /* 4 */
@@ -960,6 +955,7 @@
 	        var hiddenInput = _ref.hiddenInput;
 	        var textInput = _ref.textInput;
 	        var source = _ref.source;
+	        var selectInput = _ref.selectInput;
 	        var _ref$style = _ref.style;
 	        var style = _ref$style === undefined ? {} : _ref$style;
 	        var _ref$searchOnFocus = _ref.searchOnFocus;
@@ -985,7 +981,7 @@
 	        _classCallCheck(this, AutoComplete);
 
 	        // Key
-	        this.key = window.__autocomplete_serial_key++;
+	        this.key = AutoComplete.currentSerialKey++;
 
 	        // Environment
 	        this.finding = false;
@@ -1004,8 +1000,13 @@
 	        this.autoSelectWhenOneResult = autoSelectWhenOneResult;
 	        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
 
+	        // Source validation
+	        if (!source && !selectInput) {
+	            throw new Error('Set a source or a selectInput.');
+	        }
+
 	        // Set data source
-	        this.source = source || new _SelectSource2.default(input);
+	        this.source = source || new _SelectSource2.default(selectInput);
 
 	        // Set style props
 	        this.style = (0, _extend2.default)({
@@ -1072,10 +1073,12 @@
 	            this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
 	            this.elements.textInput.parentNode.removeChild(this.elements.textInput);
 	            // Prepare hiddenInput
+	            this.elements.hiddenInput.autoComplete = this;
 	            this.elements.hiddenInput.type = 'hidden';
 	            this.elements.hiddenInput.className = this.style.hiddenInput;
 	            this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
 	            // Prepare textInput
+	            this.elements.textInput.autoComplete = this;
 	            this.elements.textInput.type = 'hidden';
 	            this.elements.textInput.className = this.style.textInput;
 	            this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
@@ -1201,7 +1204,9 @@
 	        value: function () {
 	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
 	                var others = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-	                var length, index, element, fieldAutocompleteKey, textElement;
+
+	                var length, index, autoComplete, _element;
+
 	                return regeneratorRuntime.wrap(function _callee$(_context4) {
 	                    while (1) {
 	                        switch (_context4.prev = _context4.next) {
@@ -1211,46 +1216,48 @@
 
 	                            case 2:
 	                                if (!(index < length)) {
-	                                    _context4.next = 16;
+	                                    _context4.next = 17;
 	                                    break;
 	                                }
 
-	                                element = document.querySelector('[name="' + others[index].field + '"]');
+	                                if (!(typeof element.content !== 'undefined')) {
+	                                    _context4.next = 10;
+	                                    break;
+	                                }
 
-	                                if (element) {
-	                                    _context4.next = 6;
+	                                autoComplete = AutoComplete.autoCompleteByName(others[index].field);
+
+	                                if (autoComplete) {
+	                                    _context4.next = 7;
 	                                    break;
 	                                }
 
 	                                throw new Error('Field ' + others[index].field + ' not found to set value!');
 
-	                            case 6:
-	                                element.value = others[index].value;
+	                            case 7:
+	                                autoComplete.select(others[index]);
+	                                _context4.next = 14;
+	                                break;
 
-	                                if (!(typeof element.content !== 'undefined')) {
+	                            case 10:
+	                                _element = document.querySelector('[name="' + others[index].field + '"]');
+
+	                                if (_element) {
 	                                    _context4.next = 13;
 	                                    break;
 	                                }
 
-	                                fieldAutocompleteKey = element.dataset['autocompleteKey'];
-	                                textElement = document.querySelector('[data-autocomplete-text-key="' + fieldAutocompleteKey + '"]');
-
-	                                if (textElement) {
-	                                    _context4.next = 12;
-	                                    break;
-	                                }
-
-	                                throw new Error('AutoComplete text ' + others[index].field + ' not found to set value!');
-
-	                            case 12:
-	                                textElement.value = element.content;
+	                                throw new Error('Field ' + others[index].field + ' not found to set value!');
 
 	                            case 13:
+	                                _element.value = others[index].value;
+
+	                            case 14:
 	                                index++;
 	                                _context4.next = 2;
 	                                break;
 
-	                            case 16:
+	                            case 17:
 	                            case 'end':
 	                                return _context4.stop();
 	                        }
@@ -1388,11 +1395,146 @@
 	                this.closePanel();
 	            }
 	        }
+	    }], [{
+	        key: 'byId',
+	        value: function byId(id) {
+	            return document.getElementById(id);
+	        }
+	    }, {
+	        key: 'byName',
+	        value: function byName(name) {
+	            return document.getElementsByName(name);
+	        }
+	    }, {
+	        key: 'autoCompleteByKey',
+	        value: function autoCompleteByKey(autocompleteKey) {
+	            var element = document.querySelector('[data-autocomplete-key="' + autocompleteKey + '"]');
+	            if (!element) {
+	                return null;
+	            }
+	            if (!element.autoComplete) {
+	                throw new Error('Field is not an autocomplete!', element);
+	            }
+	            return element.autoComplete;
+	        }
+	    }, {
+	        key: 'autoCompleteByName',
+	        value: function autoCompleteByName(name) {
+	            var element = AutoComplete.byName(name);
+	            if (!element) {
+	                return null;
+	            }
+	            if (!element.autoComplete) {
+	                throw new Error('Field is not an autocomplete!', element);
+	            }
+	            return element.autoComplete;
+	        }
+	    }, {
+	        key: 'interpret',
+	        value: function interpret(mixedValue) {
+	            if (mixedValue === 'true') {
+	                return true;
+	            } else if (mixedValue === 'false') {
+	                return false;
+	            } else if (!isNaN(mixedValue)) {
+	                return +mixedValue;
+	            } else {
+	                return mixedValue;
+	            }
+	        }
+	    }, {
+	        key: 'projectElementSettings',
+	        value: function projectElementSettings(element, _ref3, _ref4) {
+	            var value = _ref3.value;
+	            var disabled = _ref3.disabled;
+	            var readonly = _ref3.readonly;
+	            var required = _ref3.required;
+	            var visibility = _ref3.visibility;
+	            var removed = _ref3.removed;
+	            var label = _ref3.label;
+	            var _ref4$defaultDisplayS = _ref4.defaultDisplayShow;
+	            var defaultDisplayShow = _ref4$defaultDisplayS === undefined ? 'inline-block' : _ref4$defaultDisplayS;
+
+	            // Label
+	            if (typeof label === 'undefined' && typeof element.dataset['oldLabel'] !== 'undefined') {
+	                label = element.dataset['oldLabel'];
+	            }
+	            if (!element.previousSibling) {
+	                throw new Error('Unknow label node for ', element);
+	            }
+	            if (typeof label !== 'undefined') {
+	                if (typeof element.dataset['oldLabel'] === 'undefined') {
+	                    element.dataset['oldLabel'] = element.previousSibling.innerText;
+	                }
+	                element.previousSibling.innerText = label;
+	            }
+
+	            // Value
+	            if (typeof value === 'undefined' && typeof element.dataset['oldValue'] !== 'undefined') {
+	                value = element.dataset['oldValue'];
+	            }
+	            if (typeof value !== 'undefined') {
+	                if (typeof element.dataset['oldValue'] === 'undefined') {
+	                    element.dataset['oldValue'] = element.value;
+	                }
+	                element.value = value;
+	            }
+
+	            // Disabled
+	            if (typeof disabled === 'undefined' && typeof element.dataset['oldDisabled'] !== 'undefined') {
+	                disabled = AutoComplete.interpret(element.dataset['oldDisabled']);
+	            }
+	            if (typeof disabled !== 'undefined') {
+	                if (typeof element.dataset['oldDisabled'] === 'undefined') {
+	                    element.dataset['oldDisabled'] = element.disabled;
+	                }
+	                element.disabled = disabled;
+	            }
+
+	            // ReadOnly
+	            if (typeof readonly === 'undefined' && typeof element.dataset['oldReadOnly'] !== 'undefined') {
+	                readonly = AutoComplete.interpret(element.dataset['oldReadOnly']);
+	            }
+	            if (typeof readonly !== 'undefined') {
+	                if (typeof element.dataset['oldReadOnly'] === 'undefined') {
+	                    element.dataset['oldReadOnly'] = element.readonly;
+	                }
+	                element.readonly = readonly;
+	            }
+
+	            // Required
+	            if (typeof required === 'undefined' && typeof element.dataset['oldRequired'] !== 'undefined') {
+	                required = AutoComplete.interpret(element.dataset['oldRequired']);
+	            }
+	            if (typeof required !== 'undefined') {
+	                if (typeof element.dataset['oldRequired'] === 'undefined') {
+	                    element.dataset['oldRequired'] = element.required;
+	                }
+	                element.required = required;
+	            }
+
+	            // Visibility
+	            if (typeof visibility === 'undefined' && typeof element.dataset['oldVisibility'] !== 'undefined') {
+	                visibility = AutoComplete.interpret(element.dataset['oldVisibility']);
+	            }
+	            if (typeof visibility !== 'undefined') {
+	                if (typeof element.dataset['oldVisibility'] === 'undefined') {
+	                    element.dataset['oldVisibility'] = element.style.display !== 'none';
+	                }
+	                element.style.display = visibility ? defaultDisplayShow : 'none';
+	            }
+
+	            // Remove (irreversible)
+	            if (removed == true) {
+	                element.parentNode.removeChild(element);
+	            }
+	        }
 	    }]);
 
 	    return AutoComplete;
 	}();
 
+	AutoComplete.currentSerialKey = 0;
 	exports.default = AutoComplete;
 
 /***/ },

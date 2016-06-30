@@ -21,7 +21,8 @@
 				{
 					"field": "occupation",
 					"content": "CEO",
-					"value": 3123213
+					"value": 3123213,
+					"hide": true
 				}
 			]
 		},
@@ -46,7 +47,38 @@
 				{
 					"field": "occupation",
 					"content": "Programmer",
-					"value": 2342342423
+					"value": 2342342423,
+					"disabled": true
+				}
+			]
+		},
+		{
+			"content": "Mario Veroneze",
+			"value": 42342343,
+			"additional": [],
+			"others": [
+				{
+					"field": "age",
+					"value": 35
+				},
+				{
+					"field": "occupation",
+					"content": "Programmer",
+					"value": 1111,
+					"readonly": true
+				}
+			]
+		},
+		{
+			"content": "Patrick Perrony",
+			"value": 42342343,
+			"additional": [],
+			"others": [
+				{
+					"field": "occupation",
+					"content": "Programmer",
+					"value": 1111,
+					"required": true
 				}
 			]
 		},
@@ -66,12 +98,14 @@
 			"others": [
 				{
 					"field": "age",
-					"value": 76
+					"value": 76,
+					"disabled": true
 				},
 				{
 					"field": "occupation",
 					"content": "Designer",
-					"value": 26677777
+					"value": 26677777,
+					"label": "Hobby"
 				}
 			]
 		}

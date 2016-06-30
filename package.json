@@ -4,6 +4,7 @@
   "description": "Pure JS, with ES7 features, without jQuery, object-oriented.",
   "main": "src/autocomplete.js",
   "scripts": {
+    "build": "webpack",
     "dev": "concurrently --kill-others \"npm run connect\" \"webpack -w\"",
     "connect": "browser-sync start --dev --server --index='example/index.html' --files='example/*.*,dist/index.js'",
     "test": "echo \"Error: no test specified\" && exit 1"
