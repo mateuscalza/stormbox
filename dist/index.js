@@ -905,8 +905,6 @@
 	    value: true
 	});
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
-
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 	var _extend = __webpack_require__(5);
@@ -929,81 +927,104 @@
 
 	var _SelectSource2 = _interopRequireDefault(_SelectSource);
 
+	var _Core = __webpack_require__(20);
+
+	var _Core2 = _interopRequireDefault(_Core);
+
+	var _Events = __webpack_require__(21);
+
+	var _Events2 = _interopRequireDefault(_Events);
+
+	var _Finding = __webpack_require__(22);
+
+	var _Finding2 = _interopRequireDefault(_Finding);
+
+	var _PanelControl = __webpack_require__(23);
+
+	var _PanelControl2 = _interopRequireDefault(_PanelControl);
+
+	var _Selecting = __webpack_require__(24);
+
+	var _Selecting2 = _interopRequireDefault(_Selecting);
+
 	var _debounce = __webpack_require__(16);
 
 	var _debounce2 = _interopRequireDefault(_debounce);
 
 	var _dom = __webpack_require__(9);
 
-	var _events = __webpack_require__(10);
-
-	var _keys = __webpack_require__(17);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var ignoredKeysOnSearch = [_keys.ENTER, _keys.ARROW_DOWN, _keys.ARROW_UP, _keys.ARROW_LEFT, _keys.ARROW_RIGHT, _keys.SHIFT, _keys.TAB];
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-	var AutoComplete = function () {
-	    function AutoComplete(_ref) {
-	        var hiddenInput = _ref.hiddenInput;
-	        var textInput = _ref.textInput;
-	        var source = _ref.source;
-	        var selectInput = _ref.selectInput;
-	        var _ref$style = _ref.style;
-	        var style = _ref$style === undefined ? {} : _ref$style;
-	        var _ref$customText = _ref.customText;
-	        var customText = _ref$customText === undefined ? false : _ref$customText;
-	        var _ref$searchOnFocus = _ref.searchOnFocus;
-	        var searchOnFocus = _ref$searchOnFocus === undefined ? false : _ref$searchOnFocus;
-	        var _ref$debounceTime = _ref.debounceTime;
-	        var debounceTime = _ref$debounceTime === undefined ? 600 : _ref$debounceTime;
-	        var _ref$queryParam = _ref.queryParam;
-	        var queryParam = _ref$queryParam === undefined ? 'q' : _ref$queryParam;
-	        var _ref$minLength = _ref.minLength;
-	        var minLength = _ref$minLength === undefined ? 1 : _ref$minLength;
-	        var _ref$clearOnType = _ref.clearOnType;
-	        var clearOnType = _ref$clearOnType === undefined ? false : _ref$clearOnType;
-	        var _ref$autoFind = _ref.autoFind;
-	        var autoFind = _ref$autoFind === undefined ? false : _ref$autoFind;
-	        var _ref$autoSelectWhenOn = _ref.autoSelectWhenOneResult;
-	        var autoSelectWhenOneResult = _ref$autoSelectWhenOn === undefined ? true : _ref$autoSelectWhenOn;
-	        var emptyItem = _ref.emptyItem;
-	        var _ref$messages = _ref.messages;
-	        var messages = _ref$messages === undefined ? {} : _ref$messages;
-	        var _ref$references = _ref.references;
-	        var references = _ref$references === undefined ? {} : _ref$references;
-	        var _ref$otherParams = _ref.otherParams;
-	        var otherParams = _ref$otherParams === undefined ? {} : _ref$otherParams;
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+	// Use mixins
+	var Parent = (0, _Selecting2.default)((0, _PanelControl2.default)((0, _Finding2.default)((0, _Events2.default)(_Core2.default))));
+
+	var AutoComplete = function (_Parent) {
+	    _inherits(AutoComplete, _Parent);
+
+	    function AutoComplete(options) {
 	        _classCallCheck(this, AutoComplete);
 
+	        var hiddenInput = options.hiddenInput;
+	        var textInput = options.textInput;
+	        var source = options.source;
+	        var selectInput = options.selectInput;
+	        var _options$style = options.style;
+	        var style = _options$style === undefined ? {} : _options$style;
+	        var _options$customText = options.customText;
+	        var customText = _options$customText === undefined ? false : _options$customText;
+	        var _options$searchOnFocu = options.searchOnFocus;
+	        var searchOnFocus = _options$searchOnFocu === undefined ? false : _options$searchOnFocu;
+	        var _options$debounceTime = options.debounceTime;
+	        var debounceTime = _options$debounceTime === undefined ? 600 : _options$debounceTime;
+	        var _options$queryParam = options.queryParam;
+	        var queryParam = _options$queryParam === undefined ? 'q' : _options$queryParam;
+	        var _options$minLength = options.minLength;
+	        var minLength = _options$minLength === undefined ? 1 : _options$minLength;
+	        var _options$clearOnType = options.clearOnType;
+	        var clearOnType = _options$clearOnType === undefined ? false : _options$clearOnType;
+	        var _options$autoFind = options.autoFind;
+	        var autoFind = _options$autoFind === undefined ? false : _options$autoFind;
+	        var _options$autoSelectWh = options.autoSelectWhenOneResult;
+	        var autoSelectWhenOneResult = _options$autoSelectWh === undefined ? true : _options$autoSelectWh;
+	        var emptyItem = options.emptyItem;
+	        var _options$messages = options.messages;
+	        var messages = _options$messages === undefined ? {} : _options$messages;
+	        var _options$references = options.references;
+	        var references = _options$references === undefined ? {} : _options$references;
+	        var _options$otherParams = options.otherParams;
+	        var otherParams = _options$otherParams === undefined ? {} : _options$otherParams;
+
+
 	        // Key
-	        this.key = AutoComplete.currentSerialKey++;
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AutoComplete).call(this, options));
+
+	        _this.key = AutoComplete.currentSerialKey++;
 
 	        // Environment
-	        this.finding = false;
-	        this.open = false;
-	        this.typing = false;
-	        this.ignoreFocus = false;
-	        this.ignoreBlur = false;
-	        this.valueOnOpen = undefined;
+	        _this.finding = false;
+	        _this.open = false;
+	        _this.typing = false;
+	        _this.ignoreFocus = false;
+	        _this.ignoreBlur = false;
+	        _this.valueOnOpen = undefined;
 
 	        // Initial
-	        this.references = references;
-	        this.otherParams = otherParams;
-	        this.queryParam = queryParam;
-	        this.clearOnType = clearOnType;
-	        this.autoFind = autoFind;
-	        this.minLength = minLength;
-	        this.customText = customText;
-	        this.autoSelectWhenOneResult = autoSelectWhenOneResult;
-	        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
+	        _this.references = references;
+	        _this.otherParams = otherParams;
+	        _this.queryParam = queryParam;
+	        _this.clearOnType = clearOnType;
+	        _this.autoFind = autoFind;
+	        _this.minLength = minLength;
+	        _this.customText = customText;
+	        _this.autoSelectWhenOneResult = autoSelectWhenOneResult;
+	        _this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
 
 	        // Source validation
 	        if (!source && !selectInput) {
@@ -1011,10 +1032,10 @@
 	        }
 
 	        // Set data source
-	        this.source = source || new _SelectSource2.default(selectInput);
+	        _this.source = source || new _SelectSource2.default(selectInput);
 
 	        // Set style props
-	        this.style = (0, _extend2.default)({
+	        _this.style = (0, _extend2.default)({
 	            hiddenInput: 'ac-hidden-input',
 	            textInput: 'ac-text-input',
 	            panel: 'ac-panel',
@@ -1036,33 +1057,34 @@
 	            loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon'
 	        }, style);
 
-	        this.messages = (0, _extend2.default)({
+	        _this.messages = (0, _extend2.default)({
 	            searchPlaceholder: 'Search...',
 	            emptyItemName: 'Empty'
 	        }, messages);
 
 	        // Set AutoComplete's elements
-	        this.elements = {
+	        _this.elements = {
 	            hiddenInput: hiddenInput,
 	            textInput: textInput,
 	            wrapper: (0, _dom.div)({
-	                className: this.style.wrapper
+	                className: _this.style.wrapper
 	            })
 	        };
 
 	        // Debouncing find
-	        this.debouncedFind = (0, _debounce2.default)(this.find.bind(this), debounceTime);
+	        _this.debouncedFind = (0, _debounce2.default)(_this.find.bind(_this), debounceTime);
 
 	        // Set relative components
-	        this.components = {
-	            presentText: new _PresentText2.default({ style: this.style }),
-	            icon: new _Icon2.default({ style: this.style }),
-	            panel: new _Panel2.default({ style: this.style }, { onSelect: this.select.bind(this) }, this)
+	        _this.components = {
+	            presentText: new _PresentText2.default({ style: _this.style }),
+	            icon: new _Icon2.default({ style: _this.style }),
+	            panel: new _Panel2.default({ style: _this.style }, { onSelect: _this.select.bind(_this) }, _this)
 	        };
 
 	        // Prepare elements
-	        this.prepareElements();
-	        this.prepareEvents();
+	        _this.prepareElements();
+	        _this.prepareEvents();
+	        return _this;
 	    }
 
 	    _createClass(AutoComplete, [{
@@ -1098,499 +1120,11 @@
 	            this.elements.wrapper.appendChild(this.components.icon.element);
 	            this.elements.wrapper.appendChild(this.components.panel.element);
 	        }
-	    }, {
-	        key: 'prepareEvents',
-	        value: function prepareEvents() {
-	            var _context;
-
-	            (_context = this.components.presentText.element, _events.on).call(_context, 'click', this.iconOrTextClick.bind(this));
-	            (_context = this.components.icon.element, _events.on).call(_context, 'click', this.iconOrTextClick.bind(this));
-	            (_context = this.elements.wrapper, _events.on).call(_context, 'keyup', this.keyUp.bind(this));
-	            (_context = this.elements.wrapper, _events.on).call(_context, 'keydown', this.keyDown.bind(this));
-	            (_context = this.elements.wrapper, _events.on).call(_context, 'focus', this.wrapperFocus.bind(this));
-	            (_context = this.elements.wrapper, _events.on).call(_context, 'mousedown', this.wrapperMouseDown.bind(this));
-	            (_context = this.elements.wrapper, _events.on).call(_context, 'blur', this.blur.bind(this));
-	            (_context = this.components.panel.components.searchInput.elements.input, _events.on).call(_context, 'blur', this.blur.bind(this));
-	        }
-	    }, {
-	        key: 'keyDown',
-	        value: function keyDown(event) {
-	            // console.log('down', this.open, event);
-	            if (this.open && event.keyCode == _keys.ARROW_UP) {
-	                event.preventDefault();
-	                event.stopPropagation();
-	                this.components.panel.components.list.up();
-	            } else if (this.open && event.keyCode == _keys.ARROW_DOWN) {
-	                event.preventDefault();
-	                event.stopPropagation();
-	                this.components.panel.components.list.down();
-	            } else if (this.open && event.keyCode == _keys.ENTER) {
-	                event.preventDefault();
-	                event.stopPropagation();
-	                this.components.panel.components.list.selectCurrent();
-	            } else if (event.keyCode == _keys.TAB && event.shiftKey && document.activeElement == this.components.panel.components.searchInput.elements.input) {
-	                this.ignoreFocus = true;
-	            }
-	        }
-	    }, {
-	        key: 'keyUp',
-	        value: function keyUp(event) {
-	            // console.log('up', this.open, event);
-	            if (event.keyCode === _keys.ESC) {
-	                this.closePanel();
-	                this.ignoreFocus = true;
-	                this.elements.wrapper.focus();
-	            } else if (event.target === this.elements.wrapper && event.keyCode == _keys.SPACE) {
-	                event.preventDefault();
-	                event.stopPropagation();
-	                this.togglePanel();
-	            } else if (event.keyCode == _keys.ARROW_UP || event.keyCode == _keys.ARROW_DOWN || event.keyCode == _keys.ENTER) {
-	                event.preventDefault();
-	                event.stopPropagation();
-	            } else if (ignoredKeysOnSearch.indexOf(event.keyCode) == -1) {
-	                if (!this.typing) {
-	                    this.typing = true;
-	                    if (this.clearOnType) {
-	                        this.select({
-	                            content: null,
-	                            value: null
-	                        });
-	                    }
-	                    this.components.panel.clear();
-	                }
-	                this.debouncedFind();
-	            }
-	        }
-	    }, {
-	        key: 'iconOrTextClick',
-	        value: function iconOrTextClick(event) {
-	            if (document.activeElement === this.elements.wrapper) {
-	                //this.togglePanel();
-	            }
-	        }
-	    }, {
-	        key: 'wrapperFocus',
-	        value: function wrapperFocus(event) {
-	            console.log('focus... ignore focus?', this.ignoreFocus);
-	            if (!event.isTrigger && !this.ignoreFocus) {
-	                this.openPanel();
-	            }
-	            this.ignoreFocus = false;
-	        }
-	    }, {
-	        key: 'blur',
-	        value: function blur(event) {
-	            if (!this.ignoreBlur) {
-	                var _context3;
-
-	                if (this.value !== this.valueOnOpen) {
-	                    var _context2;
-
-	                    this.valueOnOpen = this.value;
-	                    (_context2 = this.elements.hiddenInput, _events.trigger).call(_context2, 'change');
-	                    (_context2 = this.elements.textInput, _events.trigger).call(_context2, 'change');
-	                }
-	                (_context3 = this.elements.hiddenInput, _events.trigger).call(_context3, 'blur');
-	                (_context3 = this.elements.textInput, _events.trigger).call(_context3, 'blur');
-	                this.closePanel();
-	            }
-	            this.ignoreBlur = false;
-	        }
-	    }, {
-	        key: 'wrapperMouseDown',
-	        value: function wrapperMouseDown(event) {
-	            console.log('event.target', event.target);
-	            console.log('this.open', this.open);
-	            console.log('document.activeElement', document.activeElement);
-	            if (!this.open && document.activeElement === this.elements.wrapper) {
-	                console.log(1);
-	                this.openPanel();
-	            } else if (this.open && document.activeElement === this.elements.wrapper) {
-	                console.log(2);
-	                this.ignoreBlur = true;
-	                this.components.panel.components.searchInput.elements.input.focus();
-	                this.ignoreFocus = true;
-	            } else if (document.activeElement === this.components.panel.components.searchInput.elements.input) {
-	                if (this.open) {
-	                    this.closePanel();
-	                }
-	                this.ignoreFocus = true;
-	                this.ignoreBlur = true;
-	            } else {
-	                console.log(4);
-	                console.log('else');
-	            }
-	        }
-	    }, {
-	        key: 'select',
-	        value: function select(_ref2) {
-	            var content = _ref2.content;
-	            var value = _ref2.value;
-	            var additional = _ref2.additional;
-	            var others = _ref2.others;
-
-	            this.value = value;
-	            this.content = content;
-
-	            this.elements.hiddenInput.value = value || '';
-	            this.elements.textInput.value = content || '';
-	            //this.components.panel.components.searchInput.value('');
-	            this.components.presentText.text(content || ' ');
-
-	            others && this.setOtherFields(others);
-	        }
-	    }, {
-	        key: 'setOtherFields',
-	        value: function () {
-	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-	                var others = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-	                var length, index, element, autoComplete;
-	                return regeneratorRuntime.wrap(function _callee$(_context4) {
-	                    while (1) {
-	                        switch (_context4.prev = _context4.next) {
-	                            case 0:
-	                                length = others.length;
-	                                index = 0;
-
-	                            case 2:
-	                                if (!(index < length)) {
-	                                    _context4.next = 17;
-	                                    break;
-	                                }
-
-	                                element = document.querySelector('[name="' + others[index].field + '"]');
-
-	                                if (element) {
-	                                    _context4.next = 6;
-	                                    break;
-	                                }
-
-	                                throw new Error('Field ' + others[index].field + ' not found to set value!');
-
-	                            case 6:
-	                                if (!(typeof others[index].content !== 'undefined')) {
-	                                    _context4.next = 13;
-	                                    break;
-	                                }
-
-	                                autoComplete = AutoComplete.autoCompleteByName(others[index].field);
-
-	                                if (autoComplete) {
-	                                    _context4.next = 10;
-	                                    break;
-	                                }
-
-	                                throw new Error('Field ' + others[index].field + ' not found to set value!');
-
-	                            case 10:
-	                                autoComplete.select(others[index]);
-	                                _context4.next = 14;
-	                                break;
-
-	                            case 13:
-	                                AutoComplete.projectElementSettings(element, others[index]);
-
-	                            case 14:
-	                                index++;
-	                                _context4.next = 2;
-	                                break;
-
-	                            case 17:
-	                            case 'end':
-	                                return _context4.stop();
-	                        }
-	                    }
-	                }, _callee, this);
-	            }));
-
-	            function setOtherFields(_x) {
-	                return ref.apply(this, arguments);
-	            }
-
-	            return setOtherFields;
-	        }()
-	    }, {
-	        key: 'find',
-	        value: function () {
-	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
-	                var _this = this;
-
-	                var query, params, results;
-	                return regeneratorRuntime.wrap(function _callee2$(_context5) {
-	                    while (1) {
-	                        switch (_context5.prev = _context5.next) {
-	                            case 0:
-	                                if (this.finding) {
-	                                    console.log('Let`s abort!');
-	                                    this.source.abort();
-	                                    this.findingEnd();
-	                                }
-	                                query = this.components.panel.components.searchInput.value();
-
-	                                if (!(query.length < this.minLength)) {
-	                                    _context5.next = 4;
-	                                    break;
-	                                }
-
-	                                return _context5.abrupt('return');
-
-	                            case 4:
-	                                this.findingStart();
-	                                params = _extends({}, this.otherParams, _defineProperty({}, this.queryParam, query));
-
-	                                Object.keys(this.references).forEach(function (key) {
-	                                    if (!_this.references[key]) {
-	                                        throw new Error('Reference ' + key + ' is not valid!');
-	                                    }
-	                                    params[key] = _this.references[key].value;
-	                                });
-	                                results = { data: [] };
-	                                _context5.prev = 8;
-	                                _context5.next = 11;
-	                                return this.source.find(params);
-
-	                            case 11:
-	                                results = _context5.sent;
-
-	                                this.components.panel.show(results);
-	                                _context5.next = 18;
-	                                break;
-
-	                            case 15:
-	                                _context5.prev = 15;
-	                                _context5.t0 = _context5['catch'](8);
-
-	                                this.components.panel.error(_context5.t0);
-
-	                            case 18:
-	                                _context5.prev = 18;
-
-	                                if (this.autoSelectWhenOneResult && results && results.data && results.data.length == 1) {
-	                                    this.select({
-	                                        content: results.data[0].content,
-	                                        value: results.data[0].value
-	                                    });
-	                                } else if (!this.open && (!this.autoFind || results && results.data && results.data.length > 1)) {
-	                                    !this.open && this.openPanel();
-	                                }
-	                                this.findingEnd();
-	                                return _context5.finish(18);
-
-	                            case 22:
-	                            case 'end':
-	                                return _context5.stop();
-	                        }
-	                    }
-	                }, _callee2, this, [[8, 15, 18, 22]]);
-	            }));
-
-	            function find() {
-	                return ref.apply(this, arguments);
-	            }
-
-	            return find;
-	        }()
-	    }, {
-	        key: 'findingStart',
-	        value: function findingStart() {
-	            // Set flag
-	            this.typing = false;
-	            this.finding = true;
-	            // Start spin
-	            this.components.icon.loadingStart();
-	        }
-	    }, {
-	        key: 'findingEnd',
-	        value: function findingEnd() {
-	            // Set flag
-	            this.finding = false;
-	            // Stop spin
-	            this.components.icon.loadingStop();
-	        }
-	    }, {
-	        key: 'openPanel',
-	        value: function openPanel() {
-	            //console.log('open-panel');
-	            //console.trace();
-	            this.open = true;
-	            this.valueOnOpen = this.value;
-	            this.elements.wrapper.className = this.style.openWrapper;
-	            this.components.panel.element.style.display = 'inline-block';
-	            //console.log('ignore focus out');
-	            this.ignoreBlur = true;
-	            this.components.panel.components.searchInput.elements.input.focus();
-	            this.components.panel.components.searchInput.elements.input.setSelectionRange(0, this.components.panel.components.searchInput.elements.input.value.length);
-
-	            if (this.autoFind) {
-	                this.debouncedFind();
-	            }
-	        }
-	    }, {
-	        key: 'closePanel',
-	        value: function closePanel() {
-	            //console.log('close-panel');
-	            this.open = false;
-	            this.elements.wrapper.className = this.style.wrapper;
-	            this.components.panel.element.style.display = 'none';
-	        }
-	    }, {
-	        key: 'togglePanel',
-	        value: function togglePanel() {
-	            if (!this.open) {
-	                this.openPanel();
-	            } else {
-	                this.closePanel();
-	            }
-	        }
-	    }], [{
-	        key: 'byId',
-	        value: function byId(id) {
-	            return document.getElementById(id);
-	        }
-	    }, {
-	        key: 'byName',
-	        value: function byName(name) {
-	            var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
-
-	            var nodeListWithName = (this instanceof HTMLElement ? this : document).getElementsByName(name);
-	            if (!nodeListWithName.length || !nodeListWithName[index]) {
-	                return null;
-	            }
-	            return nodeListWithName[index];
-	        }
-	    }, {
-	        key: 'autoCompleteByKey',
-	        value: function autoCompleteByKey(autocompleteKey) {
-	            var element = document.querySelector('[data-autocomplete-key="' + autocompleteKey + '"]');
-	            if (!element) {
-	                return null;
-	            }
-	            if (!element.autoComplete) {
-	                throw new Error('Field is not an autocomplete!', element);
-	            }
-	            return element.autoComplete;
-	        }
-	    }, {
-	        key: 'autoCompleteByName',
-	        value: function autoCompleteByName(name) {
-	            var element = AutoComplete.byName(name);
-	            if (!element) {
-	                return null;
-	            }
-	            if (!element.autoComplete) {
-	                throw new Error('Field is not an autocomplete!', element);
-	            }
-	            return element.autoComplete;
-	        }
-	    }, {
-	        key: 'interpret',
-	        value: function interpret(mixedValue) {
-	            if (mixedValue === 'true') {
-	                return true;
-	            } else if (mixedValue === 'false') {
-	                return false;
-	            } else if (!isNaN(mixedValue)) {
-	                return +mixedValue;
-	            } else {
-	                return mixedValue;
-	            }
-	        }
-	    }, {
-	        key: 'projectElementSettings',
-	        value: function projectElementSettings(element, _ref3) {
-	            var value = _ref3.value;
-	            var disabled = _ref3.disabled;
-	            var readonly = _ref3.readonly;
-	            var required = _ref3.required;
-	            var visibility = _ref3.visibility;
-	            var removed = _ref3.removed;
-	            var label = _ref3.label;
-
-	            var _ref4 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
-
-	            var _ref4$defaultDisplayS = _ref4.defaultDisplayShow;
-	            var defaultDisplayShow = _ref4$defaultDisplayS === undefined ? 'inline-block' : _ref4$defaultDisplayS;
-
-	            // Label
-	            if (typeof label === 'undefined' && typeof element.dataset['oldLabel'] !== 'undefined') {
-	                label = element.dataset['oldLabel'];
-	            }
-	            if (typeof label !== 'undefined') {
-	                if (!element.previousSibling) {
-	                    throw new Error('Unknow label node for ', element);
-	                }
-	                if (typeof element.dataset['oldLabel'] === 'undefined') {
-	                    element.dataset['oldLabel'] = element.previousSibling.innerText;
-	                }
-	                element.previousSibling.innerText = label;
-	            }
-
-	            // Value
-	            if (typeof value === 'undefined' && typeof element.dataset['oldValue'] !== 'undefined') {
-	                value = element.dataset['oldValue'];
-	            }
-	            if (typeof value !== 'undefined') {
-	                if (typeof element.dataset['oldValue'] === 'undefined') {
-	                    element.dataset['oldValue'] = element.value;
-	                }
-	                element.value = value;
-	            }
-
-	            // Disabled
-	            if (typeof disabled === 'undefined' && typeof element.dataset['oldDisabled'] !== 'undefined') {
-	                disabled = AutoComplete.interpret(element.dataset['oldDisabled']);
-	            }
-	            if (typeof disabled !== 'undefined') {
-	                if (typeof element.dataset['oldDisabled'] === 'undefined') {
-	                    element.dataset['oldDisabled'] = element.disabled;
-	                }
-	                element.disabled = disabled;
-	            }
-
-	            // ReadOnly
-	            if (typeof readonly === 'undefined' && typeof element.dataset['oldReadOnly'] !== 'undefined') {
-	                readonly = AutoComplete.interpret(element.dataset['oldReadOnly']);
-	            }
-	            if (typeof readonly !== 'undefined') {
-	                if (typeof element.dataset['oldReadOnly'] === 'undefined') {
-	                    element.dataset['oldReadOnly'] = element.readonly;
-	                }
-	                element.readonly = readonly;
-	            }
-
-	            // Required
-	            if (typeof required === 'undefined' && typeof element.dataset['oldRequired'] !== 'undefined') {
-	                required = AutoComplete.interpret(element.dataset['oldRequired']);
-	            }
-	            if (typeof required !== 'undefined') {
-	                if (typeof element.dataset['oldRequired'] === 'undefined') {
-	                    element.dataset['oldRequired'] = element.required;
-	                }
-	                element.required = required;
-	            }
-
-	            // Visibility
-	            if (typeof visibility === 'undefined' && typeof element.dataset['oldVisibility'] !== 'undefined') {
-	                visibility = AutoComplete.interpret(element.dataset['oldVisibility']);
-	            }
-	            if (typeof visibility !== 'undefined') {
-	                if (typeof element.dataset['oldVisibility'] === 'undefined') {
-	                    element.dataset['oldVisibility'] = element.style.display !== 'none';
-	                }
-	                element.style.display = visibility ? defaultDisplayShow : 'none';
-	            }
-
-	            // Remove (irreversible)
-	            if (removed == true) {
-	                element.parentNode.removeChild(element);
-	            }
-	        }
 	    }]);
 
 	    return AutoComplete;
-	}();
+	}(Parent);
 
-	AutoComplete.currentSerialKey = 0;
 	exports.default = AutoComplete;
 
 /***/ },
@@ -2654,6 +2188,676 @@
 	}();
 
 	exports.default = ArraySource;
+
+/***/ },
+/* 20 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Core = function () {
+	    function Core() {
+	        _classCallCheck(this, Core);
+	    }
+
+	    _createClass(Core, null, [{
+	        key: 'byId',
+	        value: function byId(id) {
+	            return document.getElementById(id);
+	        }
+	    }, {
+	        key: 'byName',
+	        value: function byName(name) {
+	            var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+
+	            var nodeListWithName = (this instanceof HTMLElement ? this : document).getElementsByName(name);
+	            if (!nodeListWithName.length || !nodeListWithName[index]) {
+	                return null;
+	            }
+	            return nodeListWithName[index];
+	        }
+	    }, {
+	        key: 'autoCompleteByKey',
+	        value: function autoCompleteByKey(autocompleteKey) {
+	            var element = document.querySelector('[data-autocomplete-key="' + autocompleteKey + '"]');
+	            if (!element) {
+	                return null;
+	            }
+	            if (!element.autoComplete) {
+	                throw new Error('Field is not an autocomplete!', element);
+	            }
+	            return element.autoComplete;
+	        }
+	    }, {
+	        key: 'autoCompleteByName',
+	        value: function autoCompleteByName(name) {
+	            var element = AutoComplete.byName(name);
+	            if (!element) {
+	                return null;
+	            }
+	            if (!element.autoComplete) {
+	                throw new Error('Field is not an autocomplete!', element);
+	            }
+	            return element.autoComplete;
+	        }
+	    }, {
+	        key: 'interpret',
+	        value: function interpret(mixedValue) {
+	            if (mixedValue === 'true') {
+	                return true;
+	            } else if (mixedValue === 'false') {
+	                return false;
+	            } else if (!isNaN(mixedValue)) {
+	                return +mixedValue;
+	            } else {
+	                return mixedValue;
+	            }
+	        }
+	    }, {
+	        key: 'projectElementSettings',
+	        value: function projectElementSettings(element, _ref) {
+	            var value = _ref.value;
+	            var disabled = _ref.disabled;
+	            var readonly = _ref.readonly;
+	            var required = _ref.required;
+	            var visibility = _ref.visibility;
+	            var removed = _ref.removed;
+	            var label = _ref.label;
+
+	            var _ref2 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	            var _ref2$defaultDisplayS = _ref2.defaultDisplayShow;
+	            var defaultDisplayShow = _ref2$defaultDisplayS === undefined ? 'inline-block' : _ref2$defaultDisplayS;
+
+	            // Label
+	            if (typeof label === 'undefined' && typeof element.dataset['oldLabel'] !== 'undefined') {
+	                label = element.dataset['oldLabel'];
+	            }
+	            if (typeof label !== 'undefined') {
+	                if (!element.previousSibling) {
+	                    throw new Error('Unknow label node for ', element);
+	                }
+	                if (typeof element.dataset['oldLabel'] === 'undefined') {
+	                    element.dataset['oldLabel'] = element.previousSibling.innerText;
+	                }
+	                element.previousSibling.innerText = label;
+	            }
+
+	            // Value
+	            if (typeof value === 'undefined' && typeof element.dataset['oldValue'] !== 'undefined') {
+	                value = element.dataset['oldValue'];
+	            }
+	            if (typeof value !== 'undefined') {
+	                if (typeof element.dataset['oldValue'] === 'undefined') {
+	                    element.dataset['oldValue'] = element.value;
+	                }
+	                element.value = value;
+	            }
+
+	            // Disabled
+	            if (typeof disabled === 'undefined' && typeof element.dataset['oldDisabled'] !== 'undefined') {
+	                disabled = AutoComplete.interpret(element.dataset['oldDisabled']);
+	            }
+	            if (typeof disabled !== 'undefined') {
+	                if (typeof element.dataset['oldDisabled'] === 'undefined') {
+	                    element.dataset['oldDisabled'] = element.disabled;
+	                }
+	                element.disabled = disabled;
+	            }
+
+	            // ReadOnly
+	            if (typeof readonly === 'undefined' && typeof element.dataset['oldReadOnly'] !== 'undefined') {
+	                readonly = AutoComplete.interpret(element.dataset['oldReadOnly']);
+	            }
+	            if (typeof readonly !== 'undefined') {
+	                if (typeof element.dataset['oldReadOnly'] === 'undefined') {
+	                    element.dataset['oldReadOnly'] = element.readonly;
+	                }
+	                element.readonly = readonly;
+	            }
+
+	            // Required
+	            if (typeof required === 'undefined' && typeof element.dataset['oldRequired'] !== 'undefined') {
+	                required = AutoComplete.interpret(element.dataset['oldRequired']);
+	            }
+	            if (typeof required !== 'undefined') {
+	                if (typeof element.dataset['oldRequired'] === 'undefined') {
+	                    element.dataset['oldRequired'] = element.required;
+	                }
+	                element.required = required;
+	            }
+
+	            // Visibility
+	            if (typeof visibility === 'undefined' && typeof element.dataset['oldVisibility'] !== 'undefined') {
+	                visibility = AutoComplete.interpret(element.dataset['oldVisibility']);
+	            }
+	            if (typeof visibility !== 'undefined') {
+	                if (typeof element.dataset['oldVisibility'] === 'undefined') {
+	                    element.dataset['oldVisibility'] = element.style.display !== 'none';
+	                }
+	                element.style.display = visibility ? defaultDisplayShow : 'none';
+	            }
+
+	            // Remove (irreversible)
+	            if (removed == true) {
+	                element.parentNode.removeChild(element);
+	            }
+	        }
+	    }]);
+
+	    return Core;
+	}();
+
+	Core.currentSerialKey = 0;
+	exports.default = Core;
+
+/***/ },
+/* 21 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _events = __webpack_require__(10);
+
+	var _keys = __webpack_require__(17);
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ignoredKeysOnSearch = [_keys.ENTER, _keys.ARROW_DOWN, _keys.ARROW_UP, _keys.ARROW_LEFT, _keys.ARROW_RIGHT, _keys.SHIFT, _keys.TAB];
+
+	exports.default = function (Parent) {
+	    return function (_Parent) {
+	        _inherits(_class, _Parent);
+
+	        function _class() {
+	            _classCallCheck(this, _class);
+
+	            return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+	        }
+
+	        _createClass(_class, [{
+	            key: 'prepareEvents',
+	            value: function prepareEvents() {
+	                var _context;
+
+	                (_context = this.components.presentText.element, _events.on).call(_context, 'click', this.iconOrTextClick.bind(this));
+	                (_context = this.components.icon.element, _events.on).call(_context, 'click', this.iconOrTextClick.bind(this));
+	                (_context = this.elements.wrapper, _events.on).call(_context, 'keyup', this.keyUp.bind(this));
+	                (_context = this.elements.wrapper, _events.on).call(_context, 'keydown', this.keyDown.bind(this));
+	                (_context = this.elements.wrapper, _events.on).call(_context, 'focus', this.wrapperFocus.bind(this));
+	                (_context = this.elements.wrapper, _events.on).call(_context, 'mousedown', this.wrapperMouseDown.bind(this));
+	                (_context = this.elements.wrapper, _events.on).call(_context, 'blur', this.blur.bind(this));
+	                (_context = this.components.panel.components.searchInput.elements.input, _events.on).call(_context, 'blur', this.blur.bind(this));
+	            }
+	        }, {
+	            key: 'keyDown',
+	            value: function keyDown(event) {
+	                // console.log('down', this.open, event);
+	                if (this.open && event.keyCode == _keys.ARROW_UP) {
+	                    event.preventDefault();
+	                    event.stopPropagation();
+	                    this.components.panel.components.list.up();
+	                } else if (this.open && event.keyCode == _keys.ARROW_DOWN) {
+	                    event.preventDefault();
+	                    event.stopPropagation();
+	                    this.components.panel.components.list.down();
+	                } else if (this.open && event.keyCode == _keys.ENTER) {
+	                    event.preventDefault();
+	                    event.stopPropagation();
+	                    this.components.panel.components.list.selectCurrent();
+	                } else if (event.keyCode == _keys.TAB && event.shiftKey && document.activeElement == this.components.panel.components.searchInput.elements.input) {
+	                    this.ignoreFocus = true;
+	                }
+	            }
+	        }, {
+	            key: 'keyUp',
+	            value: function keyUp(event) {
+	                // console.log('up', this.open, event);
+	                if (event.keyCode === _keys.ESC) {
+	                    this.closePanel();
+	                    this.ignoreFocus = true;
+	                    this.elements.wrapper.focus();
+	                } else if (event.target === this.elements.wrapper && event.keyCode == _keys.SPACE) {
+	                    event.preventDefault();
+	                    event.stopPropagation();
+	                    this.togglePanel();
+	                } else if (event.keyCode == _keys.ARROW_UP || event.keyCode == _keys.ARROW_DOWN || event.keyCode == _keys.ENTER) {
+	                    event.preventDefault();
+	                    event.stopPropagation();
+	                } else if (ignoredKeysOnSearch.indexOf(event.keyCode) == -1) {
+	                    if (!this.typing) {
+	                        this.typing = true;
+	                        if (this.clearOnType) {
+	                            this.select({
+	                                content: null,
+	                                value: null
+	                            });
+	                        }
+	                        this.components.panel.clear();
+	                    }
+	                    this.debouncedFind();
+	                }
+	            }
+	        }, {
+	            key: 'iconOrTextClick',
+	            value: function iconOrTextClick(event) {
+	                if (document.activeElement === this.elements.wrapper) {
+	                    //this.togglePanel();
+	                }
+	            }
+	        }, {
+	            key: 'wrapperFocus',
+	            value: function wrapperFocus(event) {
+	                console.log('focus... ignore focus?', this.ignoreFocus);
+	                if (!event.isTrigger && !this.ignoreFocus) {
+	                    this.openPanel();
+	                }
+	                this.ignoreFocus = false;
+	            }
+	        }, {
+	            key: 'blur',
+	            value: function blur(event) {
+	                if (!this.ignoreBlur) {
+	                    var _context3;
+
+	                    if (this.value !== this.valueOnOpen) {
+	                        var _context2;
+
+	                        this.valueOnOpen = this.value;
+	                        (_context2 = this.elements.hiddenInput, _events.trigger).call(_context2, 'change');
+	                        (_context2 = this.elements.textInput, _events.trigger).call(_context2, 'change');
+	                    }
+	                    (_context3 = this.elements.hiddenInput, _events.trigger).call(_context3, 'blur');
+	                    (_context3 = this.elements.textInput, _events.trigger).call(_context3, 'blur');
+	                    this.closePanel();
+	                }
+	                this.ignoreBlur = false;
+	            }
+	        }, {
+	            key: 'wrapperMouseDown',
+	            value: function wrapperMouseDown(event) {
+	                console.log('event.target', event.target);
+	                console.log('this.open', this.open);
+	                console.log('document.activeElement', document.activeElement);
+	                if (!this.open && document.activeElement === this.elements.wrapper) {
+	                    console.log(1);
+	                    this.openPanel();
+	                } else if (this.open && document.activeElement === this.elements.wrapper) {
+	                    console.log(2);
+	                    this.ignoreBlur = true;
+	                    this.components.panel.components.searchInput.elements.input.focus();
+	                    this.ignoreFocus = true;
+	                } else if (document.activeElement === this.components.panel.components.searchInput.elements.input) {
+	                    if (this.open) {
+	                        this.closePanel();
+	                    }
+	                    this.ignoreFocus = true;
+	                    this.ignoreBlur = true;
+	                } else {
+	                    console.log(4);
+	                    console.log('else');
+	                }
+	            }
+	        }]);
+
+	        return _class;
+	    }(Parent);
+	};
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	exports.default = function (Parent) {
+	    return function (_Parent) {
+	        _inherits(_class, _Parent);
+
+	        function _class() {
+	            _classCallCheck(this, _class);
+
+	            return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+	        }
+
+	        _createClass(_class, [{
+	            key: 'find',
+	            value: function () {
+	                var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+	                    var _this2 = this;
+
+	                    var query, params, results;
+	                    return regeneratorRuntime.wrap(function _callee$(_context) {
+	                        while (1) {
+	                            switch (_context.prev = _context.next) {
+	                                case 0:
+	                                    if (this.finding) {
+	                                        console.log('Let`s abort!');
+	                                        this.source.abort();
+	                                        this.findingEnd();
+	                                    }
+	                                    query = this.components.panel.components.searchInput.value();
+
+	                                    if (!(query.length < this.minLength)) {
+	                                        _context.next = 4;
+	                                        break;
+	                                    }
+
+	                                    return _context.abrupt('return');
+
+	                                case 4:
+	                                    this.findingStart();
+	                                    params = _extends({}, this.otherParams, _defineProperty({}, this.queryParam, query));
+
+	                                    Object.keys(this.references).forEach(function (key) {
+	                                        if (!_this2.references[key]) {
+	                                            throw new Error('Reference ' + key + ' is not valid!');
+	                                        }
+	                                        params[key] = _this2.references[key].value;
+	                                    });
+	                                    results = { data: [] };
+	                                    _context.prev = 8;
+	                                    _context.next = 11;
+	                                    return this.source.find(params);
+
+	                                case 11:
+	                                    results = _context.sent;
+
+	                                    this.components.panel.show(results);
+	                                    _context.next = 18;
+	                                    break;
+
+	                                case 15:
+	                                    _context.prev = 15;
+	                                    _context.t0 = _context['catch'](8);
+
+	                                    this.components.panel.error(_context.t0);
+
+	                                case 18:
+	                                    _context.prev = 18;
+
+	                                    if (this.autoSelectWhenOneResult && results && results.data && results.data.length == 1) {
+	                                        this.select({
+	                                            content: results.data[0].content,
+	                                            value: results.data[0].value
+	                                        });
+	                                    } else if (!this.open && (!this.autoFind || results && results.data && results.data.length > 1)) {
+	                                        !this.open && this.openPanel();
+	                                    }
+	                                    this.findingEnd();
+	                                    return _context.finish(18);
+
+	                                case 22:
+	                                case 'end':
+	                                    return _context.stop();
+	                            }
+	                        }
+	                    }, _callee, this, [[8, 15, 18, 22]]);
+	                }));
+
+	                function find() {
+	                    return ref.apply(this, arguments);
+	                }
+
+	                return find;
+	            }()
+	        }, {
+	            key: 'findingStart',
+	            value: function findingStart() {
+	                // Set flag
+	                this.typing = false;
+	                this.finding = true;
+	                // Start spin
+	                this.components.icon.loadingStart();
+	            }
+	        }, {
+	            key: 'findingEnd',
+	            value: function findingEnd() {
+	                // Set flag
+	                this.finding = false;
+	                // Stop spin
+	                this.components.icon.loadingStop();
+	            }
+	        }]);
+
+	        return _class;
+	    }(Parent);
+	};
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	exports.default = function (Parent) {
+	    return function (_Parent) {
+	        _inherits(_class, _Parent);
+
+	        function _class() {
+	            _classCallCheck(this, _class);
+
+	            return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+	        }
+
+	        _createClass(_class, [{
+	            key: 'openPanel',
+	            value: function openPanel() {
+	                //console.log('open-panel');
+	                //console.trace();
+	                this.open = true;
+	                this.valueOnOpen = this.value;
+	                this.elements.wrapper.className = this.style.openWrapper;
+	                this.components.panel.element.style.display = 'inline-block';
+	                //console.log('ignore focus out');
+	                this.ignoreBlur = true;
+	                this.components.panel.components.searchInput.elements.input.focus();
+	                this.components.panel.components.searchInput.elements.input.setSelectionRange(0, this.components.panel.components.searchInput.elements.input.value.length);
+
+	                if (this.autoFind) {
+	                    this.debouncedFind();
+	                }
+	            }
+	        }, {
+	            key: 'closePanel',
+	            value: function closePanel() {
+	                //console.log('close-panel');
+	                this.open = false;
+	                this.elements.wrapper.className = this.style.wrapper;
+	                this.components.panel.element.style.display = 'none';
+	            }
+	        }, {
+	            key: 'togglePanel',
+	            value: function togglePanel() {
+	                if (!this.open) {
+	                    this.openPanel();
+	                } else {
+	                    this.closePanel();
+	                }
+	            }
+	        }]);
+
+	        return _class;
+	    }(Parent);
+	};
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _AutoComplete = __webpack_require__(4);
+
+	var _AutoComplete2 = _interopRequireDefault(_AutoComplete);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	exports.default = function (Parent) {
+	    return function (_Parent) {
+	        _inherits(_class, _Parent);
+
+	        function _class() {
+	            _classCallCheck(this, _class);
+
+	            return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+	        }
+
+	        _createClass(_class, [{
+	            key: 'select',
+	            value: function select(_ref) {
+	                var content = _ref.content;
+	                var value = _ref.value;
+	                var additional = _ref.additional;
+	                var others = _ref.others;
+
+	                this.value = value;
+	                this.content = content;
+
+	                this.elements.hiddenInput.value = value || '';
+	                this.elements.textInput.value = content || '';
+	                //this.components.panel.components.searchInput.value('');
+	                this.components.presentText.text(content || ' ');
+
+	                others && this.setOtherFields(others);
+	            }
+	        }, {
+	            key: 'setOtherFields',
+	            value: function () {
+	                var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+	                    var others = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+	                    var length, index, element, autoComplete;
+	                    return regeneratorRuntime.wrap(function _callee$(_context) {
+	                        while (1) {
+	                            switch (_context.prev = _context.next) {
+	                                case 0:
+	                                    length = others.length;
+	                                    index = 0;
+
+	                                case 2:
+	                                    if (!(index < length)) {
+	                                        _context.next = 17;
+	                                        break;
+	                                    }
+
+	                                    element = document.querySelector('[name="' + others[index].field + '"]');
+
+	                                    if (element) {
+	                                        _context.next = 6;
+	                                        break;
+	                                    }
+
+	                                    throw new Error('Field ' + others[index].field + ' not found to set value!');
+
+	                                case 6:
+	                                    if (!(typeof others[index].content !== 'undefined')) {
+	                                        _context.next = 13;
+	                                        break;
+	                                    }
+
+	                                    autoComplete = _AutoComplete2.default.autoCompleteByName(others[index].field);
+
+	                                    if (autoComplete) {
+	                                        _context.next = 10;
+	                                        break;
+	                                    }
+
+	                                    throw new Error('Field ' + others[index].field + ' not found to set value!');
+
+	                                case 10:
+	                                    autoComplete.select(others[index]);
+	                                    _context.next = 14;
+	                                    break;
+
+	                                case 13:
+	                                    _AutoComplete2.default.projectElementSettings(element, others[index]);
+
+	                                case 14:
+	                                    index++;
+	                                    _context.next = 2;
+	                                    break;
+
+	                                case 17:
+	                                case 'end':
+	                                    return _context.stop();
+	                            }
+	                        }
+	                    }, _callee, this);
+	                }));
+
+	                function setOtherFields(_x) {
+	                    return ref.apply(this, arguments);
+	                }
+
+	                return setOtherFields;
+	            }()
+	        }]);
+
+	        return _class;
+	    }(Parent);
+	};
 
 /***/ }
 /******/ ]);

@@ -150,7 +150,7 @@ input[type="button"], input[type="submit"] {
     font-style: italic;
 }
 .ac-list-wrapper ul li .ac-item.active {
-    background: #1abc9c;
+    background: #f8ac59;
     color: #fff;
 }
 .ac-search-input-wrapper {
