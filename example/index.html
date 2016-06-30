@@ -11,34 +11,36 @@
 
 <body>
     <h1>ES7 AutoComplete</h1>
-    <fieldset>
-        <legend>References</legend>
-        <p>Fields that follow as param to sources.</p>
-        <input id="city" name="city" placeholder="City">
-    </fieldset>
+    <form action="/" method="post">
+        <fieldset>
+            <legend>References</legend>
+            <p>Fields that follow as param to sources.</p>
+            <input id="city" name="city" placeholder="City">
+        </fieldset>
 
-    <fieldset>
-        <legend>AutoComplete</legend>
-        <p>The ultra super mega ultra autocomplete.</p>
-        <input id="user_id" name="user_id" type="hidden">
-        <input id="text_user_id" name="text_user_id" type="text" value="Meu Usuário Salvo da Silva Pereira Buscapé de Tal">
-    </fieldset>
+        <fieldset>
+            <legend>AutoComplete</legend>
+            <p>The <b>ultra super hyper mega</b> autocomplete.</p>
+            <input id="user_id" name="user_id" type="hidden">
+            <input id="text_user_id" name="text_user_id" type="text" value="Meu Usuário Salvo da Silva Pereira Buscapé de Tal">
+        </fieldset>
 
-    <fieldset>
-        <legend>Other Fields</legend>
-        <p>Fields that will receive value from autocomplete response.</p>
-        <label>
-            <p>Age</p>
-            <input id="age" name="age" placeholder="Age">
-        </label>
-        <label>
-            <p>Occupation</p>
-            <input id="occupation" name="occupation" placeholder="Occupation" type="hidden">
-            <input id="text_occupation" name="text_occupation" placeholder="Occupation"type="text">
-        </label>
-    </fieldset>
+        <fieldset>
+            <legend>Other Fields</legend>
+            <p>Fields that will receive value from autocomplete response.</p>
+            <label>
+                <p>Age</p>
+                <input id="age" name="age" placeholder="Age">
+            </label>
+            <label>
+                <p>Occupation</p>
+                <input id="occupation" name="occupation" placeholder="Occupation" type="hidden">
+                <input id="text_occupation" name="text_occupation" placeholder="Occupation"type="text">
+            </label>
+        </fieldset>
 
-
+        <input type="submit" value="Store">
+    </form>
 
     <script src="/dist/index.js"></script>
     <script>

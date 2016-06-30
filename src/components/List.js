@@ -93,6 +93,13 @@ export default class List {
         }
 
         this.autocomplete.closePanel();
+
+        if(document.activeElement != this.autocomplete.elements.wrapper) {
+            this.autocomplete.ignoreFocus = true;
+            console.log(this.autocomplete.elements.wrapper);
+            this.autocomplete.elements.wrapper.focus();
+        }
+
     }
 
     updateSelection(index) {

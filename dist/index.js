@@ -947,8 +947,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var keysThatOpen = [_keys.ENTER, _keys.SPACE];
-	var ignoredKeysOnSearch = [_keys.SHIFT, _keys.TAB];
+	var ignoredKeysOnSearch = [_keys.ENTER, _keys.ARROW_DOWN, _keys.ARROW_UP, _keys.ARROW_LEFT, _keys.ARROW_RIGHT, _keys.SHIFT, _keys.TAB];
 
 	var AutoComplete = function () {
 	    function AutoComplete(_ref) {
@@ -958,6 +957,8 @@
 	        var selectInput = _ref.selectInput;
 	        var _ref$style = _ref.style;
 	        var style = _ref$style === undefined ? {} : _ref$style;
+	        var _ref$customText = _ref.customText;
+	        var customText = _ref$customText === undefined ? true : _ref$customText;
 	        var _ref$searchOnFocus = _ref.searchOnFocus;
 	        var searchOnFocus = _ref$searchOnFocus === undefined ? false : _ref$searchOnFocus;
 	        var _ref$debounceTime = _ref.debounceTime;
@@ -1000,6 +1001,7 @@
 	        this.clearOnType = clearOnType;
 	        this.autoFind = autoFind;
 	        this.minLength = minLength;
+	        this.customText = customText;
 	        this.autoSelectWhenOneResult = autoSelectWhenOneResult;
 	        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
 
@@ -1103,26 +1105,47 @@
 	            (_context = this.components.presentText.element, _events.on).call(_context, 'click', this.iconOrTextClick.bind(this));
 	            (_context = this.components.icon.element, _events.on).call(_context, 'click', this.iconOrTextClick.bind(this));
 	            (_context = this.elements.wrapper, _events.on).call(_context, 'keyup', this.keyUp.bind(this));
+	            (_context = this.elements.wrapper, _events.on).call(_context, 'keydown', this.keyDown.bind(this));
 	            (_context = this.elements.wrapper, _events.on).call(_context, 'focus', this.wrapperFocus.bind(this));
 	            (_context = this.elements.wrapper, _events.on).call(_context, 'mousedown', this.wrapperMouseDown.bind(this));
 	            (_context = this.elements.wrapper, _events.on).call(_context, 'blur', this.blur.bind(this));
 	            (_context = this.components.panel.components.searchInput.elements.input, _events.on).call(_context, 'blur', this.blur.bind(this));
 	        }
 	    }, {
+	        key: 'keyDown',
+	        value: function keyDown(event) {
+	            // console.log('down', this.open, event);
+	            if (this.open && event.keyCode == _keys.ARROW_UP) {
+	                event.preventDefault();
+	                event.stopPropagation();
+	                this.components.panel.components.list.up();
+	            } else if (this.open && event.keyCode == _keys.ARROW_DOWN) {
+	                event.preventDefault();
+	                event.stopPropagation();
+	                this.components.panel.components.list.down();
+	            } else if (this.open && event.keyCode == _keys.ENTER) {
+	                event.preventDefault();
+	                event.stopPropagation();
+	                this.components.panel.components.list.selectCurrent();
+	            } else if (event.keyCode == _keys.TAB && event.shiftKey && document.activeElement == this.components.panel.components.searchInput.elements.input) {
+	                this.ignoreFocus = true;
+	            }
+	        }
+	    }, {
 	        key: 'keyUp',
 	        value: function keyUp(event) {
+	            // console.log('up', this.open, event);
 	            if (event.keyCode === _keys.ESC) {
 	                this.closePanel();
 	                this.ignoreFocus = true;
 	                this.elements.wrapper.focus();
-	            } else if (event.target === this.elements.wrapper && keysThatOpen.indexOf(event.keyCode) != -1) {
+	            } else if (event.target === this.elements.wrapper && event.keyCode == _keys.SPACE) {
+	                event.preventDefault();
+	                event.stopPropagation();
 	                this.togglePanel();
-	            } else if (event.keyCode == _keys.ARROW_UP) {
-	                this.components.panel.components.list.up();
-	            } else if (event.keyCode == _keys.ARROW_DOWN) {
-	                this.components.panel.components.list.down();
-	            } else if (event.keyCode == _keys.ENTER) {
-	                this.components.panel.components.list.selectCurrent();
+	            } else if (event.keyCode == _keys.ARROW_UP || event.keyCode == _keys.ARROW_DOWN || event.keyCode == _keys.ENTER) {
+	                event.preventDefault();
+	                event.stopPropagation();
 	            } else if (ignoredKeysOnSearch.indexOf(event.keyCode) == -1) {
 	                if (!this.typing) {
 	                    this.typing = true;
@@ -1147,6 +1170,7 @@
 	    }, {
 	        key: 'wrapperFocus',
 	        value: function wrapperFocus(event) {
+	            console.log('focus... ignore focus?', this.ignoreFocus);
 	            if (!event.isTrigger && !this.ignoreFocus) {
 	                this.openPanel();
 	            }
@@ -1174,15 +1198,26 @@
 	    }, {
 	        key: 'wrapperMouseDown',
 	        value: function wrapperMouseDown(event) {
+	            console.log('event.target', event.target);
+	            console.log('this.open', this.open);
+	            console.log('document.activeElement', document.activeElement);
 	            if (!this.open && document.activeElement === this.elements.wrapper) {
+	                console.log(1);
 	                this.openPanel();
 	            } else if (this.open && document.activeElement === this.elements.wrapper) {
+	                console.log(2);
 	                this.ignoreBlur = true;
 	                this.components.panel.components.searchInput.elements.input.focus();
 	                this.ignoreFocus = true;
 	            } else if (document.activeElement === this.components.panel.components.searchInput.elements.input) {
+	                if (this.open) {
+	                    this.closePanel();
+	                }
 	                this.ignoreFocus = true;
 	                this.ignoreBlur = true;
+	            } else {
+	                console.log(4);
+	                console.log('else');
 	            }
 	        }
 	    }, {
@@ -1198,7 +1233,7 @@
 
 	            this.elements.hiddenInput.value = value || '';
 	            this.elements.textInput.value = content || '';
-	            this.components.panel.components.searchInput.value('');
+	            //this.components.panel.components.searchInput.value('');
 	            this.components.presentText.text(content || ' ');
 
 	            others && this.setOtherFields(others);
@@ -2359,6 +2394,12 @@
 	            }
 
 	            this.autocomplete.closePanel();
+
+	            if (document.activeElement != this.autocomplete.elements.wrapper) {
+	                this.autocomplete.ignoreFocus = true;
+	                console.log(this.autocomplete.elements.wrapper);
+	                this.autocomplete.elements.wrapper.focus();
+	            }
 	        }
 	    }, {
 	        key: 'updateSelection',

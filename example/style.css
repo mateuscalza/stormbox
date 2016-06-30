@@ -34,6 +34,12 @@ input[disabled] {
     background-color: #ecf0f1;
     cursor: not-allowed;
 }
+input[type="button"], input[type="submit"] {
+    background-color: #ccc;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    cursor: pointer;
+}
 *, *:before, *:after {
     box-sizing: border-box;
 }
