@@ -43,9 +43,19 @@ export default class List {
             });
             let additionalChild = null;
             if(items[index].additional && items[index].additional.length) {
-                additionalChild = div.call(null, {}, ...items[index].additional.map(({ label, content }) => {
-                    return div({ className: this.style.additional }, strong({ innerText: `${label}: ` }), span({ innerText: content }));
-                }));
+                if(typeof this.autocomplete.valueInOthersAs !== 'string') {
+                    additionalChild = div.call(null, {}, ...items[index].additional.map(({ label, content }) => {
+                        return div({ className: this.style.additional }, strong({ innerText: `${label}: ` }), span({ innerText: content }));
+                    }));
+                } else {
+                    additionalChild = div.call(null, {},
+                        div({ className: this.style.additional }, strong({ innerText: `${this.autocomplete.valueInOthersAs}: ` }), span({ innerText: items[index].value })), 
+                        ...items[index].additional.map(({ label, content }) => {
+                            return div({ className: this.style.additional }, strong({ innerText: `${label}: ` }), span({ innerText: content }));
+                        })
+                    );
+                }
+
             }
             let innerChild = div({
                 className: this.style.item

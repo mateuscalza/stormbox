@@ -11,10 +11,14 @@ export default Parent => class extends Parent {
         this.elements.hiddenInput.value = value || '';
         this.elements.textInput.value = content || '';
         // Present text
+        this.components.presentText.value(value || '');
         this.components.presentText.text(content || ' ');
 
         // Async set other fields data and clear previous
         this.setOrClearOtherFields(others);
+
+        // Return scroll to original position
+        this.components.presentText.scrollToHide();
     }
 
     async setOrClearOtherFields(others = []) {

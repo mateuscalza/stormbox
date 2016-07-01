@@ -1,4 +1,4 @@
-body {
+body, input, textarea, select {
     font-family: 'Open Sans', 'Helvetica Neue', helvetica, arial, sans-serif;
 }
 label {
@@ -61,7 +61,7 @@ input[type="button"], input[type="submit"] {
     width: 100%;
     height: 35px;
     display: inline-block;
-    padding: 0 12px;
+    padding: 0;
     font-size: 14px;
     line-height: 35px;
     color: #555555;
@@ -80,12 +80,34 @@ input[type="button"], input[type="submit"] {
     border-color: #f8ac59;
 }
 .ac-present-crop-text {
-    width: 94%;
+    position: relative;
+    width: calc(100% - 25px);
+    height: 35px;
+    border-radius: 4px;
     overflow: hidden;
+}
+.ac-present-items {
+    position: absolute;
+    top: 0;
+    left: -0;
+    width: 900px;
+    -webkit-transition: left linear 3s;
+    -o-transition: left linear 3s;
+    transition: left linear 3s;
+}
+.ac-present-inner-text, .ac-present-inner-value {
+    padding: 0 6px;
 }
 .ac-present-inner-text {
     display: inline-block;
     white-space: nowrap;
+}
+.ac-present-inner-value {
+    height: 34px;
+    display: none;
+    line-height: 34px;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 4px 0 0 4px;
 }
 .ac-panel {
     position: absolute;
@@ -126,6 +148,7 @@ input[type="button"], input[type="submit"] {
 .ac-list-wrapper ul li .ac-item {
     font-size: 13px;
     padding: 4px 6px;
+    word-break: break-all;
 }
 .ac-list-wrapper ul li .ac-item .ac-additional {
     font-size: 11px;

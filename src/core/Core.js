@@ -60,6 +60,7 @@ export default class Core {
             }
             element.value = value;
             if(typeof element.autoComplete !== 'undefined') {
+                element.autoComplete.components.presentText.value(value || '');
                 element.autoComplete.value = value;
             }
         }

@@ -15,4 +15,5 @@ export function trigger(eventName) {
 
 export function on(eventName, callback) {
     this.addEventListener(eventName, callback);
+    return this;
 }

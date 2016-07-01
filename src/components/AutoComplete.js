@@ -34,7 +34,8 @@ export default class AutoComplete extends Parent {
             messages = {}, // Custom presentation messages
             references = {}, // Carry other fields value as param
             otherParams = {}, // Set more params to be passed to sources
-            showValue = true // Present value to user
+            showValue = true, // Present value to user
+            valueInOthersAs = 'ID' // Text to show "value" in additional data (if not string, is hide)
         } = options;
 
         super(options);
@@ -61,6 +62,7 @@ export default class AutoComplete extends Parent {
         this.showValue = showValue;
         this.customText = customText;
         this.autoSelectWhenOneResult = autoSelectWhenOneResult;
+        this.valueInOthersAs = valueInOthersAs;
         this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (!hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required'));
 
         // Source validation
@@ -84,8 +86,10 @@ export default class AutoComplete extends Parent {
             searchInput: 'ac-search-input',
             searchInputWrapper: 'ac-search-input-wrapper',
             presentText: 'ac-present-text',
-            presentInnerText: 'ac-present-inner-text',
             presentCropText: 'ac-present-crop-text',
+            presentTextItems: 'ac-present-items',
+            presentInnerText: 'ac-present-inner-text',
+            presentInnerValue: 'ac-present-inner-value',
             errorView: 'ac-error-view',
             errorViewWrapper: 'ac-error-view-wrapper',
             wrapper: 'ac-wrapper',
@@ -113,7 +117,7 @@ export default class AutoComplete extends Parent {
 
         // Set relative components
         this.components = {
-            presentText: new PresentText({ style: this.style }),
+            presentText: new PresentText({ style: this.style }, {}, this),
             icon: new Icon({ style: this.style }),
             panel: new Panel({ style: this.style }, { onSelect: ::this.select }, this)
         };
@@ -145,6 +149,7 @@ export default class AutoComplete extends Parent {
         this.elements.textInput.className = this.style.textInput;
         this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
         // Set initial text
+        this.components.presentText.value(this.value);
         this.components.presentText.text(this.content);
         // Append wrapper's children
         this.elements.wrapper.appendChild(this.elements.hiddenInput);

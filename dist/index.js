@@ -1001,6 +1001,8 @@
 	        var otherParams = _options$otherParams === undefined ? {} : _options$otherParams;
 	        var _options$showValue = options.showValue;
 	        var showValue = _options$showValue === undefined ? true : _options$showValue;
+	        var _options$valueInOther = options.valueInOthersAs;
+	        var valueInOthersAs = _options$valueInOther === undefined ? 'ID' : _options$valueInOther;
 
 
 	        // Key
@@ -1028,6 +1030,7 @@
 	        _this.showValue = showValue;
 	        _this.customText = customText;
 	        _this.autoSelectWhenOneResult = autoSelectWhenOneResult;
+	        _this.valueInOthersAs = valueInOthersAs;
 	        _this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
 
 	        // Source validation
@@ -1051,8 +1054,10 @@
 	            searchInput: 'ac-search-input',
 	            searchInputWrapper: 'ac-search-input-wrapper',
 	            presentText: 'ac-present-text',
-	            presentInnerText: 'ac-present-inner-text',
 	            presentCropText: 'ac-present-crop-text',
+	            presentTextItems: 'ac-present-items',
+	            presentInnerText: 'ac-present-inner-text',
+	            presentInnerValue: 'ac-present-inner-value',
 	            errorView: 'ac-error-view',
 	            errorViewWrapper: 'ac-error-view-wrapper',
 	            wrapper: 'ac-wrapper',
@@ -1080,7 +1085,7 @@
 
 	        // Set relative components
 	        _this.components = {
-	            presentText: new _PresentText2.default({ style: _this.style }),
+	            presentText: new _PresentText2.default({ style: _this.style }, {}, _this),
 	            icon: new _Icon2.default({ style: _this.style }),
 	            panel: new _Panel2.default({ style: _this.style }, { onSelect: _this.select.bind(_this) }, _this)
 	        };
@@ -1120,6 +1125,7 @@
 	                                this.elements.textInput.className = this.style.textInput;
 	                                this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
 	                                // Set initial text
+	                                this.components.presentText.value(this.value);
 	                                this.components.presentText.text(this.content);
 	                                // Append wrapper's children
 	                                this.elements.wrapper.appendChild(this.elements.hiddenInput);
@@ -1130,7 +1136,7 @@
 
 	                                this.prepareEvents();
 
-	                            case 21:
+	                            case 22:
 	                            case 'end':
 	                                return _context.stop();
 	                        }
@@ -1277,6 +1283,10 @@
 	        var presentText = _ref$style.presentText;
 	        var presentInnerText = _ref$style.presentInnerText;
 	        var presentCropText = _ref$style.presentCropText;
+	        var presentInnerValue = _ref$style.presentInnerValue;
+	        var presentTextItems = _ref$style.presentTextItems;
+
+	        var _context;
 
 	        _classCallCheck(this, PresentText);
 
@@ -1287,23 +1297,64 @@
 	            className: presentInnerText
 	        });
 
+	        this.elements.innerValue = (0, _dom.div)({
+	            className: presentInnerValue
+	        });
+
+	        this.elements.items = (0, _dom.div)({
+	            className: presentTextItems
+	        }, this.elements.innerValue, this.elements.inner);
+
 	        this.elements.crop = (0, _dom.div)({
 	            className: presentCropText
-	        }, this.elements.inner);
+	        }, this.elements.items);
 
-	        this.element = (0, _dom.div)({
+	        this.element = (_context = (_context = (0, _dom.div)({
 	            className: presentText
-	        }, this.elements.crop);
+	        }, this.elements.crop), _events.on).call(_context, 'mouseenter', this.scrollToShow.bind(this)), _events.on).call(_context, 'mouseout', this.scrollToHide.bind(this));
 	    }
 
 	    _createClass(PresentText, [{
+	        key: 'scrollToShow',
+	        value: function scrollToShow() {
+	            // Prepare transition
+	            this.elements.items.style.webkitTransition = 'left linear 3s';
+	            this.elements.items.style.mozTransition = 'left linear 3s';
+	            this.elements.items.style.oTransition = 'left linear 3s';
+	            this.elements.items.style.transition = 'left linear 3s';
+
+	            // Floor and set min as 0 to diff between crop width and sum innerText width with innerValue
+	            this.elements.items.style.left = '-' + Math.max(0, Math.floor((this.elements.innerValue.style.display === 'none' ? 0 : this.elements.innerValue.getBoundingClientRect().width) + this.elements.inner.getBoundingClientRect().width - this.elements.crop.getBoundingClientRect().width)) + 'px';
+	        }
+	    }, {
+	        key: 'scrollToHide',
+	        value: function scrollToHide() {
+	            // Prepare transition
+	            this.elements.items.style.webkitTransition = 'left linear 600ms';
+	            this.elements.items.style.mozTransition = 'left linear 600ms';
+	            this.elements.items.style.oTransition = 'left linear 600ms';
+	            this.elements.items.style.transition = 'left linear 600ms';
+
+	            // Return transition
+	            this.elements.items.style.left = '0px';
+	        }
+	    }, {
 	        key: 'text',
 	        value: function text(_text) {
 	            this.elements.inner.innerText = _text;
 	        }
 	    }, {
 	        key: 'value',
-	        value: function value(_value) {}
+	        value: function value() {
+	            var _value = arguments.length <= 0 || arguments[0] === undefined ? '' : arguments[0];
+
+	            if (this.autocomplete.showValue && String(_value).length) {
+	                this.elements.innerValue.innerText = _value;
+	                this.elements.innerValue.style.display = 'inline-block';
+	            } else {
+	                this.elements.innerValue.style.display = 'none';
+	            }
+	        }
 	    }]);
 
 	    return PresentText;
@@ -1562,6 +1613,7 @@
 
 	function on(eventName, callback) {
 	    this.addEventListener(eventName, callback);
+	    return this;
 	}
 
 /***/ },
@@ -1898,12 +1950,21 @@
 	                });
 	                var additionalChild = null;
 	                if (items[index].additional && items[index].additional.length) {
-	                    additionalChild = _dom.div.call.apply(_dom.div, [null, {}].concat(_toConsumableArray(items[index].additional.map(function (_ref3) {
-	                        var label = _ref3.label;
-	                        var content = _ref3.content;
+	                    if (typeof this.autocomplete.valueInOthersAs !== 'string') {
+	                        additionalChild = _dom.div.call.apply(_dom.div, [null, {}].concat(_toConsumableArray(items[index].additional.map(function (_ref3) {
+	                            var label = _ref3.label;
+	                            var content = _ref3.content;
 
-	                        return (0, _dom.div)({ className: _this.style.additional }, (0, _dom.strong)({ innerText: label + ': ' }), (0, _dom.span)({ innerText: content }));
-	                    }))));
+	                            return (0, _dom.div)({ className: _this.style.additional }, (0, _dom.strong)({ innerText: label + ': ' }), (0, _dom.span)({ innerText: content }));
+	                        }))));
+	                    } else {
+	                        additionalChild = _dom.div.call.apply(_dom.div, [null, {}, (0, _dom.div)({ className: this.style.additional }, (0, _dom.strong)({ innerText: this.autocomplete.valueInOthersAs + ': ' }), (0, _dom.span)({ innerText: items[index].value }))].concat(_toConsumableArray(items[index].additional.map(function (_ref4) {
+	                            var label = _ref4.label;
+	                            var content = _ref4.content;
+
+	                            return (0, _dom.div)({ className: _this.style.additional }, (0, _dom.strong)({ innerText: label + ': ' }), (0, _dom.span)({ innerText: content }));
+	                        }))));
+	                    }
 	                }
 	                var innerChild = (0, _dom.div)({
 	                    className: this.style.item
@@ -2113,6 +2174,7 @@
 	                }
 	                element.value = value;
 	                if (typeof element.autoComplete !== 'undefined') {
+	                    element.autoComplete.components.presentText.value(value || '');
 	                    element.autoComplete.value = value;
 	                }
 	            }
@@ -2633,10 +2695,14 @@
 	                this.elements.hiddenInput.value = value || '';
 	                this.elements.textInput.value = content || '';
 	                // Present text
+	                this.components.presentText.value(value || '');
 	                this.components.presentText.text(content || ' ');
 
 	                // Async set other fields data and clear previous
 	                this.setOrClearOtherFields(others);
+
+	                // Return scroll to original position
+	                this.components.presentText.scrollToHide();
 	            }
 	        }, {
 	            key: 'setOrClearOtherFields',
