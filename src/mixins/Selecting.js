@@ -3,34 +3,48 @@ import AutoComplete from '../components/AutoComplete';
 export default Parent => class extends Parent {
 
     select({ content, value, additional, others }) {
+        // Set instance data
         this.value = value;
         this.content = content;
 
+        // Inject data in original inputs
         this.elements.hiddenInput.value = value || '';
         this.elements.textInput.value = content || '';
-        //this.components.panel.components.searchInput.value('');
+        // Present text
         this.components.presentText.text(content || ' ');
 
-        others && this.setOtherFields(others);
+        // Async set other fields data and clear previous
+        this.setOrClearOtherFields(others);
     }
 
-    async setOtherFields(others = []) {
-        let length = others.length;
+    async setOrClearOtherFields(others = []) {
+        const length = others.length;
+
+        // Clone usedOtherFields from previous settings to clear if not replaced
+        const fieldsToRevert = this.usedOtherFields.slice(0);
+        // Iterate other fields data to set
         for(let index = 0; index < length; index++) {
+            let indexInUsed = this.usedOtherFields.indexOf(others[index].field);
+            // Find element and project element to set new data or revert to oldest
             let element = document.querySelector(`[name="${others[index].field}"]`);
-            if(!element) {
-                throw new Error(`Field ${others[index].field} not found to set value!`);
-            }
-            if(typeof others[index].content !== 'undefined') {
-                let autoComplete = AutoComplete.autoCompleteByName(others[index].field);
-                if(!autoComplete) {
-                    throw new Error(`Field ${others[index].field} not found to set value!`);
-                }
-                autoComplete.select(others[index]);
+            AutoComplete.projectElementSettings(element, others[index]);
+            if(indexInUsed === -1) {
+                // Set as used field
+                this.usedOtherFields[this.usedOtherFields.length] = others[index].field;
             } else {
-                AutoComplete.projectElementSettings(element, others[index]);
+                // If is setted remove from temporary revert intention list
+                fieldsToRevert.splice(fieldsToRevert.indexOf(others[index].field), 1);
             }
         }
+
+        // Iterate fields to revert to the original data
+        const revertLength = fieldsToRevert.length;
+        for(let index = 0; index < revertLength; index++) {
+            // Find element and project element to revert to oldest
+            let element = document.querySelector(`[name="${fieldsToRevert[index]}"]`);
+            AutoComplete.projectElementSettings(element, {});
+        }
     }
+
 
 };

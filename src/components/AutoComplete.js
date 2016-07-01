@@ -24,7 +24,6 @@ export default class AutoComplete extends Parent {
             selectInput, // If selectInput then hiddenInput, textInput and source are unnecessary
             style = {}, // Styles
             customText = false, // Users can type a custom text without value
-            searchOnFocus = false, // When focus immediatly search
             debounceTime = 600, // Time for wait key up
             queryParam = 'q', // Query param to filter sources
             minLength = 1, // The minimum number of characters a user must type before a search is performed
@@ -49,6 +48,7 @@ export default class AutoComplete extends Parent {
         this.ignoreFocus = false;
         this.ignoreBlur = false;
         this.valueOnOpen = undefined;
+        this.usedOtherFields = [];
 
         // Initial
         this.references = references;
@@ -118,10 +118,9 @@ export default class AutoComplete extends Parent {
 
         // Prepare elements
         this.prepareElements();
-        this.prepareEvents();
     }
 
-    prepareElements() {
+    async prepareElements() {
         // Turn wrapper focusable
         this.elements.wrapper.setAttribute('tabindex', '0');
         // Store hiddenInput value
@@ -151,6 +150,8 @@ export default class AutoComplete extends Parent {
         this.elements.wrapper.appendChild(this.components.presentText.element);
         this.elements.wrapper.appendChild(this.components.icon.element);
         this.elements.wrapper.appendChild(this.components.panel.element);
+
+        this.prepareEvents();
     }
 
 }

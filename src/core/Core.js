@@ -48,20 +48,7 @@ export default class Core {
         }
     }
 
-    static projectElementSettings(element, { value, disabled, readonly, required, visibility, removed, label }, { defaultDisplayShow = 'inline-block' } = {}) {
-        // Label
-        if(typeof label === 'undefined' && typeof element.dataset['oldLabel'] !== 'undefined') {
-            label = element.dataset['oldLabel'];
-        }
-        if(typeof label !== 'undefined') {
-            if(!element.previousSibling) {
-                throw new Error('Unknow label node for ', element);
-            }
-            if(typeof element.dataset['oldLabel'] === 'undefined') {
-                element.dataset['oldLabel'] = element.previousSibling.innerText;
-            }
-            element.previousSibling.innerText = label;
-        }
+    static projectElementSettings(element, { content, value, disabled, readonly, required, visibility, removed, label }, { defaultDisplayShow = 'inline-block' } = {}) {
 
         // Value
         if(typeof value === 'undefined' && typeof element.dataset['oldValue'] !== 'undefined') {
@@ -72,6 +59,9 @@ export default class Core {
                 element.dataset['oldValue'] = element.value;
             }
             element.value = value;
+            if(typeof element.autoComplete !== 'undefined') {
+                element.autoComplete.value = value;
+            }
         }
 
         // Disabled
@@ -118,10 +108,28 @@ export default class Core {
             element.style.display = visibility ? defaultDisplayShow : 'none';
         }
 
+        // Content
+        if(typeof content === 'undefined' && typeof element.dataset['oldContent'] !== 'undefined') {
+            content = element.dataset['oldContent'];
+        }
+        if(typeof content !== 'undefined') {
+            const textElement = document.querySelector(`[data-autocomplete-text-key="${element.dataset.autocompleteKey}"]`)
+            if(!textElement) {
+                throw new Error('Unknow text element to ', element);
+            }
+            if(typeof element.dataset['oldContent'] === 'undefined') {
+                element.dataset['oldContent'] = textElement.value;
+            }
+            textElement.autoComplete.content = content;
+            textElement.autoComplete.components.presentText.text(content || ' ');
+            textElement.value = content;
+        }
+
         // Remove (irreversible)
         if(removed == true) {
             element.parentNode.removeChild(element);
         }
+
     }
 
 }

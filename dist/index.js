@@ -855,7 +855,7 @@
 
 	var _Source2 = _interopRequireDefault(_Source);
 
-	var _AjaxSource = __webpack_require__(18);
+	var _AjaxSource = __webpack_require__(23);
 
 	var _AjaxSource2 = _interopRequireDefault(_AjaxSource);
 
@@ -863,7 +863,7 @@
 
 	var _SelectSource2 = _interopRequireDefault(_SelectSource);
 
-	var _ArraySource = __webpack_require__(19);
+	var _ArraySource = __webpack_require__(24);
 
 	var _ArraySource2 = _interopRequireDefault(_ArraySource);
 
@@ -927,33 +927,35 @@
 
 	var _SelectSource2 = _interopRequireDefault(_SelectSource);
 
-	var _Core = __webpack_require__(20);
+	var _Core = __webpack_require__(16);
 
 	var _Core2 = _interopRequireDefault(_Core);
 
-	var _Events = __webpack_require__(21);
+	var _Events = __webpack_require__(17);
 
 	var _Events2 = _interopRequireDefault(_Events);
 
-	var _Finding = __webpack_require__(22);
+	var _Finding = __webpack_require__(19);
 
 	var _Finding2 = _interopRequireDefault(_Finding);
 
-	var _PanelControl = __webpack_require__(23);
+	var _PanelControl = __webpack_require__(20);
 
 	var _PanelControl2 = _interopRequireDefault(_PanelControl);
 
-	var _Selecting = __webpack_require__(24);
+	var _Selecting = __webpack_require__(21);
 
 	var _Selecting2 = _interopRequireDefault(_Selecting);
 
-	var _debounce = __webpack_require__(16);
+	var _debounce = __webpack_require__(22);
 
 	var _debounce2 = _interopRequireDefault(_debounce);
 
 	var _dom = __webpack_require__(9);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -978,8 +980,6 @@
 	        var style = _options$style === undefined ? {} : _options$style;
 	        var _options$customText = options.customText;
 	        var customText = _options$customText === undefined ? false : _options$customText;
-	        var _options$searchOnFocu = options.searchOnFocus;
-	        var searchOnFocus = _options$searchOnFocu === undefined ? false : _options$searchOnFocu;
 	        var _options$debounceTime = options.debounceTime;
 	        var debounceTime = _options$debounceTime === undefined ? 600 : _options$debounceTime;
 	        var _options$queryParam = options.queryParam;
@@ -1014,6 +1014,7 @@
 	        _this.ignoreFocus = false;
 	        _this.ignoreBlur = false;
 	        _this.valueOnOpen = undefined;
+	        _this.usedOtherFields = [];
 
 	        // Initial
 	        _this.references = references;
@@ -1083,43 +1084,63 @@
 
 	        // Prepare elements
 	        _this.prepareElements();
-	        _this.prepareEvents();
 	        return _this;
 	    }
 
 	    _createClass(AutoComplete, [{
 	        key: 'prepareElements',
-	        value: function prepareElements() {
-	            // Turn wrapper focusable
-	            this.elements.wrapper.setAttribute('tabindex', '0');
-	            // Store hiddenInput value
-	            this.value = this.elements.hiddenInput.value;
-	            // Store textInput value (content)
-	            this.content = this.elements.textInput.value;
-	            // Add wrapper after hiddenInput
-	            this.elements.textInput.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
-	            // Remove old inputs
-	            this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
-	            this.elements.textInput.parentNode.removeChild(this.elements.textInput);
-	            // Prepare hiddenInput
-	            this.elements.hiddenInput.autoComplete = this;
-	            this.elements.hiddenInput.type = 'hidden';
-	            this.elements.hiddenInput.className = this.style.hiddenInput;
-	            this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
-	            // Prepare textInput
-	            this.elements.textInput.autoComplete = this;
-	            this.elements.textInput.type = 'hidden';
-	            this.elements.textInput.className = this.style.textInput;
-	            this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
-	            // Set initial text
-	            this.components.presentText.text(this.content);
-	            // Append wrapper's children
-	            this.elements.wrapper.appendChild(this.elements.hiddenInput);
-	            this.elements.wrapper.appendChild(this.elements.textInput);
-	            this.elements.wrapper.appendChild(this.components.presentText.element);
-	            this.elements.wrapper.appendChild(this.components.icon.element);
-	            this.elements.wrapper.appendChild(this.components.panel.element);
-	        }
+	        value: function () {
+	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+	                return regeneratorRuntime.wrap(function _callee$(_context) {
+	                    while (1) {
+	                        switch (_context.prev = _context.next) {
+	                            case 0:
+	                                // Turn wrapper focusable
+	                                this.elements.wrapper.setAttribute('tabindex', '0');
+	                                // Store hiddenInput value
+	                                this.value = this.elements.hiddenInput.value;
+	                                // Store textInput value (content)
+	                                this.content = this.elements.textInput.value;
+	                                // Add wrapper after hiddenInput
+	                                this.elements.textInput.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
+	                                // Remove old inputs
+	                                this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
+	                                this.elements.textInput.parentNode.removeChild(this.elements.textInput);
+	                                // Prepare hiddenInput
+	                                this.elements.hiddenInput.autoComplete = this;
+	                                this.elements.hiddenInput.type = 'hidden';
+	                                this.elements.hiddenInput.className = this.style.hiddenInput;
+	                                this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
+	                                // Prepare textInput
+	                                this.elements.textInput.autoComplete = this;
+	                                this.elements.textInput.type = 'hidden';
+	                                this.elements.textInput.className = this.style.textInput;
+	                                this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
+	                                // Set initial text
+	                                this.components.presentText.text(this.content);
+	                                // Append wrapper's children
+	                                this.elements.wrapper.appendChild(this.elements.hiddenInput);
+	                                this.elements.wrapper.appendChild(this.elements.textInput);
+	                                this.elements.wrapper.appendChild(this.components.presentText.element);
+	                                this.elements.wrapper.appendChild(this.components.icon.element);
+	                                this.elements.wrapper.appendChild(this.components.panel.element);
+
+	                                this.prepareEvents();
+
+	                            case 21:
+	                            case 'end':
+	                                return _context.stop();
+	                        }
+	                    }
+	                }, _callee, this);
+	            }));
+
+	            function prepareElements() {
+	                return ref.apply(this, arguments);
+	            }
+
+	            return prepareElements;
+	        }()
 	    }]);
 
 	    return AutoComplete;
@@ -1984,215 +2005,6 @@
 /* 16 */
 /***/ function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	exports.default = debounce;
-	function debounce(func, wait, immediate) {
-	    var timeout;
-	    return function () {
-	        var context = this,
-	            args = arguments;
-	        var later = function later() {
-	            timeout = null;
-	            if (!immediate) func.apply(context, args);
-	        };
-	        var callNow = immediate && !timeout;
-	        clearTimeout(timeout);
-	        timeout = setTimeout(later, wait);
-	        if (callNow) func.apply(context, args);
-	    };
-	};
-
-/***/ },
-/* 17 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	var ENTER = exports.ENTER = 13;
-	var SPACE = exports.SPACE = 32;
-	var ESC = exports.ESC = 27;
-	var ARROW_UP = exports.ARROW_UP = 38;
-	var ARROW_DOWN = exports.ARROW_DOWN = 40;
-	var ARROW_RIGHT = exports.ARROW_RIGHT = 39;
-	var ARROW_LEFT = exports.ARROW_LEFT = 37;
-	var TAB = exports.TAB = 9;
-	var SHIFT = exports.SHIFT = 16;
-
-/***/ },
-/* 18 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Source = __webpack_require__(8);
-
-	var _Source2 = _interopRequireDefault(_Source);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var AjaxSource = function () {
-	    function AjaxSource(url) {
-	        _classCallCheck(this, AjaxSource);
-
-	        this.url = url;
-	        this.request = null;
-	    }
-
-	    _createClass(AjaxSource, [{
-	        key: 'prepareRequest',
-	        value: function prepareRequest(params) {
-	            this.request = new XMLHttpRequest();
-	            var paramUrl = Object.keys(params).map(function (key) {
-	                return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
-	            }).join('&');
-	            this.request.open('GET', this.url + '?' + paramUrl, true);
-	        }
-	    }, {
-	        key: 'abort',
-	        value: function abort() {
-	            this.request && this.request.abort && this.request.abort();
-	        }
-	    }, {
-	        key: 'send',
-	        value: function send() {
-	            var _this = this;
-
-	            return new Promise(function (resolve, reject) {
-	                _this.request.onreadystatechange = function () {
-	                    console.log('readyState change', _this.request.readyState, _this.request.status, _this.request);
-	                    if (_this.request.readyState == 4 && _this.request.status == 200) {
-	                        var json = JSON.parse(_this.request.responseText);
-	                        _this.request = null;
-	                        resolve(json);
-	                    } else if (_this.request.readyState == 4 && _this.request.status != 200) {
-	                        reject(new Error(_this.request.responseText));
-	                    }
-	                };
-	                _this.request.send();
-	            });
-	        }
-	    }, {
-	        key: 'find',
-	        value: function () {
-	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(params) {
-	                return regeneratorRuntime.wrap(function _callee$(_context) {
-	                    while (1) {
-	                        switch (_context.prev = _context.next) {
-	                            case 0:
-	                                this.prepareRequest(params);
-	                                _context.next = 3;
-	                                return this.send();
-
-	                            case 3:
-	                                return _context.abrupt('return', _context.sent);
-
-	                            case 4:
-	                            case 'end':
-	                                return _context.stop();
-	                        }
-	                    }
-	                }, _callee, this);
-	            }));
-
-	            function find(_x) {
-	                return ref.apply(this, arguments);
-	            }
-
-	            return find;
-	        }()
-	    }]);
-
-	    return AjaxSource;
-	}();
-
-	exports.default = AjaxSource;
-
-/***/ },
-/* 19 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _Source = __webpack_require__(8);
-
-	var _Source2 = _interopRequireDefault(_Source);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var ArraySource = function () {
-	    function ArraySource() {
-	        var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-
-	        _classCallCheck(this, ArraySource);
-
-	        this.data = data;
-	    }
-
-	    _createClass(ArraySource, [{
-	        key: 'find',
-	        value: function () {
-	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref) {
-	                var value = _ref.value;
-	                return regeneratorRuntime.wrap(function _callee$(_context) {
-	                    while (1) {
-	                        switch (_context.prev = _context.next) {
-	                            case 0:
-	                                return _context.abrupt('return', {
-	                                    data: this.data
-	                                });
-
-	                            case 1:
-	                            case 'end':
-	                                return _context.stop();
-	                        }
-	                    }
-	                }, _callee, this);
-	            }));
-
-	            function find(_x2) {
-	                return ref.apply(this, arguments);
-	            }
-
-	            return find;
-	        }()
-	    }]);
-
-	    return ArraySource;
-	}();
-
-	exports.default = ArraySource;
-
-/***/ },
-/* 20 */
-/***/ function(module, exports) {
-
 	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
@@ -2264,6 +2076,7 @@
 	    }, {
 	        key: 'projectElementSettings',
 	        value: function projectElementSettings(element, _ref) {
+	            var content = _ref.content;
 	            var value = _ref.value;
 	            var disabled = _ref.disabled;
 	            var readonly = _ref.readonly;
@@ -2277,19 +2090,6 @@
 	            var _ref2$defaultDisplayS = _ref2.defaultDisplayShow;
 	            var defaultDisplayShow = _ref2$defaultDisplayS === undefined ? 'inline-block' : _ref2$defaultDisplayS;
 
-	            // Label
-	            if (typeof label === 'undefined' && typeof element.dataset['oldLabel'] !== 'undefined') {
-	                label = element.dataset['oldLabel'];
-	            }
-	            if (typeof label !== 'undefined') {
-	                if (!element.previousSibling) {
-	                    throw new Error('Unknow label node for ', element);
-	                }
-	                if (typeof element.dataset['oldLabel'] === 'undefined') {
-	                    element.dataset['oldLabel'] = element.previousSibling.innerText;
-	                }
-	                element.previousSibling.innerText = label;
-	            }
 
 	            // Value
 	            if (typeof value === 'undefined' && typeof element.dataset['oldValue'] !== 'undefined') {
@@ -2300,6 +2100,9 @@
 	                    element.dataset['oldValue'] = element.value;
 	                }
 	                element.value = value;
+	                if (typeof element.autoComplete !== 'undefined') {
+	                    element.autoComplete.value = value;
+	                }
 	            }
 
 	            // Disabled
@@ -2346,6 +2149,23 @@
 	                element.style.display = visibility ? defaultDisplayShow : 'none';
 	            }
 
+	            // Content
+	            if (typeof content === 'undefined' && typeof element.dataset['oldContent'] !== 'undefined') {
+	                content = element.dataset['oldContent'];
+	            }
+	            if (typeof content !== 'undefined') {
+	                var textElement = document.querySelector('[data-autocomplete-text-key="' + element.dataset.autocompleteKey + '"]');
+	                if (!textElement) {
+	                    throw new Error('Unknow text element to ', element);
+	                }
+	                if (typeof element.dataset['oldContent'] === 'undefined') {
+	                    element.dataset['oldContent'] = textElement.value;
+	                }
+	                textElement.autoComplete.content = content;
+	                textElement.autoComplete.components.presentText.text(content || ' ');
+	                textElement.value = content;
+	            }
+
 	            // Remove (irreversible)
 	            if (removed == true) {
 	                element.parentNode.removeChild(element);
@@ -2360,7 +2180,7 @@
 	exports.default = Core;
 
 /***/ },
-/* 21 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2373,7 +2193,7 @@
 
 	var _events = __webpack_require__(10);
 
-	var _keys = __webpack_require__(17);
+	var _keys = __webpack_require__(18);
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -2523,7 +2343,26 @@
 	};
 
 /***/ },
-/* 22 */
+/* 18 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	var ENTER = exports.ENTER = 13;
+	var SPACE = exports.SPACE = 32;
+	var ESC = exports.ESC = 27;
+	var ARROW_UP = exports.ARROW_UP = 38;
+	var ARROW_DOWN = exports.ARROW_DOWN = 40;
+	var ARROW_RIGHT = exports.ARROW_RIGHT = 39;
+	var ARROW_LEFT = exports.ARROW_LEFT = 37;
+	var TAB = exports.TAB = 9;
+	var SHIFT = exports.SHIFT = 16;
+
+/***/ },
+/* 19 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2661,7 +2500,7 @@
 	};
 
 /***/ },
-/* 23 */
+/* 20 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -2730,7 +2569,7 @@
 	};
 
 /***/ },
-/* 24 */
+/* 21 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -2773,73 +2612,65 @@
 	                var additional = _ref.additional;
 	                var others = _ref.others;
 
+	                // Set instance data
 	                this.value = value;
 	                this.content = content;
 
+	                // Inject data in original inputs
 	                this.elements.hiddenInput.value = value || '';
 	                this.elements.textInput.value = content || '';
-	                //this.components.panel.components.searchInput.value('');
+	                // Present text
 	                this.components.presentText.text(content || ' ');
 
-	                others && this.setOtherFields(others);
+	                // Async set other fields data and clear previous
+	                this.setOrClearOtherFields(others);
 	            }
 	        }, {
-	            key: 'setOtherFields',
+	            key: 'setOrClearOtherFields',
 	            value: function () {
 	                var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
 	                    var others = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
-	                    var length, index, element, autoComplete;
+
+	                    var length, fieldsToRevert, index, indexInUsed, element, revertLength, _index, _element;
+
 	                    return regeneratorRuntime.wrap(function _callee$(_context) {
 	                        while (1) {
 	                            switch (_context.prev = _context.next) {
 	                                case 0:
 	                                    length = others.length;
-	                                    index = 0;
 
-	                                case 2:
-	                                    if (!(index < length)) {
-	                                        _context.next = 17;
-	                                        break;
+	                                    // Clone usedOtherFields from previous settings to clear if not replaced
+
+	                                    fieldsToRevert = this.usedOtherFields.slice(0);
+	                                    // Iterate other fields data to set
+
+	                                    for (index = 0; index < length; index++) {
+	                                        indexInUsed = this.usedOtherFields.indexOf(others[index].field);
+	                                        // Find element and project element to set new data or revert to oldest
+
+	                                        element = document.querySelector('[name="' + others[index].field + '"]');
+
+	                                        _AutoComplete2.default.projectElementSettings(element, others[index]);
+	                                        if (indexInUsed === -1) {
+	                                            // Set as used field
+	                                            this.usedOtherFields[this.usedOtherFields.length] = others[index].field;
+	                                        } else {
+	                                            // If is setted remove from temporary revert intention list
+	                                            fieldsToRevert.splice(fieldsToRevert.indexOf(others[index].field), 1);
+	                                        }
 	                                    }
 
-	                                    element = document.querySelector('[name="' + others[index].field + '"]');
+	                                    // Iterate fields to revert to the original data
+	                                    revertLength = fieldsToRevert.length;
 
-	                                    if (element) {
-	                                        _context.next = 6;
-	                                        break;
+	                                    for (_index = 0; _index < revertLength; _index++) {
+	                                        // Find element and project element to revert to oldest
+	                                        _element = document.querySelector('[name="' + fieldsToRevert[_index] + '"]');
+
+	                                        _AutoComplete2.default.projectElementSettings(_element, {});
 	                                    }
 
-	                                    throw new Error('Field ' + others[index].field + ' not found to set value!');
-
-	                                case 6:
-	                                    if (!(typeof others[index].content !== 'undefined')) {
-	                                        _context.next = 13;
-	                                        break;
-	                                    }
-
-	                                    autoComplete = _AutoComplete2.default.autoCompleteByName(others[index].field);
-
-	                                    if (autoComplete) {
-	                                        _context.next = 10;
-	                                        break;
-	                                    }
-
-	                                    throw new Error('Field ' + others[index].field + ' not found to set value!');
-
-	                                case 10:
-	                                    autoComplete.select(others[index]);
-	                                    _context.next = 14;
-	                                    break;
-
-	                                case 13:
-	                                    _AutoComplete2.default.projectElementSettings(element, others[index]);
-
-	                                case 14:
-	                                    index++;
-	                                    _context.next = 2;
-	                                    break;
-
-	                                case 17:
+	                                case 5:
 	                                case 'end':
 	                                    return _context.stop();
 	                            }
@@ -2847,17 +2678,207 @@
 	                    }, _callee, this);
 	                }));
 
-	                function setOtherFields(_x) {
+	                function setOrClearOtherFields(_x) {
 	                    return ref.apply(this, arguments);
 	                }
 
-	                return setOtherFields;
+	                return setOrClearOtherFields;
 	            }()
 	        }]);
 
 	        return _class;
 	    }(Parent);
 	};
+
+/***/ },
+/* 22 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = debounce;
+	function debounce(func, wait, immediate) {
+	    var timeout;
+	    return function () {
+	        var context = this,
+	            args = arguments;
+	        var later = function later() {
+	            timeout = null;
+	            if (!immediate) func.apply(context, args);
+	        };
+	        var callNow = immediate && !timeout;
+	        clearTimeout(timeout);
+	        timeout = setTimeout(later, wait);
+	        if (callNow) func.apply(context, args);
+	    };
+	};
+
+/***/ },
+/* 23 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Source = __webpack_require__(8);
+
+	var _Source2 = _interopRequireDefault(_Source);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var AjaxSource = function () {
+	    function AjaxSource(url) {
+	        _classCallCheck(this, AjaxSource);
+
+	        this.url = url;
+	        this.request = null;
+	    }
+
+	    _createClass(AjaxSource, [{
+	        key: 'prepareRequest',
+	        value: function prepareRequest(params) {
+	            this.request = new XMLHttpRequest();
+	            var paramUrl = Object.keys(params).map(function (key) {
+	                return encodeURIComponent(key) + '=' + encodeURIComponent(params[key]);
+	            }).join('&');
+	            this.request.open('GET', this.url + '?' + paramUrl, true);
+	        }
+	    }, {
+	        key: 'abort',
+	        value: function abort() {
+	            this.request && this.request.abort && this.request.abort();
+	        }
+	    }, {
+	        key: 'send',
+	        value: function send() {
+	            var _this = this;
+
+	            return new Promise(function (resolve, reject) {
+	                _this.request.onreadystatechange = function () {
+	                    console.log('readyState change', _this.request.readyState, _this.request.status, _this.request);
+	                    if (_this.request.readyState == 4 && _this.request.status == 200) {
+	                        var json = JSON.parse(_this.request.responseText);
+	                        _this.request = null;
+	                        resolve(json);
+	                    } else if (_this.request.readyState == 4 && _this.request.status != 200) {
+	                        reject(new Error(_this.request.responseText));
+	                    }
+	                };
+	                _this.request.send();
+	            });
+	        }
+	    }, {
+	        key: 'find',
+	        value: function () {
+	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(params) {
+	                return regeneratorRuntime.wrap(function _callee$(_context) {
+	                    while (1) {
+	                        switch (_context.prev = _context.next) {
+	                            case 0:
+	                                this.prepareRequest(params);
+	                                _context.next = 3;
+	                                return this.send();
+
+	                            case 3:
+	                                return _context.abrupt('return', _context.sent);
+
+	                            case 4:
+	                            case 'end':
+	                                return _context.stop();
+	                        }
+	                    }
+	                }, _callee, this);
+	            }));
+
+	            function find(_x) {
+	                return ref.apply(this, arguments);
+	            }
+
+	            return find;
+	        }()
+	    }]);
+
+	    return AjaxSource;
+	}();
+
+	exports.default = AjaxSource;
+
+/***/ },
+/* 24 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _Source = __webpack_require__(8);
+
+	var _Source2 = _interopRequireDefault(_Source);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var ArraySource = function () {
+	    function ArraySource() {
+	        var data = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+
+	        _classCallCheck(this, ArraySource);
+
+	        this.data = data;
+	    }
+
+	    _createClass(ArraySource, [{
+	        key: 'find',
+	        value: function () {
+	            var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(_ref) {
+	                var value = _ref.value;
+	                return regeneratorRuntime.wrap(function _callee$(_context) {
+	                    while (1) {
+	                        switch (_context.prev = _context.next) {
+	                            case 0:
+	                                return _context.abrupt('return', {
+	                                    data: this.data
+	                                });
+
+	                            case 1:
+	                            case 'end':
+	                                return _context.stop();
+	                        }
+	                    }
+	                }, _callee, this);
+	            }));
+
+	            function find(_x2) {
+	                return ref.apply(this, arguments);
+	            }
+
+	            return find;
+	        }()
+	    }]);
+
+	    return ArraySource;
+	}();
+
+	exports.default = ArraySource;
 
 /***/ }
 /******/ ]);
