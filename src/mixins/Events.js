@@ -25,7 +25,6 @@ export default (Parent) => class extends Parent {
     }
 
     keyDown(event) {
-        // console.log('down', this.open, event);
         if (this.open && event.keyCode == ARROW_UP) {
             event.preventDefault();
             event.stopPropagation();
@@ -37,6 +36,8 @@ export default (Parent) => class extends Parent {
         } else if (this.open && event.keyCode == ENTER) {
             event.preventDefault();
             event.stopPropagation();
+            this.components.panel.components.list.selectCurrent();
+        } else if (this.open && event.keyCode == TAB && !event.shiftKey) {
             this.components.panel.components.list.selectCurrent();
         } else if (event.keyCode == TAB && event.shiftKey && document.activeElement == this.components.panel.components.searchInput.elements.input) {
             this.ignoreFocus = true;

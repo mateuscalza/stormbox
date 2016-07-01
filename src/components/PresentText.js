@@ -4,7 +4,8 @@ import { div } from '../util/dom';
 import { on } from '../util/events';
 
 export default class PresentText {
-    constructor({ style: { presentText, presentInnerText, presentCropText } }) {
+    constructor({ style: { presentText, presentInnerText, presentCropText } }, undefined, autocomplete) {
+        this.autocomplete = autocomplete;
         this.elements = {};
 
         this.elements.inner = div({
@@ -22,5 +23,9 @@ export default class PresentText {
 
     text(text) {
         this.elements.inner.innerText = text;
+    }
+
+    value(value) {
+
     }
 }

@@ -29,11 +29,12 @@ export default class AutoComplete extends Parent {
             minLength = 1, // The minimum number of characters a user must type before a search is performed
             clearOnType = false, // Clear current value and content when user type
             autoFind = false, // Find when user enter on element
-            autoSelectWhenOneResult = true, // When return just one result, select it
+            autoSelectWhenOneResult = true, // Select when return just one result, NOT VALID IF EMPTY ITEM IS ALLOWED, EXCEPT WHEN AUTOCOMPLETE IS CLOSED
             emptyItem, // Create a empty item to set values as null
             messages = {}, // Custom presentation messages
             references = {}, // Carry other fields value as param
-            otherParams = {} // Set more params to be passed to sources
+            otherParams = {}, // Set more params to be passed to sources
+            showValue = true // Present value to user
         } = options;
 
         super(options);
@@ -57,6 +58,7 @@ export default class AutoComplete extends Parent {
         this.clearOnType = clearOnType;
         this.autoFind = autoFind;
         this.minLength = minLength;
+        this.showValue = showValue;
         this.customText = customText;
         this.autoSelectWhenOneResult = autoSelectWhenOneResult;
         this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (!hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required'));

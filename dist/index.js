@@ -999,6 +999,8 @@
 	        var references = _options$references === undefined ? {} : _options$references;
 	        var _options$otherParams = options.otherParams;
 	        var otherParams = _options$otherParams === undefined ? {} : _options$otherParams;
+	        var _options$showValue = options.showValue;
+	        var showValue = _options$showValue === undefined ? true : _options$showValue;
 
 
 	        // Key
@@ -1023,6 +1025,7 @@
 	        _this.clearOnType = clearOnType;
 	        _this.autoFind = autoFind;
 	        _this.minLength = minLength;
+	        _this.showValue = showValue;
 	        _this.customText = customText;
 	        _this.autoSelectWhenOneResult = autoSelectWhenOneResult;
 	        _this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
@@ -1269,7 +1272,7 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var PresentText = function () {
-	    function PresentText(_ref) {
+	    function PresentText(_ref, undefined, autocomplete) {
 	        var _ref$style = _ref.style;
 	        var presentText = _ref$style.presentText;
 	        var presentInnerText = _ref$style.presentInnerText;
@@ -1277,6 +1280,7 @@
 
 	        _classCallCheck(this, PresentText);
 
+	        this.autocomplete = autocomplete;
 	        this.elements = {};
 
 	        this.elements.inner = (0, _dom.div)({
@@ -1297,6 +1301,9 @@
 	        value: function text(_text) {
 	            this.elements.inner.innerText = _text;
 	        }
+	    }, {
+	        key: 'value',
+	        value: function value(_value) {}
 	    }]);
 
 	    return PresentText;
@@ -1923,7 +1930,12 @@
 	            }
 
 	            this.elements.wrapper.style.display = 'block';
-	            this.updateSelection(0);
+
+	            if (items.length >= 1) {
+	                this.updateSelection(1);
+	            } else {
+	                this.updateSelection(0);
+	            }
 	        }
 	    }, {
 	        key: 'prepareItemEvents',
@@ -2230,7 +2242,6 @@
 	        }, {
 	            key: 'keyDown',
 	            value: function keyDown(event) {
-	                // console.log('down', this.open, event);
 	                if (this.open && event.keyCode == _keys.ARROW_UP) {
 	                    event.preventDefault();
 	                    event.stopPropagation();
@@ -2242,6 +2253,8 @@
 	                } else if (this.open && event.keyCode == _keys.ENTER) {
 	                    event.preventDefault();
 	                    event.stopPropagation();
+	                    this.components.panel.components.list.selectCurrent();
+	                } else if (this.open && event.keyCode == _keys.TAB && !event.shiftKey) {
 	                    this.components.panel.components.list.selectCurrent();
 	                } else if (event.keyCode == _keys.TAB && event.shiftKey && document.activeElement == this.components.panel.components.searchInput.elements.input) {
 	                    this.ignoreFocus = true;
@@ -2451,13 +2464,13 @@
 	                                case 18:
 	                                    _context.prev = 18;
 
-	                                    if (this.autoSelectWhenOneResult && results && results.data && results.data.length == 1) {
+	                                    if (this.autoSelectWhenOneResult && (!this.open || !this.emptyItem) && results && results.data && results.data.length == 1) {
 	                                        this.select({
 	                                            content: results.data[0].content,
 	                                            value: results.data[0].value
 	                                        });
 	                                    } else if (!this.open && (!this.autoFind || results && results.data && results.data.length > 1)) {
-	                                        !this.open && this.openPanel();
+	                                        this.openPanel();
 	                                    }
 	                                    this.findingEnd();
 	                                    return _context.finish(18);

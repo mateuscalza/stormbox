@@ -29,13 +29,13 @@ export default Parent => class extends Parent {
         } catch (error) {
             this.components.panel.error(error);
         } finally {
-            if(this.autoSelectWhenOneResult && results && results.data && results.data.length == 1) {
+            if(this.autoSelectWhenOneResult && (!this.open || !this.emptyItem) && results && results.data && results.data.length == 1) {
                 this.select({
                     content: results.data[0].content,
                     value: results.data[0].value
                 });
             } else if(!this.open && (!this.autoFind || (results && results.data && results.data.length > 1))) {
-                !this.open && this.openPanel();
+                this.openPanel();
             }
             this.findingEnd();
         }
@@ -55,5 +55,5 @@ export default Parent => class extends Parent {
         // Stop spin
         this.components.icon.loadingStop();
     }
-    
+
 };

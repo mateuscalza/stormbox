@@ -72,7 +72,13 @@ export default class List {
         }
 
         this.elements.wrapper.style.display = 'block';
-        this.updateSelection(0);
+
+        if(items.length >= 1) {
+            this.updateSelection(1);
+        } else {
+            this.updateSelection(0);
+        }
+
     }
 
     prepareItemEvents(element, data, elementIndex) {
