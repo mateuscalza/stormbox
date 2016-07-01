@@ -21,6 +21,7 @@ export default class List {
     show(items = []) {
         this.items = items;
         this.elements.ul.innerHTML = '';
+        this.elements.wrapper.style.display = 'block';
         this.searchInput = this.autocomplete.components.panel.components.searchInput;
 
         let length = items.length;
@@ -38,6 +39,8 @@ export default class List {
         }
 
         for(let index = 0; index < length; index++) {
+            console.log(this.autocomplete.components.panel.element.getBoundingClientRect().height);
+
             let mainText = span({
                 innerText: items[index].content
             });
@@ -49,7 +52,7 @@ export default class List {
                     }));
                 } else {
                     additionalChild = div.call(null, {},
-                        div({ className: this.style.additional }, strong({ innerText: `${this.autocomplete.valueInOthersAs}: ` }), span({ innerText: items[index].value })), 
+                        div({ className: this.style.additional }, strong({ innerText: `${this.autocomplete.valueInOthersAs}: ` }), span({ innerText: items[index].value })),
                         ...items[index].additional.map(({ label, content }) => {
                             return div({ className: this.style.additional }, strong({ innerText: `${label}: ` }), span({ innerText: content }));
                         })
@@ -80,8 +83,6 @@ export default class List {
             this.elements.ul.appendChild(liChildForEmpty);
             elementIndex++;
         }
-
-        this.elements.wrapper.style.display = 'block';
 
         if(items.length >= 1) {
             this.updateSelection(1);

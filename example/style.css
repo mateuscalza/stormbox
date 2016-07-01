@@ -153,7 +153,7 @@ input[type="button"], input[type="submit"] {
 .ac-list-wrapper ul li .ac-item .ac-additional {
     font-size: 11px;
     display: inline-block;
-    margin: 5px 5px 5px 0;
+    margin: 0 5px 0 0;
 }
 .ac-list-wrapper ul li:nth-child(even) .ac-item {
     background: #F0F4F5;

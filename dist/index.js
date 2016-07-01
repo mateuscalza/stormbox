@@ -1317,14 +1317,16 @@
 	    _createClass(PresentText, [{
 	        key: 'scrollToShow',
 	        value: function scrollToShow() {
-	            // Prepare transition
-	            this.elements.items.style.webkitTransition = 'left linear 3s';
-	            this.elements.items.style.mozTransition = 'left linear 3s';
-	            this.elements.items.style.oTransition = 'left linear 3s';
-	            this.elements.items.style.transition = 'left linear 3s';
+	            if (!this.autocomplete.open) {
+	                // Prepare transition
+	                this.elements.items.style.webkitTransition = 'left linear 3s';
+	                this.elements.items.style.mozTransition = 'left linear 3s';
+	                this.elements.items.style.oTransition = 'left linear 3s';
+	                this.elements.items.style.transition = 'left linear 3s';
 
-	            // Floor and set min as 0 to diff between crop width and sum innerText width with innerValue
-	            this.elements.items.style.left = '-' + Math.max(0, Math.floor((this.elements.innerValue.style.display === 'none' ? 0 : this.elements.innerValue.getBoundingClientRect().width) + this.elements.inner.getBoundingClientRect().width - this.elements.crop.getBoundingClientRect().width)) + 'px';
+	                // Floor and set min as 0 to diff between crop width and sum innerText width with innerValue
+	                this.elements.items.style.left = '-' + Math.max(0, Math.floor((this.elements.innerValue.style.display === 'none' ? 0 : this.elements.innerValue.getBoundingClientRect().width) + this.elements.inner.getBoundingClientRect().width - this.elements.crop.getBoundingClientRect().width)) + 'px';
+	            }
 	        }
 	    }, {
 	        key: 'scrollToHide',
@@ -1928,6 +1930,7 @@
 
 	            this.items = items;
 	            this.elements.ul.innerHTML = '';
+	            this.elements.wrapper.style.display = 'block';
 	            this.searchInput = this.autocomplete.components.panel.components.searchInput;
 
 	            var length = items.length;
@@ -1945,6 +1948,8 @@
 	            }
 
 	            for (var index = 0; index < length; index++) {
+	                console.log(this.autocomplete.components.panel.element.getBoundingClientRect().height);
+
 	                var mainText = (0, _dom.span)({
 	                    innerText: items[index].content
 	                });
@@ -1989,8 +1994,6 @@
 	                this.elements.ul.appendChild(_liChildForEmpty);
 	                elementIndex++;
 	            }
-
-	            this.elements.wrapper.style.display = 'block';
 
 	            if (items.length >= 1) {
 	                this.updateSelection(1);
@@ -2605,13 +2608,10 @@
 	        _createClass(_class, [{
 	            key: 'openPanel',
 	            value: function openPanel() {
-	                //console.log('open-panel');
-	                //console.trace();
 	                this.open = true;
 	                this.valueOnOpen = this.value;
 	                this.elements.wrapper.className = this.style.openWrapper;
 	                this.components.panel.element.style.display = 'inline-block';
-	                //console.log('ignore focus out');
 	                this.ignoreBlur = true;
 	                this.components.panel.components.searchInput.elements.input.focus();
 	                this.components.panel.components.searchInput.elements.input.setSelectionRange(0, this.components.panel.components.searchInput.elements.input.value.length);
@@ -2619,11 +2619,13 @@
 	                if (this.autoFind) {
 	                    this.debouncedFind();
 	                }
+
+	                // Return scroll to original position
+	                this.components.presentText.scrollToHide();
 	            }
 	        }, {
 	            key: 'closePanel',
 	            value: function closePanel() {
-	                //console.log('close-panel');
 	                this.open = false;
 	                this.elements.wrapper.className = this.style.wrapper;
 	                this.components.panel.element.style.display = 'none';
@@ -2700,9 +2702,6 @@
 
 	                // Async set other fields data and clear previous
 	                this.setOrClearOtherFields(others);
-
-	                // Return scroll to original position
-	                this.components.presentText.scrollToHide();
 	            }
 	        }, {
 	            key: 'setOrClearOtherFields',

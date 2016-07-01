@@ -33,20 +33,22 @@ export default class PresentText {
     }
 
     scrollToShow() {
-        // Prepare transition
-        this.elements.items.style.webkitTransition = 'left linear 3s';
-        this.elements.items.style.mozTransition = 'left linear 3s';
-        this.elements.items.style.oTransition = 'left linear 3s';
-        this.elements.items.style.transition = 'left linear 3s';
+        if(!this.autocomplete.open) {
+            // Prepare transition
+            this.elements.items.style.webkitTransition = 'left linear 3s';
+            this.elements.items.style.mozTransition = 'left linear 3s';
+            this.elements.items.style.oTransition = 'left linear 3s';
+            this.elements.items.style.transition = 'left linear 3s';
 
-        // Floor and set min as 0 to diff between crop width and sum innerText width with innerValue
-        this.elements.items.style.left = '-' + Math.max(0, Math.floor(
-            (this.elements.innerValue.style.display === 'none' ? 0 : this.elements.innerValue.getBoundingClientRect().width)
-            +
-            this.elements.inner.getBoundingClientRect().width
-            -
-            this.elements.crop.getBoundingClientRect().width
-        )) + 'px';
+            // Floor and set min as 0 to diff between crop width and sum innerText width with innerValue
+            this.elements.items.style.left = '-' + Math.max(0, Math.floor(
+                (this.elements.innerValue.style.display === 'none' ? 0 : this.elements.innerValue.getBoundingClientRect().width)
+                +
+                this.elements.inner.getBoundingClientRect().width
+                -
+                this.elements.crop.getBoundingClientRect().width
+            )) + 'px';
+        }
     }
 
     scrollToHide() {
