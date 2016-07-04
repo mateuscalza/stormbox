@@ -28,6 +28,11 @@ export default Parent => class extends Parent {
             let indexInUsed = this.usedOtherFields.indexOf(others[index].field);
             // Find element and project element to set new data or revert to oldest
             let element = document.querySelector(`[name="${others[index].field}"]`);
+
+            if(!element) {
+                throw new Error(`Element of other field '${others[index].field}' not found!`);
+            }
+
             AutoComplete.projectElementSettings(element, others[index]);
             if(indexInUsed === -1) {
                 // Set as used field
