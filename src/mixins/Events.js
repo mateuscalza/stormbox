@@ -22,6 +22,13 @@ export default (Parent) => class extends Parent {
         this.elements.wrapper::on('mousedown', ::this.wrapperMouseDown);
         this.elements.wrapper::on('blur', ::this.blur);
         this.components.panel.components.searchInput.elements.input::on('blur', ::this.blur);
+        window::on('scroll', ::this.scroll);
+    }
+
+    scroll(event) {
+        console.log('scroll', event);
+        console.log('this.topSpace()', this.topSpace());
+        console.log('this.bottomSpace()', this.bottomSpace());
     }
 
     keyDown(event) {

@@ -1,10 +1,9 @@
 {
   "name": "es7-autocomplete",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Pure JS, with ES7 features, without jQuery, object-oriented.",
-  "main": "src/autocomplete.js",
+  "main": "src/index.js",
   "scripts": {
-    "build": "webpack",
     "dev": "concurrently --kill-others \"npm run connect\" \"webpack -w\"",
     "build": "webpack",
     "connect": "browser-sync start --dev --server --index='example/index.html' --files='example/*.*,dist/index.js'",

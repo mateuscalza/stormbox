@@ -8,11 +8,12 @@ import Events from '../mixins/Events';
 import Finding from '../mixins/Finding';
 import PanelControl from '../mixins/PanelControl';
 import Selecting from '../mixins/Selecting';
+import Positioning from '../mixins/Positioning';
 import debounce from '../util/debounce';
 import { div } from '../util/dom';
 
 // Use mixins
-const Parent = Selecting(PanelControl(Finding(Events(Core))));
+const Parent = Selecting(PanelControl(Finding(Positioning(Events(Core)))));
 
 export default class AutoComplete extends Parent {
     constructor(options) {
