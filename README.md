@@ -16,6 +16,7 @@ Or for a direct use, you can download zip. Only dist/index.min.js is necessary.
 * Pagination
 * Sub-input for search
 * Set other fields value from JSON response
+* Send other fields value (references) in requests
 * Multiple sources (remote, array or select input)
 * Horizontal scroll transition for large texts
 * Pure JS
