@@ -1,6 +1,6 @@
 {
   "name": "es7-autocomplete",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Pure JS, with ES7 features, without jQuery, object-oriented.",
   "main": "dist/index.js",
   "scripts": {
