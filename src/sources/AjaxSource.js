@@ -35,9 +35,9 @@ export default class AjaxSource {
         });
     }
 
-    async find(params) {
+    find(params) {
         this.prepareRequest(params);
-        return await this.send();
+        return this.send();
     }
 
 }

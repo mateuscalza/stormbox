@@ -10,7 +10,6 @@
  * @version 1.0.0
  */
 
-import 'babel-regenerator-runtime';
 import AutoComplete from './components/AutoComplete';
 
 import Source from './sources/Source';

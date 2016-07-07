@@ -24,7 +24,7 @@ export default class AutoComplete extends Parent {
             source, // Data source (Source instance)
             selectInput, // If selectInput then hiddenInput, textInput and source are unnecessary
             style = {}, // Styles
-            customText = true, // Users can type a custom text without value
+            customText = false, // Users can type a custom text without value
             debounceTime = 600, // Time for wait key up
             queryParam = 'q', // Query param to filter sources
             minLength = 1, // The minimum number of characters a user must type before a search is performed
@@ -132,7 +132,7 @@ export default class AutoComplete extends Parent {
         this.prepareElements();
     }
 
-    async prepareElements() {
+    prepareElements() {
         // Turn wrapper focusable
         this.elements.wrapper.setAttribute('tabindex', '0');
         // Store hiddenInput value

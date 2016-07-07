@@ -6,10 +6,12 @@ export default class ArraySource {
         this.data = data;
     }
 
-    async find({ value }) {
-        return {
-            data: this.data
-        };
+    find({ value }) {
+        return new Promise(resolve => {
+            resolve({
+                data: this.data
+            });
+        });
     }
 
 }

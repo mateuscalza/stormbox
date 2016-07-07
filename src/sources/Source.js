@@ -1,7 +1,7 @@
 export default class Source {
 
-    async find({ value }) {
-        throw new Error('Source class is abstract!');
+    find({ value }) {
+        return new Promise((resolve, reject) => reject(new Error('Source class is abstract!')));
     }
 
     abort() {

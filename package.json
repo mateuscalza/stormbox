@@ -5,11 +5,11 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run build:debug && npm run build:min",
-    "build:debug": "mkdir -p dist && browserify src/index.js -s AutoComplete -t babelify --presets [es2015, stage-0, stage-1, stage-2, stage-3] -p [bannerify --file .banner] -o dist/index.js",
+    "build:debug": "mkdir -p dist && browserify src/index.js -s AutoComplete -t babelify --presets [es2015, stage-0, stage-1, stage-2] -p [bannerify --file .banner] -o dist/index.js",
     "build:min": "uglifyjs dist/index.js --comments '/!/' -m screw_ie8=true -c screw_ie8=true,unused=false -o dist/index.min.js",
     "build:watch": "watchify src/index.js -s AutoComplete -t babelify --presets [es2015] -o dist/index.js -v",
     "prepublish": "npm run build",
-    "live": "browser-sync start --dev --server --index='example/index.html' --files='example/*.*,dist/index.js'"
+    "live": "browser-sync start --dev --no-ghost-mode --server --index='example/index.html' --files='example/*.*,dist/index.js'"
   },
   "repository": {
     "type": "git",

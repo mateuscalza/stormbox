@@ -18,7 +18,7 @@ export default Parent => class extends Parent {
         this.setOrClearOtherFields(others);
     }
 
-    async setOrClearOtherFields(others = []) {
+    setOrClearOtherFields(others = []) {
         const length = others.length;
 
         // Clone usedOtherFields from previous settings to clear if not replaced

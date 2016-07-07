@@ -2,8 +2,8 @@ import Source from './Source';
 
 export default class SelectSource {
 
-    async find({ value }) {
-        return [];
+    find({ value }) {
+        return new Promise(resolve => resolve());
     }
 
 }
