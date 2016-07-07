@@ -24,6 +24,7 @@ export default (Parent) => class extends Parent {
         this.components.panel.components.searchInput.elements.input::on('blur', ::this.blur);
         window::on('scroll', ::this.scroll);
         window::on('resize', ::this.resize);
+        
         this.debouncedLayoutChange();
     }
 

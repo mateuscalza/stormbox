@@ -4,10 +4,12 @@
   "description": "Pure JS, with ES7 features, without jQuery, object-oriented.",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "concurrently --kill-others \"npm run connect\" \"webpack -w\"",
-    "build": "webpack",
-    "connect": "browser-sync start --dev --server --index='example/index.html' --files='example/*.*,dist/index.js'",
-    "test": "karma start karma.conf.js"
+    "build": "npm run build:debug && npm run build:min",
+    "build:debug": "mkdir -p dist && browserify src/index.js -s AutoComplete -t babelify --presets [es2015, stage-0, stage-1, stage-2, stage-3] -p [bannerify --file .banner] -o dist/index.js",
+    "build:min": "uglifyjs dist/index.js --comments '/!/' -m screw_ie8=true -c screw_ie8=true,unused=false -o dist/index.min.js",
+    "build:watch": "watchify src/index.js -s AutoComplete -t babelify --presets [es2015] -o dist/index.js -v",
+    "prepublish": "npm run build",
+    "live": "browser-sync start --dev --server --index='example/index.html' --files='example/*.*,dist/index.js'"
   },
   "repository": {
     "type": "git",
@@ -48,8 +50,11 @@
     "babel-preset-stage-2": "^6.5.0",
     "babel-preset-stage-3": "^6.5.0",
     "babel-regenerator-runtime": "^6.5.0",
+    "babelify": "^7.2.0",
+    "bannerify": "^1.0.1",
     "browser-sync": "^2.13.0",
-    "concurrently": "^2.1.0",
+    "browserify": "^13.0.0",
+    "concurrently": "^2.2.0",
     "karma": "^1.1.0",
     "karma-babel-preprocessor": "^6.0.1",
     "karma-chrome-launcher": "^1.0.1",
@@ -58,11 +63,10 @@
     "karma-should": "^1.0.0",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-verbose-reporter": "0.0.3",
-    "karma-webpack": "^1.7.0",
     "mocha": "^2.5.3",
     "should": "^9.0.2",
-    "webpack": "^1.13.1",
-    "webpack-dev-server": "^1.14.1"
+    "uglify-js": "^2.6.2",
+    "watchify": "^3.7.0"
   },
   "dependencies": {
     "extend": "^3.0.0"

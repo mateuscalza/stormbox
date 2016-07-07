@@ -47,23 +47,23 @@
     <script src="/dist/index.js"></script>
     <script>
 
-        var userAc = new AutoComplete({
-            hiddenInput: AutoComplete.byId('user_id'),
-            textInput: AutoComplete.byId('text_user_id'),
-            source: new AutoComplete.sources.AjaxSource('/example/source.json'),
+        var userAc = new AutoCompleteWidget({
+            hiddenInput: AutoCompleteWidget.byId('user_id'),
+            textInput: AutoCompleteWidget.byId('text_user_id'),
+            source: new AutoCompleteWidget.AjaxSource('/example/source.json'),
             messages: {
                 emptyItemName: 'Nenhum',
                 searchPlaceholder: 'Digite para buscar...'
             },
             references: {
-                city: AutoComplete.byId('city')
+                city: AutoCompleteWidget.byId('city')
             }
         });
 
-         new AutoComplete({
-             hiddenInput: AutoComplete.byId('occupation'),
-             textInput: AutoComplete.byId('text_occupation'),
-             source: new AutoComplete.sources.ArraySource([])
+         new AutoCompleteWidget({
+             hiddenInput: AutoCompleteWidget.byId('occupation'),
+             textInput: AutoCompleteWidget.byId('text_occupation'),
+             source: new AutoCompleteWidget.ArraySource([])
          });
 
         // autocomplete.byId('text_user_id').addEventListener('blur', function(event){

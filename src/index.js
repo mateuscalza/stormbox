@@ -10,6 +10,7 @@
  * @version 1.0.0
  */
 
+import 'babel-regenerator-runtime';
 import AutoComplete from './components/AutoComplete';
 
 import Source from './sources/Source';
@@ -17,22 +18,17 @@ import AjaxSource from './sources/AjaxSource';
 import SelectSource from './sources/SelectSource';
 import ArraySource from './sources/ArraySource';
 
-AutoComplete.sources = {
-    AjaxSource,
-    SelectSource,
-    ArraySource
-};
+AutoComplete.AjaxSource = AjaxSource;
+AutoComplete.SelectSource = SelectSource;
+AutoComplete.ArraySource = ArraySource;
 
 AutoComplete.abstracts = {
     Source
 };
 
+export default AutoComplete;
+
 if(typeof window !== 'undefined') {
-    window.AutoComplete = AutoComplete;
+    window.AutoCompleteWidget = AutoComplete;
 }
 
-AutoComplete.AjaxSource = AjaxSource;
-AutoComplete.SelectSource = SelectSource;
-AutoComplete.ArraySource = ArraySource;
-
-export default AutoComplete;
