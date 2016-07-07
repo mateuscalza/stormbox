@@ -3,6 +3,10 @@ Pure JS, with ES7 features, without jQuery, object-oriented.
 
 > **Caution!** This widget is under construction.
 
+## Demo
+Avaible on CodePen:
+[http://codepen.io/calza/full/oLZNjJ/](http://codepen.io/calza/full/oLZNjJ/)
+
 ## Install
 You can use NPM:
 ```sh
