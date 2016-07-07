@@ -893,6 +893,10 @@
 	    window.AutoComplete = _AutoComplete2.default;
 	}
 
+	_AutoComplete2.default.AjaxSource = _AjaxSource2.default;
+	_AutoComplete2.default.SelectSource = _SelectSource2.default;
+	_AutoComplete2.default.ArraySource = _ArraySource2.default;
+
 	exports.default = _AutoComplete2.default;
 
 /***/ },

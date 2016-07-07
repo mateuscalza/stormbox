@@ -31,4 +31,8 @@ if(typeof window !== 'undefined') {
     window.AutoComplete = AutoComplete;
 }
 
+AutoComplete.AjaxSource = AjaxSource;
+AutoComplete.SelectSource = SelectSource;
+AutoComplete.ArraySource = ArraySource;
+
 export default AutoComplete;
