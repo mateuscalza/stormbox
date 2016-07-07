@@ -23,12 +23,34 @@ export default (Parent) => class extends Parent {
         this.elements.wrapper::on('blur', ::this.blur);
         this.components.panel.components.searchInput.elements.input::on('blur', ::this.blur);
         window::on('scroll', ::this.scroll);
+        window::on('resize', ::this.resize);
+        this.debouncedLayoutChange(null);
     }
 
     scroll(event) {
-        console.log('scroll', event);
-        console.log('this.topSpace()', this.topSpace());
-        console.log('this.bottomSpace()', this.bottomSpace());
+        this.debouncedLayoutChange(event);
+    }
+
+    resize(event) {
+        this.debouncedLayoutChange(event);
+    }
+
+    layoutChange() {
+        const topSpace = this.topSpace();
+        const bottomSpace = this.bottomSpace();
+        if(topSpace > bottomSpace && this.direction !== 'top') {
+            this.direction = 'top';
+        } else if(this.direction !== 'bottom') {
+            this.direction = 'bottom';
+        }
+
+        if(this.direction === 'top') {
+            this.heightSpace = topSpace;
+        } else {
+            this.heightSpace = bottomSpace;
+        }
+
+        this.components.panel.components.list.render();
     }
 
     keyDown(event) {

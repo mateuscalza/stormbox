@@ -983,7 +983,7 @@
 	        var _options$style = options.style;
 	        var style = _options$style === undefined ? {} : _options$style;
 	        var _options$customText = options.customText;
-	        var customText = _options$customText === undefined ? false : _options$customText;
+	        var customText = _options$customText === undefined ? true : _options$customText;
 	        var _options$debounceTime = options.debounceTime;
 	        var debounceTime = _options$debounceTime === undefined ? 600 : _options$debounceTime;
 	        var _options$queryParam = options.queryParam;
@@ -1023,6 +1023,7 @@
 	        _this.ignoreBlur = false;
 	        _this.valueOnOpen = undefined;
 	        _this.usedOtherFields = [];
+	        _this.direction = 'down';
 
 	        // Initial
 	        _this.references = references;
@@ -1086,6 +1087,8 @@
 
 	        // Debouncing find
 	        _this.debouncedFind = (0, _debounce2.default)(_this.find.bind(_this), debounceTime);
+	        // Debouncing layout change
+	        _this.debouncedLayoutChange = (0, _debounce2.default)(_this.layoutChange.bind(_this), 250);
 
 	        // Set relative components
 	        _this.components = {
@@ -1916,7 +1919,7 @@
 	        this.onSelect = onSelect;
 	        this.autocomplete = autocomplete;
 	        this.style = style;
-	        this.items = [];
+	        this.items = null;
 	        this.selectedIndex = 0;
 	        this.searchInput = null;
 
@@ -1928,81 +1931,96 @@
 	    _createClass(List, [{
 	        key: 'show',
 	        value: function show() {
-	            var _this = this;
-
 	            var items = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
 	            this.items = items;
-	            this.elements.ul.innerHTML = '';
 	            this.elements.wrapper.style.display = 'block';
-	            this.searchInput = this.autocomplete.components.panel.components.searchInput;
+	            this.render();
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _this = this;
 
-	            var length = items.length;
-	            var elementIndex = 0;
+	            if (this.items && this.autocomplete.open) {
+	                this.elements.ul.innerHTML = '';
+	                this.searchInput = this.autocomplete.components.panel.components.searchInput;
 
-	            if (this.autocomplete.emptyItem) {
-	                var childForEmpty = (0, _dom.div)({
-	                    className: this.style.item + ' ' + this.style.emptyItem,
-	                    innerText: this.autocomplete.messages.emptyItemName
-	                });
-	                this.prepareItemEvents(childForEmpty, { content: null, value: null }, elementIndex);
-	                var liChildForEmpty = (0, _dom.li)({}, childForEmpty);
-	                this.elements.ul.appendChild(liChildForEmpty);
-	                elementIndex++;
-	            }
+	                var length = this.items.length;
+	                var elementIndex = 0;
 
-	            for (var index = 0; index < length; index++) {
-	                console.log(this.autocomplete.components.panel.element.getBoundingClientRect().height);
+	                if (this.autocomplete.emptyItem) {
+	                    var childForEmpty = (0, _dom.div)({
+	                        className: this.style.item + ' ' + this.style.emptyItem,
+	                        innerText: this.autocomplete.messages.emptyItemName
+	                    });
+	                    this.prepareItemEvents(childForEmpty, { content: null, value: null }, elementIndex);
+	                    var liChildForEmpty = (0, _dom.li)({}, childForEmpty);
+	                    this.elements.ul.appendChild(liChildForEmpty);
+	                    elementIndex++;
+	                }
 
-	                var mainText = (0, _dom.span)({
-	                    innerText: items[index].content
-	                });
-	                var additionalChild = null;
-	                if (items[index].additional && items[index].additional.length) {
-	                    if (typeof this.autocomplete.valueInOthersAs !== 'string') {
-	                        additionalChild = _dom.div.call.apply(_dom.div, [null, {}].concat(_toConsumableArray(items[index].additional.map(function (_ref3) {
-	                            var label = _ref3.label;
-	                            var content = _ref3.content;
+	                var liChildForCustomText = null;
+	                if (this.autocomplete.customText && this.searchInput.value().trim().length) {
+	                    var searchBarValue = this.searchInput.value().trim();
+	                    var childForCustomText = (0, _dom.div)({
+	                        className: this.style.item + ' ' + this.style.customTextItem,
+	                        innerText: searchBarValue
+	                    });
+	                    this.prepareItemEvents(childForCustomText, { content: searchBarValue, value: null }, elementIndex);
+	                    liChildForCustomText = (0, _dom.li)({}, childForCustomText);
+	                    this.elements.ul.appendChild(liChildForCustomText);
+	                    elementIndex++;
+	                }
 
-	                            return (0, _dom.div)({ className: _this.style.additional }, (0, _dom.strong)({ innerText: label + ': ' }), (0, _dom.span)({ innerText: content }));
-	                        }))));
+	                for (var index = 0; index < length; index++) {
+	                    var mainText = (0, _dom.span)({
+	                        innerText: this.items[index].content
+	                    });
+	                    var additionalChild = null;
+	                    if (this.items[index].additional && this.items[index].additional.length) {
+	                        if (typeof this.autocomplete.valueInOthersAs !== 'string') {
+	                            additionalChild = _dom.div.call.apply(_dom.div, [null, {}].concat(_toConsumableArray(this.items[index].additional.map(function (_ref3) {
+	                                var label = _ref3.label;
+	                                var content = _ref3.content;
+
+	                                return (0, _dom.div)({ className: _this.style.additional }, (0, _dom.strong)({ innerText: label + ': ' }), (0, _dom.span)({ innerText: content }));
+	                            }))));
+	                        } else {
+	                            additionalChild = _dom.div.call.apply(_dom.div, [null, {}, (0, _dom.div)({ className: this.style.additional }, (0, _dom.strong)({ innerText: this.autocomplete.valueInOthersAs + ': ' }), (0, _dom.span)({ innerText: this.items[index].value }))].concat(_toConsumableArray(this.items[index].additional.map(function (_ref4) {
+	                                var label = _ref4.label;
+	                                var content = _ref4.content;
+
+	                                return (0, _dom.div)({ className: _this.style.additional }, (0, _dom.strong)({ innerText: label + ': ' }), (0, _dom.span)({ innerText: content }));
+	                            }))));
+	                        }
+	                    }
+	                    var innerChild = (0, _dom.div)({
+	                        className: this.style.item
+	                    }, mainText);
+	                    if (additionalChild) {
+	                        innerChild.appendChild(additionalChild);
+	                    }
+	                    this.prepareItemEvents(innerChild, this.items[index], elementIndex);
+	                    var liChild = (0, _dom.li)({}, innerChild);
+	                    if (liChildForCustomText) {
+	                        this.elements.ul.insertBefore(liChild, liChildForCustomText);
 	                    } else {
-	                        additionalChild = _dom.div.call.apply(_dom.div, [null, {}, (0, _dom.div)({ className: this.style.additional }, (0, _dom.strong)({ innerText: this.autocomplete.valueInOthersAs + ': ' }), (0, _dom.span)({ innerText: items[index].value }))].concat(_toConsumableArray(items[index].additional.map(function (_ref4) {
-	                            var label = _ref4.label;
-	                            var content = _ref4.content;
-
-	                            return (0, _dom.div)({ className: _this.style.additional }, (0, _dom.strong)({ innerText: label + ': ' }), (0, _dom.span)({ innerText: content }));
-	                        }))));
+	                        this.elements.ul.appendChild(liChild);
+	                    }
+	                    elementIndex++;
+	                    if (this.autocomplete.components.panel.element.getBoundingClientRect().height > this.autocomplete.heightSpace) {
+	                        this.elements.ul.removeChild(liChild);
+	                        elementIndex--;
+	                        break;
 	                    }
 	                }
-	                var innerChild = (0, _dom.div)({
-	                    className: this.style.item
-	                }, mainText);
-	                if (additionalChild) {
-	                    innerChild.appendChild(additionalChild);
+
+	                if (this.items.length >= 1) {
+	                    this.updateSelection(1);
+	                } else {
+	                    this.updateSelection(0);
 	                }
-	                this.prepareItemEvents(innerChild, items[index], elementIndex);
-	                var liChild = (0, _dom.li)({}, innerChild);
-	                this.elements.ul.appendChild(liChild);
-	                elementIndex++;
-	            }
-
-	            if (this.autocomplete.customText && this.searchInput.value().trim().length) {
-	                var searchBarValue = this.searchInput.value().trim();
-	                var _childForEmpty = (0, _dom.div)({
-	                    className: this.style.item + ' ' + this.style.customTextItem,
-	                    innerText: searchBarValue
-	                });
-	                this.prepareItemEvents(_childForEmpty, { content: searchBarValue, value: null }, elementIndex);
-	                var _liChildForEmpty = (0, _dom.li)({}, _childForEmpty);
-	                this.elements.ul.appendChild(_liChildForEmpty);
-	                elementIndex++;
-	            }
-
-	            if (items.length >= 1) {
-	                this.updateSelection(1);
-	            } else {
-	                this.updateSelection(0);
 	            }
 	        }
 	    }, {
@@ -2308,13 +2326,37 @@
 	                (_context = this.elements.wrapper, _events.on).call(_context, 'blur', this.blur.bind(this));
 	                (_context = this.components.panel.components.searchInput.elements.input, _events.on).call(_context, 'blur', this.blur.bind(this));
 	                (_context = window, _events.on).call(_context, 'scroll', this.scroll.bind(this));
+	                (_context = window, _events.on).call(_context, 'resize', this.resize.bind(this));
+	                this.debouncedLayoutChange(null);
 	            }
 	        }, {
 	            key: 'scroll',
 	            value: function scroll(event) {
-	                console.log('scroll', event);
-	                console.log('this.topSpace()', this.topSpace());
-	                console.log('this.bottomSpace()', this.bottomSpace());
+	                this.debouncedLayoutChange(event);
+	            }
+	        }, {
+	            key: 'resize',
+	            value: function resize(event) {
+	                this.debouncedLayoutChange(event);
+	            }
+	        }, {
+	            key: 'layoutChange',
+	            value: function layoutChange() {
+	                var topSpace = this.topSpace();
+	                var bottomSpace = this.bottomSpace();
+	                if (topSpace > bottomSpace && this.direction !== 'top') {
+	                    this.direction = 'top';
+	                } else if (this.direction !== 'bottom') {
+	                    this.direction = 'bottom';
+	                }
+
+	                if (this.direction === 'top') {
+	                    this.heightSpace = topSpace;
+	                } else {
+	                    this.heightSpace = bottomSpace;
+	                }
+
+	                this.components.panel.components.list.render();
 	            }
 	        }, {
 	            key: 'keyDown',
@@ -2734,21 +2776,43 @@
 	                                    fieldsToRevert = this.usedOtherFields.slice(0);
 	                                    // Iterate other fields data to set
 
-	                                    for (index = 0; index < length; index++) {
-	                                        indexInUsed = this.usedOtherFields.indexOf(others[index].field);
-	                                        // Find element and project element to set new data or revert to oldest
+	                                    index = 0;
 
-	                                        element = document.querySelector('[name="' + others[index].field + '"]');
-
-	                                        _AutoComplete2.default.projectElementSettings(element, others[index]);
-	                                        if (indexInUsed === -1) {
-	                                            // Set as used field
-	                                            this.usedOtherFields[this.usedOtherFields.length] = others[index].field;
-	                                        } else {
-	                                            // If is setted remove from temporary revert intention list
-	                                            fieldsToRevert.splice(fieldsToRevert.indexOf(others[index].field), 1);
-	                                        }
+	                                case 3:
+	                                    if (!(index < length)) {
+	                                        _context.next = 13;
+	                                        break;
 	                                    }
+
+	                                    indexInUsed = this.usedOtherFields.indexOf(others[index].field);
+	                                    // Find element and project element to set new data or revert to oldest
+
+	                                    element = document.querySelector('[name="' + others[index].field + '"]');
+
+	                                    if (element) {
+	                                        _context.next = 8;
+	                                        break;
+	                                    }
+
+	                                    throw new Error('Element of other field \'' + others[index].field + '\' not found!');
+
+	                                case 8:
+
+	                                    _AutoComplete2.default.projectElementSettings(element, others[index]);
+	                                    if (indexInUsed === -1) {
+	                                        // Set as used field
+	                                        this.usedOtherFields[this.usedOtherFields.length] = others[index].field;
+	                                    } else {
+	                                        // If is setted remove from temporary revert intention list
+	                                        fieldsToRevert.splice(fieldsToRevert.indexOf(others[index].field), 1);
+	                                    }
+
+	                                case 10:
+	                                    index++;
+	                                    _context.next = 3;
+	                                    break;
+
+	                                case 13:
 
 	                                    // Iterate fields to revert to the original data
 	                                    revertLength = fieldsToRevert.length;
@@ -2760,7 +2824,7 @@
 	                                        _AutoComplete2.default.projectElementSettings(_element, {});
 	                                    }
 
-	                                case 5:
+	                                case 15:
 	                                case 'end':
 	                                    return _context.stop();
 	                            }

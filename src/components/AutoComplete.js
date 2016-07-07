@@ -24,7 +24,7 @@ export default class AutoComplete extends Parent {
             source, // Data source (Source instance)
             selectInput, // If selectInput then hiddenInput, textInput and source are unnecessary
             style = {}, // Styles
-            customText = false, // Users can type a custom text without value
+            customText = true, // Users can type a custom text without value
             debounceTime = 600, // Time for wait key up
             queryParam = 'q', // Query param to filter sources
             minLength = 1, // The minimum number of characters a user must type before a search is performed
@@ -52,6 +52,7 @@ export default class AutoComplete extends Parent {
         this.ignoreBlur = false;
         this.valueOnOpen = undefined;
         this.usedOtherFields = [];
+        this.direction = 'down';
 
         // Initial
         this.references = references;
@@ -115,6 +116,8 @@ export default class AutoComplete extends Parent {
 
         // Debouncing find
         this.debouncedFind = debounce(::this.find, debounceTime);
+        // Debouncing layout change
+        this.debouncedLayoutChange = debounce(::this.layoutChange, 250);
 
         // Set relative components
         this.components = {

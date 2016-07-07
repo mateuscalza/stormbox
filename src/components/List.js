@@ -9,7 +9,7 @@ export default class List {
         this.onSelect = onSelect;
         this.autocomplete = autocomplete;
         this.style = style;
-        this.items = [];
+        this.items = null;
         this.selectedIndex = 0;
         this.searchInput = null;
 
@@ -20,76 +20,89 @@ export default class List {
 
     show(items = []) {
         this.items = items;
-        this.elements.ul.innerHTML = '';
         this.elements.wrapper.style.display = 'block';
-        this.searchInput = this.autocomplete.components.panel.components.searchInput;
+        this.render();
+    }
 
-        let length = items.length;
-        let elementIndex = 0;
+    render() {
+        if(this.items && this.autocomplete.open) {
+            this.elements.ul.innerHTML = '';
+            this.searchInput = this.autocomplete.components.panel.components.searchInput;
 
-        if(this.autocomplete.emptyItem) {
-            let childForEmpty = div({
-                className: `${this.style.item} ${this.style.emptyItem}`,
-                innerText: this.autocomplete.messages.emptyItemName
-            });
-            this.prepareItemEvents(childForEmpty, { content: null, value: null }, elementIndex);
-            let liChildForEmpty = li({}, childForEmpty);
-            this.elements.ul.appendChild(liChildForEmpty);
-            elementIndex++;
-        }
+            let length = this.items.length;
+            let elementIndex = 0;
 
-        for(let index = 0; index < length; index++) {
-            console.log(this.autocomplete.components.panel.element.getBoundingClientRect().height);
+            if(this.autocomplete.emptyItem) {
+                let childForEmpty = div({
+                    className: `${this.style.item} ${this.style.emptyItem}`,
+                    innerText: this.autocomplete.messages.emptyItemName
+                });
+                this.prepareItemEvents(childForEmpty, { content: null, value: null }, elementIndex);
+                let liChildForEmpty = li({}, childForEmpty);
+                this.elements.ul.appendChild(liChildForEmpty);
+                elementIndex++;
+            }
 
-            let mainText = span({
-                innerText: items[index].content
-            });
-            let additionalChild = null;
-            if(items[index].additional && items[index].additional.length) {
-                if(typeof this.autocomplete.valueInOthersAs !== 'string') {
-                    additionalChild = div.call(null, {}, ...items[index].additional.map(({ label, content }) => {
-                        return div({ className: this.style.additional }, strong({ innerText: `${label}: ` }), span({ innerText: content }));
-                    }));
-                } else {
-                    additionalChild = div.call(null, {},
-                        div({ className: this.style.additional }, strong({ innerText: `${this.autocomplete.valueInOthersAs}: ` }), span({ innerText: items[index].value })),
-                        ...items[index].additional.map(({ label, content }) => {
+            let liChildForCustomText = null;
+            if(this.autocomplete.customText && this.searchInput.value().trim().length) {
+                let searchBarValue = this.searchInput.value().trim();
+                let childForCustomText = div({
+                    className: `${this.style.item} ${this.style.customTextItem}`,
+                    innerText: searchBarValue
+                });
+                this.prepareItemEvents(childForCustomText, { content: searchBarValue, value: null }, elementIndex);
+                liChildForCustomText = li({}, childForCustomText);
+                this.elements.ul.appendChild(liChildForCustomText);
+                elementIndex++;
+            }
+
+            for(let index = 0; index < length; index++) {
+                let mainText = span({
+                    innerText: this.items[index].content
+                });
+                let additionalChild = null;
+                if(this.items[index].additional && this.items[index].additional.length) {
+                    if(typeof this.autocomplete.valueInOthersAs !== 'string') {
+                        additionalChild = div.call(null, {}, ...this.items[index].additional.map(({ label, content }) => {
                             return div({ className: this.style.additional }, strong({ innerText: `${label}: ` }), span({ innerText: content }));
-                        })
-                    );
+                        }));
+                    } else {
+                        additionalChild = div.call(null, {},
+                            div({ className: this.style.additional }, strong({ innerText: `${this.autocomplete.valueInOthersAs}: ` }), span({ innerText: this.items[index].value })),
+                            ...this.items[index].additional.map(({ label, content }) => {
+                                return div({ className: this.style.additional }, strong({ innerText: `${label}: ` }), span({ innerText: content }));
+                            })
+                        );
+                    }
+
                 }
-
+                let innerChild = div({
+                    className: this.style.item
+                }, mainText);
+                if(additionalChild) {
+                    innerChild.appendChild(additionalChild);
+                }
+                this.prepareItemEvents(innerChild, this.items[index], elementIndex);
+                let liChild = li({}, innerChild);
+                if(liChildForCustomText) {
+                    this.elements.ul.insertBefore(liChild, liChildForCustomText);
+                } else {
+                    this.elements.ul.appendChild(liChild);
+                }
+                elementIndex++;
+                if(this.autocomplete.components.panel.element.getBoundingClientRect().height > this.autocomplete.heightSpace) {
+                    this.elements.ul.removeChild(liChild);
+                    elementIndex--;
+                    break;
+                }
             }
-            let innerChild = div({
-                className: this.style.item
-            }, mainText);
-            if(additionalChild) {
-                innerChild.appendChild(additionalChild);
+
+            if(this.items.length >= 1) {
+                this.updateSelection(1);
+            } else {
+                this.updateSelection(0);
             }
-            this.prepareItemEvents(innerChild, items[index], elementIndex);
-            let liChild = li({}, innerChild);
-            this.elements.ul.appendChild(liChild);
-            elementIndex++;
         }
-
-        if(this.autocomplete.customText && this.searchInput.value().trim().length) {
-            let searchBarValue = this.searchInput.value().trim();
-            let childForEmpty = div({
-                className: `${this.style.item} ${this.style.customTextItem}`,
-                innerText: searchBarValue
-            });
-            this.prepareItemEvents(childForEmpty, { content: searchBarValue, value: null }, elementIndex);
-            let liChildForEmpty = li({}, childForEmpty);
-            this.elements.ul.appendChild(liChildForEmpty);
-            elementIndex++;
-        }
-
-        if(items.length >= 1) {
-            this.updateSelection(1);
-        } else {
-            this.updateSelection(0);
-        }
-
     }
 
     prepareItemEvents(element, data, elementIndex) {

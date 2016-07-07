@@ -7,7 +7,7 @@
     "dev": "concurrently --kill-others \"npm run connect\" \"webpack -w\"",
     "build": "webpack",
     "connect": "browser-sync start --dev --server --index='example/index.html' --files='example/*.*,dist/index.js'",
-    "test": "echo \"Error: no test specified yet :`( they are comming\" && exit 1"
+    "test": "karma start karma.conf.js"
   },
   "repository": {
     "type": "git",
@@ -50,6 +50,17 @@
     "babel-regenerator-runtime": "^6.5.0",
     "browser-sync": "^2.13.0",
     "concurrently": "^2.1.0",
+    "karma": "^1.1.0",
+    "karma-babel-preprocessor": "^6.0.1",
+    "karma-chrome-launcher": "^1.0.1",
+    "karma-firefox-launcher": "^1.0.0",
+    "karma-mocha": "^1.1.1",
+    "karma-should": "^1.0.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-verbose-reporter": "0.0.3",
+    "karma-webpack": "^1.7.0",
+    "mocha": "^2.5.3",
+    "should": "^9.0.2",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1"
   },

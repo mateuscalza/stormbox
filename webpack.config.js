@@ -13,14 +13,7 @@ module.exports = [
                 exclude: /(node_modules)/,
                 loader: 'babel',
                 query: {
-                    cacheDirectory: true,
-                    presets: [
-                        'es2015',
-                        'stage-0',
-                        'stage-1',
-                        'stage-2',
-                        'stage-3'
-                    ]
+                    cacheDirectory: true
                 }
             }]
         }
