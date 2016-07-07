@@ -1800,10 +1800,12 @@
 
 	        this.elements = {};
 
-	        this.elements.wrapper = (0, _dom.div)({ className: style.searchInputWrapper }, this.elements.input = (0, _dom.input)({
+	        this.elements.input = (0, _dom.input)({
 	            className: style.searchInput,
 	            placeholder: autocomplete.messages.searchPlaceholder
-	        }));
+	        });
+
+	        this.elements.wrapper = (0, _dom.div)({ className: style.searchInputWrapper }, this.elements.input);
 	    }
 
 	    _createClass(SearchInput, [{
@@ -1946,6 +1948,7 @@
 
 	            if (this.items && this.autocomplete.open) {
 	                this.elements.ul.innerHTML = '';
+	                this.autocomplete.components.panel.element.style.maxHeight = null;
 	                this.searchInput = this.autocomplete.components.panel.components.searchInput;
 
 	                var length = this.items.length;
@@ -1962,17 +1965,17 @@
 	                    elementIndex++;
 	                }
 
+	                var childForCustomText = null;
 	                var liChildForCustomText = null;
+	                var searchBarValue = null;
 	                if (this.autocomplete.customText && this.searchInput.value().trim().length) {
-	                    var searchBarValue = this.searchInput.value().trim();
-	                    var childForCustomText = (0, _dom.div)({
+	                    searchBarValue = this.searchInput.value().trim();
+	                    childForCustomText = (0, _dom.div)({
 	                        className: this.style.item + ' ' + this.style.customTextItem,
 	                        innerText: searchBarValue
 	                    });
-	                    this.prepareItemEvents(childForCustomText, { content: searchBarValue, value: null }, elementIndex);
 	                    liChildForCustomText = (0, _dom.li)({}, childForCustomText);
 	                    this.elements.ul.appendChild(liChildForCustomText);
-	                    elementIndex++;
 	                }
 
 	                for (var index = 0; index < length; index++) {
@@ -2018,6 +2021,12 @@
 	                    }
 	                }
 
+	                if (childForCustomText) {
+	                    this.prepareItemEvents(childForCustomText, { content: searchBarValue, value: null }, elementIndex);
+	                    elementIndex++;
+	                }
+	                this.autocomplete.components.panel.element.style.maxHeight = Math.max(110, this.autocomplete.heightSpace) + 'px';
+
 	                if (this.items.length >= 1) {
 	                    this.updateSelection(1);
 	                } else {
@@ -2031,9 +2040,12 @@
 	            var _this2 = this;
 
 	            element.addEventListener('mouseenter', function (event) {
+	                console.log(elementIndex);
 	                _this2.updateSelection(elementIndex);
 	            });
 	            element.addEventListener('mousedown', function (event) {
+	                console.log(elementIndex);
+	                _this2.updateSelection(elementIndex);
 	                _this2.onSelect(data);
 	                _this2.autocomplete.closePanel();
 	            });

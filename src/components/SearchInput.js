@@ -6,10 +6,12 @@ export default class SearchInput {
     constructor({ style }, undefined, autocomplete) {
         this.elements = {};
 
-        this.elements.wrapper = div({ className: style.searchInputWrapper }, this.elements.input = input({
+        this.elements.input = input({
             className: style.searchInput,
             placeholder: autocomplete.messages.searchPlaceholder
-        }));
+        });
+
+        this.elements.wrapper = div({ className: style.searchInputWrapper }, this.elements.input);
     }
 
     value(setValue) {

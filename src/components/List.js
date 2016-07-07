@@ -27,6 +27,7 @@ export default class List {
     render() {
         if(this.items && this.autocomplete.open) {
             this.elements.ul.innerHTML = '';
+            this.autocomplete.components.panel.element.style.maxHeight = null;
             this.searchInput = this.autocomplete.components.panel.components.searchInput;
 
             let length = this.items.length;
@@ -43,17 +44,17 @@ export default class List {
                 elementIndex++;
             }
 
+            let childForCustomText = null;
             let liChildForCustomText = null;
+            let searchBarValue = null;
             if(this.autocomplete.customText && this.searchInput.value().trim().length) {
-                let searchBarValue = this.searchInput.value().trim();
-                let childForCustomText = div({
+                searchBarValue = this.searchInput.value().trim();
+                childForCustomText = div({
                     className: `${this.style.item} ${this.style.customTextItem}`,
                     innerText: searchBarValue
                 });
-                this.prepareItemEvents(childForCustomText, { content: searchBarValue, value: null }, elementIndex);
                 liChildForCustomText = li({}, childForCustomText);
                 this.elements.ul.appendChild(liChildForCustomText);
-                elementIndex++;
             }
 
             for(let index = 0; index < length; index++) {
@@ -97,6 +98,13 @@ export default class List {
                 }
             }
 
+
+            if(childForCustomText) {
+                this.prepareItemEvents(childForCustomText, { content: searchBarValue, value: null }, elementIndex);
+                elementIndex++;
+            }
+            this.autocomplete.components.panel.element.style.maxHeight = Math.max(110, this.autocomplete.heightSpace) + 'px';
+
             if(this.items.length >= 1) {
                 this.updateSelection(1);
             } else {
@@ -107,9 +115,12 @@ export default class List {
 
     prepareItemEvents(element, data, elementIndex) {
         element.addEventListener('mouseenter', event => {
+            console.log(elementIndex);
             this.updateSelection(elementIndex);
         });
         element.addEventListener('mousedown', event => {
+            console.log(elementIndex);
+            this.updateSelection(elementIndex);
             this.onSelect(data);
             this.autocomplete.closePanel();
         });

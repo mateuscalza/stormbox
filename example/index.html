@@ -7,6 +7,7 @@
     <meta name="description" content="ES7 Autocomplete Example">
     <meta name="author" content="Inovadora Sistemas">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="/example/style.css" media="screen" title="no title" charset="utf-8">
 </head>
 
@@ -46,20 +47,6 @@
     <script src="/dist/index.js"></script>
     <script>
 
-        // autocomplete.byId('text_user_id').addEventListener('blur', function(event){
-        //     console.log('text blur working', event.target.value);
-        // });
-        // autocomplete.byId('text_user_id').addEventListener('change', function(event){
-        //     console.log('text change working', event.target.value);
-        // });
-        //
-        // autocomplete.byId('user_id').addEventListener('blur', function(event){
-        //     console.log('value blur working', event.target.value);
-        // });
-        // autocomplete.byId('user_id').addEventListener('change', function(event){
-        //     console.log('value change working', event.target.value);
-        // });
-
         var userAc = new AutoComplete({
             hiddenInput: AutoComplete.byId('user_id'),
             textInput: AutoComplete.byId('text_user_id'),
@@ -79,8 +66,21 @@
              source: new AutoComplete.sources.ArraySource([])
          });
 
+        // autocomplete.byId('text_user_id').addEventListener('blur', function(event){
+        //     console.log('text blur working', event.target.value);
+        // });
+        // autocomplete.byId('text_user_id').addEventListener('change', function(event){
+        //     console.log('text change working', event.target.value);
+        // });
+        //
+        // autocomplete.byId('user_id').addEventListener('blur', function(event){
+        //     console.log('value blur working', event.target.value);
+        // });
+        // autocomplete.byId('user_id').addEventListener('change', function(event){
+        //     console.log('value change working', event.target.value);
+        // });
+
     </script>
-    <script src="https://use.fontawesome.com/b8f550cebc.js"></script>
     <script id="__bs_script__">
     //<![CDATA[
         document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.2.13.0.js'><\/script>".replace("HOST", location.hostname));

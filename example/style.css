@@ -118,6 +118,7 @@ input[type="button"], input[type="submit"] {
     background: #ecf0f1;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    overflow: auto;
     z-index: 9999;
 }
 .ac-open-wrapper.ac-bottom .ac-panel {
