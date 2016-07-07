@@ -1066,6 +1066,8 @@
 	            errorView: 'ac-error-view',
 	            errorViewWrapper: 'ac-error-view-wrapper',
 	            wrapper: 'ac-wrapper',
+	            top: 'ac-top',
+	            bottom: 'ac-bottom',
 	            openWrapper: 'ac-wrapper ac-open-wrapper',
 	            rightIcon: 'fa fa-search ac-icon',
 	            loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon'
@@ -2327,27 +2329,40 @@
 	                (_context = this.components.panel.components.searchInput.elements.input, _events.on).call(_context, 'blur', this.blur.bind(this));
 	                (_context = window, _events.on).call(_context, 'scroll', this.scroll.bind(this));
 	                (_context = window, _events.on).call(_context, 'resize', this.resize.bind(this));
-	                this.debouncedLayoutChange(null);
+	                this.debouncedLayoutChange();
 	            }
 	        }, {
 	            key: 'scroll',
-	            value: function scroll(event) {
-	                this.debouncedLayoutChange(event);
+	            value: function scroll() {
+	                this.debouncedLayoutChange();
 	            }
 	        }, {
 	            key: 'resize',
-	            value: function resize(event) {
-	                this.debouncedLayoutChange(event);
+	            value: function resize() {
+	                this.debouncedLayoutChange();
 	            }
 	        }, {
 	            key: 'layoutChange',
 	            value: function layoutChange() {
+	                if (!this.open) {
+	                    return;
+	                }
+
 	                var topSpace = this.topSpace();
 	                var bottomSpace = this.bottomSpace();
-	                if (topSpace > bottomSpace && this.direction !== 'top') {
+
+	                var lastDirection = this.direction;
+	                console.log('topSpace: ' + topSpace + ', bottomSpace: ' + bottomSpace);
+	                if ( // Set to top?
+	                topSpace > bottomSpace // Top space greater than bottom
+	                && bottomSpace < 300) {
 	                    this.direction = 'top';
-	                } else if (this.direction !== 'bottom') {
+	                } else {
 	                    this.direction = 'bottom';
+	                }
+
+	                if (lastDirection !== this.direction) {
+	                    this.updateDirection();
 	                }
 
 	                if (this.direction === 'top') {
@@ -2676,6 +2691,10 @@
 
 	                // Return scroll to original position
 	                this.components.presentText.scrollToHide();
+
+	                // Update layout composition
+	                this.layoutChange();
+	                this.updateDirection();
 	            }
 	        }, {
 	            key: 'closePanel',
@@ -2683,6 +2702,10 @@
 	                this.open = false;
 	                this.elements.wrapper.className = this.style.wrapper;
 	                this.components.panel.element.style.display = 'none';
+
+	                // Update layout composition
+	                this.layoutChange();
+	                this.updateDirection();
 	            }
 	        }, {
 	            key: 'togglePanel',
@@ -2848,7 +2871,7 @@
 /* 22 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
@@ -2873,14 +2896,26 @@
 	        }
 
 	        _createClass(_class, [{
-	            key: "topSpace",
+	            key: 'topSpace',
 	            value: function topSpace() {
 	                return this.elements.wrapper.offsetTop - window.scrollY;
 	            }
 	        }, {
-	            key: "bottomSpace",
+	            key: 'bottomSpace',
 	            value: function bottomSpace() {
 	                return window.innerHeight - (this.topSpace() + this.elements.wrapper.getBoundingClientRect().height);
+	            }
+	        }, {
+	            key: 'updateDirection',
+	            value: function updateDirection() {
+	                console.log('direction: ' + this.direction);
+	                if (this.direction === 'top') {
+	                    this.elements.wrapper.classList.remove(this.style.bottom);
+	                    this.elements.wrapper.classList.add(this.style.top);
+	                } else {
+	                    this.elements.wrapper.classList.remove(this.style.top);
+	                    this.elements.wrapper.classList.add(this.style.bottom);
+	                }
 	            }
 	        }]);
 

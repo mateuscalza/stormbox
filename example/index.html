@@ -6,6 +6,7 @@
     <title>Autocomplete Example</title>
     <meta name="description" content="ES7 Autocomplete Example">
     <meta name="author" content="Inovadora Sistemas">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/example/style.css" media="screen" title="no title" charset="utf-8">
 </head>
 
@@ -72,11 +73,11 @@
             }
         });
 
-        // new AutoComplete({
-        //     hiddenInput: AutoComplete.byId('occupation'),
-        //     textInput: AutoComplete.byId('text_occupation'),
-        //     source: new AutoComplete.sources.ArraySource([])
-        // });
+         new AutoComplete({
+             hiddenInput: AutoComplete.byId('occupation'),
+             textInput: AutoComplete.byId('text_occupation'),
+             source: new AutoComplete.sources.ArraySource([])
+         });
 
     </script>
     <script src="https://use.fontawesome.com/b8f550cebc.js"></script>

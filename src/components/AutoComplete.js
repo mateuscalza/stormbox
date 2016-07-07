@@ -95,6 +95,8 @@ export default class AutoComplete extends Parent {
             errorView: 'ac-error-view',
             errorViewWrapper: 'ac-error-view-wrapper',
             wrapper: 'ac-wrapper',
+            top: 'ac-top',
+            bottom: 'ac-bottom',
             openWrapper: 'ac-wrapper ac-open-wrapper',
             rightIcon: 'fa fa-search ac-icon',
             loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon'

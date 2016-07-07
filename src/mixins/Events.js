@@ -24,24 +24,39 @@ export default (Parent) => class extends Parent {
         this.components.panel.components.searchInput.elements.input::on('blur', ::this.blur);
         window::on('scroll', ::this.scroll);
         window::on('resize', ::this.resize);
-        this.debouncedLayoutChange(null);
+        this.debouncedLayoutChange();
     }
 
-    scroll(event) {
-        this.debouncedLayoutChange(event);
+    scroll() {
+        this.debouncedLayoutChange();
     }
 
-    resize(event) {
-        this.debouncedLayoutChange(event);
+    resize() {
+        this.debouncedLayoutChange();
     }
 
     layoutChange() {
+        if(!this.open) {
+            return;
+        }
+
         const topSpace = this.topSpace();
         const bottomSpace = this.bottomSpace();
-        if(topSpace > bottomSpace && this.direction !== 'top') {
+
+        const lastDirection = this.direction;
+        console.log(`topSpace: ${topSpace}, bottomSpace: ${bottomSpace}`);
+        if( // Set to top?
+            topSpace > bottomSpace // Top space greater than bottom
+            &&
+            bottomSpace < 300
+        ) {
             this.direction = 'top';
-        } else if(this.direction !== 'bottom') {
+        } else {
             this.direction = 'bottom';
+        }
+
+        if(lastDirection !== this.direction) {
+            this.updateDirection();
         }
 
         if(this.direction === 'top') {

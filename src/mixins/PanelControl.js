@@ -15,12 +15,20 @@ export default Parent => class extends Parent {
 
         // Return scroll to original position
         this.components.presentText.scrollToHide();
+
+        // Update layout composition
+        this.layoutChange();
+        this.updateDirection();
     }
 
     closePanel() {
         this.open = false;
         this.elements.wrapper.className = this.style.wrapper;
         this.components.panel.element.style.display = 'none';
+
+        // Update layout composition
+        this.layoutChange();
+        this.updateDirection();
     }
 
     togglePanel() {

@@ -111,7 +111,6 @@ input[type="button"], input[type="submit"] {
 }
 .ac-panel {
     position: absolute;
-    top: 34px;
     left: 0;
     width: 100%;
     display: none;
@@ -119,8 +118,15 @@ input[type="button"], input[type="submit"] {
     background: #ecf0f1;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
-    border-radius: 0 0 4px 4px;
     z-index: 9999;
+}
+.ac-open-wrapper.ac-bottom .ac-panel {
+    top: 34px;
+    border-radius: 0 0 4px 4px;
+}
+.ac-open-wrapper.ac-top .ac-panel {
+    bottom: 38px;
+    border-radius: 4px 4px 0 0;
 }
 .ac-list-wrapper {
     padding: 0 10px 10px 10px;
@@ -217,8 +223,11 @@ input[type="button"], input[type="submit"] {
 .ac-error-view-wrapper {
     padding: 0 10px 10px 10px;
 }
-.ac-open-wrapper .ac-present-text {
+.ac-open-wrapper.ac-bottom .ac-present-text {
     border-radius: 4px 4px 0 0;
+}
+.ac-open-wrapper.ac-top .ac-present-text {
+    border-radius: 0 0 4px 4px;
 }
 i.fa.ac-icon {
     position: absolute;
