@@ -156,7 +156,7 @@ export default (Parent) => class extends Parent {
         } else if(this.open && document.activeElement === this.elements.wrapper) {
             this.ignoreBlur = true;
             this.components.panel.components.searchInput.elements.input.focus();
-            this.ignoreFocus = true;s
+            this.ignoreFocus = true;
         } else if(document.activeElement === this.components.panel.components.searchInput.elements.input) {
             if(
                 this.open
