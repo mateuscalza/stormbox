@@ -50,6 +50,7 @@ export default class StormBox extends Parent {
         this.typing = false;
         this.ignoreFocus = false;
         this.ignoreBlur = false;
+        this.lastParams = null;
         this.valueOnOpen = undefined;
         this.usedOtherFields = [];
         this.direction = 'down';

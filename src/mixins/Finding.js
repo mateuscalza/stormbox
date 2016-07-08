@@ -26,6 +26,7 @@ export default Parent => class extends Parent {
             let results = { data: [] };
             this.source.find(params)
                 .then(newResults => {
+                    this.lastParams = params;
                     results = newResults;
                     this.components.panel.show(results);
                     if(this.autoSelectWhenOneResult && (!this.open || !this.emptyItem) && results && results.data && results.data.length == 1) {
@@ -52,6 +53,19 @@ export default Parent => class extends Parent {
                 });
 
         });
+    }
+    
+    feed(offset) {
+        this.findingStart();
+        return this.source.find({ ...this.lastParams, offset })
+            .then(newResults => {
+                this.findingEnd();
+                return newResults.data;
+            })
+            .catch(error => {
+                this.components.panel.error(error);
+                this.findingEnd();
+            });
     }
 
     findingStart() {

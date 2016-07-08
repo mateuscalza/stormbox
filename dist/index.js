@@ -1,4 +1,4 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AutoComplete = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.StormBox = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
 var hasOwn = Object.prototype.hasOwnProperty;
@@ -447,6 +447,7 @@ var Pagination = function () {
         _classCallCheck(this, Pagination);
 
         this.currentStep = 0;
+        this.end = false;
         this.steps = [];
         this.offset = 0;
         this.perPage = Infinity;
@@ -490,12 +491,28 @@ var Pagination = function () {
     }, {
         key: 'next',
         value: function next() {
-            if (typeof this.autocomplete.components.panel.components.list.items[this.offset + this.perPage] === 'undefined') {
-                return;
+            var _this2 = this;
+
+            var items = this.autocomplete.components.panel.components.list.items;
+            if (typeof items[this.offset + this.perPage] === 'undefined') {
+                if (this.end) {
+                    return;
+                }
+                this.feed(this.offset + this.perPage).then(function (newItems) {
+                    if (!newItems.length) {
+                        _this2.end = true;
+                    } else {
+                        items.push.apply(items, newItems);
+                        _this2.currentStep++;
+                        _this2.offset = _this2.steps[_this2.currentStep] = _this2.offset + _this2.perPage;
+                        _this2.autocomplete.components.panel.components.list.render();
+                    }
+                });
+            } else {
+                this.currentStep++;
+                this.offset = this.steps[this.currentStep] = this.offset + this.perPage;
+                this.autocomplete.components.panel.components.list.render();
             }
-            this.currentStep++;
-            this.offset = this.steps[this.currentStep] = this.offset + this.perPage;
-            this.autocomplete.components.panel.components.list.render();
         }
     }, {
         key: 'prev',
@@ -506,6 +523,11 @@ var Pagination = function () {
             this.currentStep--;
             this.offset = this.steps[this.currentStep] || 0;
             this.autocomplete.components.panel.components.list.render();
+        }
+    }, {
+        key: 'feed',
+        value: function feed(offset) {
+            return this.autocomplete.feed(offset);
         }
     }]);
 
@@ -880,6 +902,7 @@ var StormBox = function (_Parent) {
         _this.typing = false;
         _this.ignoreFocus = false;
         _this.ignoreBlur = false;
+        _this.lastParams = null;
         _this.valueOnOpen = undefined;
         _this.usedOtherFields = [];
         _this.direction = 'down';
@@ -1510,6 +1533,7 @@ exports.default = function (Parent) {
 
                     var results = { data: [] };
                     _this2.source.find(params).then(function (newResults) {
+                        _this2.lastParams = params;
                         results = newResults;
                         _this2.components.panel.show(results);
                         if (_this2.autoSelectWhenOneResult && (!_this2.open || !_this2.emptyItem) && results && results.data && results.data.length == 1) {
@@ -1533,6 +1557,20 @@ exports.default = function (Parent) {
                         }
                         _this2.findingEnd();
                     });
+                });
+            }
+        }, {
+            key: 'feed',
+            value: function feed(offset) {
+                var _this3 = this;
+
+                this.findingStart();
+                return this.source.find(_extends({}, this.lastParams, { offset: offset })).then(function (newResults) {
+                    _this3.findingEnd();
+                    return newResults.data;
+                }).catch(function (error) {
+                    _this3.components.panel.error(error);
+                    _this3.findingEnd();
                 });
             }
         }, {

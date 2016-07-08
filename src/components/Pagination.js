@@ -4,6 +4,7 @@ import { on } from '../util/events';
 export default class Pagination {
     constructor({ style }, { onSelect }, autocomplete) {
         this.currentStep = 0;
+        this.end = false;
         this.steps = [];
         this.offset = 0;
         this.perPage = Infinity;
@@ -39,12 +40,27 @@ export default class Pagination {
     }
 
     next() {
-        if(typeof this.autocomplete.components.panel.components.list.items[this.offset + this.perPage] === 'undefined') {
-            return;
+        const items = this.autocomplete.components.panel.components.list.items;
+        if(typeof items[this.offset + this.perPage] === 'undefined') {
+            if(this.end) {
+                return;
+            }
+            this.feed(this.offset + this.perPage)
+                .then(newItems => {
+                    if(!newItems.length) {
+                        this.end = true;
+                    } else {
+                        items.push.apply(items, newItems);
+                        this.currentStep++;
+                        this.offset = this.steps[this.currentStep] = this.offset + this.perPage;
+                        this.autocomplete.components.panel.components.list.render();
+                    }
+                });
+        } else {
+            this.currentStep++;
+            this.offset = this.steps[this.currentStep] = this.offset + this.perPage;
+            this.autocomplete.components.panel.components.list.render();
         }
-        this.currentStep++;
-        this.offset = this.steps[this.currentStep] = this.offset + this.perPage;
-        this.autocomplete.components.panel.components.list.render();
     }
 
     prev() {
@@ -54,5 +70,9 @@ export default class Pagination {
         this.currentStep--;
         this.offset = this.steps[this.currentStep] || 0;
         this.autocomplete.components.panel.components.list.render();
+    }
+
+    feed(offset) {
+        return this.autocomplete.feed(offset);
     }
 }
