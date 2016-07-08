@@ -1,6 +1,5 @@
 {
   "name": "stormbox",
-  "version": "1.0.10",
   "description": "StormBox Responsive Autocomplete: pure JS, with ES7 features, without jQuery, object-oriented.",
   "main": "dist/index.js",
   "scripts": {
@@ -73,5 +72,6 @@
   },
   "dependencies": {
     "extend": "^3.0.0"
-  }
+  },
+  "version": "1.0.10"
 }
