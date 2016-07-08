@@ -1,3 +1,4 @@
+import StormBox from '../components/StormBox';
 import { trigger, on } from '../util/events';
 import { ENTER, SPACE, ESC, SHIFT, TAB, ARROW_UP, ARROW_DOWN, ARROW_LEFT, ARROW_RIGHT } from '../util/keys';
 
@@ -21,7 +22,7 @@ export default (Parent) => class extends Parent {
         this.elements.wrapper::on('focus', ::this.wrapperFocus);
         this.elements.wrapper::on('mousedown', ::this.wrapperMouseDown);
         this.elements.wrapper::on('blur', ::this.blur);
-        this.components.panel.components.searchInput.elements.input::on('blur', ::this.blur);
+        this.components.panel.components.searchInput.elements['input']::on('blur', ::this.blur);
         window::on('scroll', ::this.scroll);
         window::on('resize', ::this.resize);
         
@@ -45,7 +46,7 @@ export default (Parent) => class extends Parent {
         const bottomSpace = this.bottomSpace();
 
         const lastDirection = this.direction;
-        console.log(`topSpace: ${topSpace}, bottomSpace: ${bottomSpace}`);
+
         if( // Set to top?
             topSpace > bottomSpace // Top space greater than bottom
             &&
@@ -90,7 +91,6 @@ export default (Parent) => class extends Parent {
     }
 
     keyUp(event) {
-        // console.log('up', this.open, event);
         if(event.keyCode === ESC) {
             this.closePanel();
             this.ignoreFocus = true;
@@ -130,7 +130,6 @@ export default (Parent) => class extends Parent {
     }
 
     wrapperFocus(event) {
-        console.log('focus... ignore focus?', this.ignoreFocus);
         if(!event.isTrigger && !this.ignoreFocus) {
             this.openPanel();
         }
@@ -152,26 +151,24 @@ export default (Parent) => class extends Parent {
     }
 
     wrapperMouseDown(event) {
-        console.log('event.target', event.target);
-        console.log('this.open', this.open);
-        console.log('document.activeElement', document.activeElement);
         if(!this.open && document.activeElement === this.elements.wrapper) {
-            console.log(1);
             this.openPanel();
         } else if(this.open && document.activeElement === this.elements.wrapper) {
-            console.log(2);
             this.ignoreBlur = true;
             this.components.panel.components.searchInput.elements.input.focus();
-            this.ignoreFocus = true;
+            this.ignoreFocus = true;s
         } else if(document.activeElement === this.components.panel.components.searchInput.elements.input) {
-            if(this.open) {
+            if(
+                this.open
+                &&
+                !StormBox.isFrom(event.target, this.components.panel.components.pagination.elements.goLeft)
+                &&
+                !StormBox.isFrom(event.target, this.components.panel.components.pagination.elements.goRight)
+            ) {
                 this.closePanel();
             }
             this.ignoreFocus = true;
             this.ignoreBlur = true;
-        } else {
-            console.log(4);
-            console.log('else');
         }
     }
 };

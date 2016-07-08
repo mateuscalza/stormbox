@@ -469,13 +469,17 @@ var Pagination = function () {
             var _context,
                 _this = this;
 
-            (_context = this.elements.goLeft, _events.on).call(_context, 'click', function (event) {
+            (_context = this.elements.goLeft, _events.on).call(_context, 'mousedown', function (event) {
                 event.preventDefault();
                 _this.prev();
+                _this.ignoreFocus = true;
+                _this.ignoreBlur = true;
             });
-            (_context = this.elements.goRight, _events.on).call(_context, 'click', function (event) {
+            (_context = this.elements.goRight, _events.on).call(_context, 'mousedown', function (event) {
                 event.preventDefault();
                 _this.next();
+                _this.ignoreFocus = true;
+                _this.ignoreBlur = true;
             });
         }
     }, {
@@ -1085,6 +1089,15 @@ var Core = function () {
             return element.autoComplete;
         }
     }, {
+        key: 'isFrom',
+        value: function isFrom(target, canditateParent) {
+            while (target) {
+                if (target === canditateParent) return true;
+                target = target.parentNode;
+            }
+            return false;
+        }
+    }, {
         key: 'autoCompleteByName',
         value: function autoCompleteByName(name) {
             var element = _StormBox2.default.byName(name);
@@ -1216,6 +1229,9 @@ var Core = function () {
 Core.currentSerialKey = 0;
 exports.default = Core;
 
+
+window.isFrom = Core.isFrom;
+
 },{"../components/StormBox":9}],11:[function(require,module,exports){
 'use strict';
 
@@ -1280,9 +1296,15 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _StormBox = require('../components/StormBox');
+
+var _StormBox2 = _interopRequireDefault(_StormBox);
+
 var _events = require('../util/events');
 
 var _keys = require('../util/keys');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -1314,7 +1336,7 @@ exports.default = function (Parent) {
                 (_context = this.elements.wrapper, _events.on).call(_context, 'focus', this.wrapperFocus.bind(this));
                 (_context = this.elements.wrapper, _events.on).call(_context, 'mousedown', this.wrapperMouseDown.bind(this));
                 (_context = this.elements.wrapper, _events.on).call(_context, 'blur', this.blur.bind(this));
-                (_context = this.components.panel.components.searchInput.elements.input, _events.on).call(_context, 'blur', this.blur.bind(this));
+                (_context = this.components.panel.components.searchInput.elements['input'], _events.on).call(_context, 'blur', this.blur.bind(this));
                 (_context = window, _events.on).call(_context, 'scroll', this.scroll.bind(this));
                 (_context = window, _events.on).call(_context, 'resize', this.resize.bind(this));
 
@@ -1341,7 +1363,7 @@ exports.default = function (Parent) {
                 var bottomSpace = this.bottomSpace();
 
                 var lastDirection = this.direction;
-                console.log('topSpace: ' + topSpace + ', bottomSpace: ' + bottomSpace);
+
                 if ( // Set to top?
                 topSpace > bottomSpace // Top space greater than bottom
                 && bottomSpace < 300) {
@@ -1386,7 +1408,6 @@ exports.default = function (Parent) {
         }, {
             key: 'keyUp',
             value: function keyUp(event) {
-                // console.log('up', this.open, event);
                 if (event.keyCode === _keys.ESC) {
                     this.closePanel();
                     this.ignoreFocus = true;
@@ -1422,7 +1443,6 @@ exports.default = function (Parent) {
         }, {
             key: 'wrapperFocus',
             value: function wrapperFocus(event) {
-                console.log('focus... ignore focus?', this.ignoreFocus);
                 if (!event.isTrigger && !this.ignoreFocus) {
                     this.openPanel();
                 }
@@ -1450,26 +1470,18 @@ exports.default = function (Parent) {
         }, {
             key: 'wrapperMouseDown',
             value: function wrapperMouseDown(event) {
-                console.log('event.target', event.target);
-                console.log('this.open', this.open);
-                console.log('document.activeElement', document.activeElement);
                 if (!this.open && document.activeElement === this.elements.wrapper) {
-                    console.log(1);
                     this.openPanel();
                 } else if (this.open && document.activeElement === this.elements.wrapper) {
-                    console.log(2);
                     this.ignoreBlur = true;
                     this.components.panel.components.searchInput.elements.input.focus();
-                    this.ignoreFocus = true;
+                    this.ignoreFocus = true;s;
                 } else if (document.activeElement === this.components.panel.components.searchInput.elements.input) {
-                    if (this.open) {
+                    if (this.open && !_StormBox2.default.isFrom(event.target, this.components.panel.components.pagination.elements.goLeft) && !_StormBox2.default.isFrom(event.target, this.components.panel.components.pagination.elements.goRight)) {
                         this.closePanel();
                     }
                     this.ignoreFocus = true;
                     this.ignoreBlur = true;
-                } else {
-                    console.log(4);
-                    console.log('else');
                 }
             }
         }]);
@@ -1478,7 +1490,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{"../util/events":23,"../util/keys":24}],13:[function(require,module,exports){
+},{"../components/StormBox":9,"../util/events":23,"../util/keys":24}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
