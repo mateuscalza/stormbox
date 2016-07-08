@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="aad62eb3-a8b8-42d1-8503-5886b1ae417e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.js" afterPath="$PROJECT_DIR$/dist/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.min.js" afterPath="$PROJECT_DIR$/dist/index.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="es7-autocomplete.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -78,11 +76,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+      <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/README.md">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="154">
-              <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
+            <state relative-caret-position="208">
+              <caret line="19" column="139" selection-start-line="19" selection-start-column="139" selection-end-line="19" selection-end-column="139" />
               <folding />
             </state>
           </provider>
@@ -133,12 +131,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.min.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="index.min.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dist/index.min.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="167">
-              <caret line="0" column="22669" selection-start-line="0" selection-start-column="22669" selection-end-line="0" selection-end-column="22669" />
-              <folding />
+              <caret line="7" column="22669" selection-start-line="7" selection-start-column="22669" selection-end-line="7" selection-end-column="22669" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -192,11 +192,11 @@
         <option value="$PROJECT_DIR$/src/components/List.js" />
         <option value="$PROJECT_DIR$/example/index.html" />
         <option value="$PROJECT_DIR$/src/components/Icon.js" />
-        <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/src/index.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/.banner" />
         <option value="$PROJECT_DIR$/dist/index.min.js" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -448,7 +448,7 @@
       <workItem from="1467886909020" duration="2719000" />
       <workItem from="1467889646752" duration="23873000" />
       <workItem from="1467973245075" duration="2542000" />
-      <workItem from="1467977492959" duration="2736000" />
+      <workItem from="1467977492959" duration="2875000" />
     </task>
     <task id="LOCAL-00001" summary="Renaming from AutoComplete to StormBox.">
       <created>1467977626753</created>
@@ -461,7 +461,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="36640000" />
+    <option name="totallyTimeSpent" value="36779000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -918,14 +918,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="154">
-          <caret line="10" column="16" selection-start-line="10" selection-start-column="16" selection-end-line="10" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Panel.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="90">
@@ -933,14 +925,6 @@
           <folding>
             <element signature="e#0#40#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="75" column="21" selection-start-line="75" selection-start-column="21" selection-end-line="75" selection-end-column="21" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -955,6 +939,24 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dist/index.min.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="167">
+          <caret line="7" column="22669" selection-start-line="7" selection-start-column="22669" selection-end-line="7" selection-end-column="22669" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="483">
+          <caret line="75" column="21" selection-start-line="75" selection-start-column="21" selection-end-line="75" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/.banner">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="108">
@@ -963,10 +965,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dist/index.min.js">
+    <entry file="file://$PROJECT_DIR$/README.md">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="0" column="22669" selection-start-line="0" selection-start-column="22669" selection-end-line="0" selection-end-column="22669" />
+        <state relative-caret-position="208">
+          <caret line="19" column="139" selection-start-line="19" selection-start-column="139" selection-end-line="19" selection-end-column="139" />
           <folding />
         </state>
       </provider>

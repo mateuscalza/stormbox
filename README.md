@@ -17,7 +17,7 @@ Or for a direct use, you can download zip. Only dist/index.min.js is necessary.
 [https://github.com/mateuscalza/stormbox/archive/master.zip](https://github.com/mateuscalza/es7-autocomplete/archive/master.zip)
 
 Or use a CDN:
-https://cdn.rawgit.com/mateuscalza/stormbox/master/dist/index.min.js
+[https://cdn.rawgit.com/mateuscalza/stormbox/master/dist/index.min.js](https://cdn.rawgit.com/mateuscalza/stormbox/master/dist/index.min.js)
 
 ## Features
 * Pagination
