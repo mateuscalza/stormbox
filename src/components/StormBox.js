@@ -36,7 +36,8 @@ export default class StormBox extends Parent {
             references = {}, // Carry other fields value as param
             otherParams = {}, // Set more params to be passed to sources
             showValue = true, // Present value to user
-            valueInOthersAs = 'ID' // Text to show "value" in additional data (if not string, is hide)
+            valueInOthersAs = 'ID', // Text to show "value" in additional data (if not string, is hide)
+            minItemsLength = 1 // Min obrigatory items per page (if no space, scroll)
         } = options;
 
         super(options);
@@ -66,6 +67,7 @@ export default class StormBox extends Parent {
         this.customText = customText;
         this.autoSelectWhenOneResult = autoSelectWhenOneResult;
         this.valueInOthersAs = valueInOthersAs;
+        this.minItemsLength = minItemsLength;
         this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (!hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required'));
 
         // Source validation

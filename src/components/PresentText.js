@@ -1,5 +1,3 @@
-import extend from 'extend';
-import SelectSource from '../sources/SelectSource';
 import { div } from '../util/dom';
 import { on } from '../util/events';
 

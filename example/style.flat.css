@@ -160,6 +160,7 @@ input[type="button"], input[type="submit"] {
     display: none;
     border: 1px solid #ccc;
     background: #ecf0f1;
+    overflow: auto;
     z-index: 9999;
 }
 

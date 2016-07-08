@@ -1,4 +1,10 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.StormBox = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/*!
+ * StormBox Responsive Autocomplete v3.0.0
+ * Created by Mateus Calza.
+ * With Inovadora Sistemas support.
+ *
+ * Licensed MIT.
+ */(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.StormBox = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
 var hasOwn = Object.prototype.hasOwnProperty;
@@ -318,7 +324,8 @@ var List = function () {
                     }
                     elementIndex++;
                     realItemsCount++;
-                    if (this.autocomplete.components.panel.element.getBoundingClientRect().height > this.autocomplete.heightSpace) {
+                    console.log('realItemsCount > this.autocomplete.minItemsLength', realItemsCount, this.autocomplete.minItemsLength);
+                    if (this.autocomplete.components.panel.element.getBoundingClientRect().height > this.autocomplete.heightSpace && realItemsCount > this.autocomplete.minItemsLength) {
                         this.elements.ul.removeChild(liChild);
                         elementIndex--;
                         realItemsCount--;
@@ -473,17 +480,13 @@ var Pagination = function () {
             var _context,
                 _this = this;
 
-            (_context = this.elements.goLeft, _events.on).call(_context, 'mousedown', function (event) {
+            (_context = this.elements.goLeft, _events.on).call(_context, 'click', function (event) {
                 event.preventDefault();
                 _this.prev();
-                _this.ignoreFocus = true;
-                _this.ignoreBlur = true;
             });
-            (_context = this.elements.goRight, _events.on).call(_context, 'mousedown', function (event) {
+            (_context = this.elements.goRight, _events.on).call(_context, 'click', function (event) {
                 event.preventDefault();
                 _this.next();
-                _this.ignoreFocus = true;
-                _this.ignoreBlur = true;
             });
         }
     }, {
@@ -634,19 +637,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _extend = require('extend');
-
-var _extend2 = _interopRequireDefault(_extend);
-
-var _SelectSource = require('../sources/SelectSource');
-
-var _SelectSource2 = _interopRequireDefault(_SelectSource);
-
 var _dom = require('../util/dom');
 
 var _events = require('../util/events');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -737,7 +730,7 @@ var PresentText = function () {
 
 exports.default = PresentText;
 
-},{"../sources/SelectSource":19,"../util/dom":22,"../util/events":23,"extend":1}],8:[function(require,module,exports){
+},{"../util/dom":22,"../util/events":23}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -899,6 +892,8 @@ var StormBox = function (_Parent) {
         var showValue = _options$showValue === undefined ? true : _options$showValue;
         var _options$valueInOther = options.valueInOthersAs;
         var valueInOthersAs = _options$valueInOther === undefined ? 'ID' : _options$valueInOther;
+        var _options$minItemsLeng = options.minItemsLength;
+        var minItemsLength = _options$minItemsLeng === undefined ? 1 : _options$minItemsLeng;
 
 
         // Key
@@ -929,6 +924,7 @@ var StormBox = function (_Parent) {
         _this.customText = customText;
         _this.autoSelectWhenOneResult = autoSelectWhenOneResult;
         _this.valueInOthersAs = valueInOthersAs;
+        _this.minItemsLength = minItemsLength;
         _this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
 
         // Source validation

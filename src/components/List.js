@@ -92,7 +92,8 @@ export default class List {
                 }
                 elementIndex++;
                 realItemsCount++;
-                if(this.autocomplete.components.panel.element.getBoundingClientRect().height > this.autocomplete.heightSpace) {
+                console.log('realItemsCount > this.autocomplete.minItemsLength', realItemsCount, this.autocomplete.minItemsLength);
+                if(this.autocomplete.components.panel.element.getBoundingClientRect().height > this.autocomplete.heightSpace && realItemsCount > this.autocomplete.minItemsLength) {
                     this.elements.ul.removeChild(liChild);
                     elementIndex--;
                     realItemsCount--;
