@@ -1,10 +1,4 @@
-/*!
- * StormBox Responsive Autocomplete v3.0.0
- * Created by Mateus Calza.
- * With Inovadora Sistemas support.
- *
- * Licensed MIT.
- */(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AutoComplete = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AutoComplete = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
 var hasOwn = Object.prototype.hasOwnProperty;
@@ -148,7 +142,7 @@ var SearchInput = function () {
 
 exports.default = SearchInput;
 
-},{"../sources/SelectSource":18,"../util/dom":21,"extend":1}],3:[function(require,module,exports){
+},{"../sources/SelectSource":19,"../util/dom":22,"extend":1}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -203,7 +197,7 @@ var Icon = function () {
 
 exports.default = Icon;
 
-},{"../sources/SelectSource":18,"../util/dom":21,"../util/events":22,"extend":1}],4:[function(require,module,exports){
+},{"../sources/SelectSource":19,"../util/dom":22,"../util/events":23,"extend":1}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -254,6 +248,7 @@ var List = function () {
             var _this = this;
 
             if (this.items && this.autocomplete.open) {
+                this.autocomplete.components.panel.components.pagination.show();
                 this.elements.ul.innerHTML = '';
                 this.autocomplete.components.panel.element.style.maxHeight = null;
                 this.searchInput = this.autocomplete.components.panel.components.searchInput;
@@ -285,7 +280,8 @@ var List = function () {
                     this.elements.ul.appendChild(liChildForCustomText);
                 }
 
-                for (var index = 0; index < length; index++) {
+                var realItemsCount = 0;
+                for (var index = this.autocomplete.components.panel.components.pagination.offset; index < length; index++) {
                     var mainText = (0, _dom.span)({
                         innerText: this.items[index].content
                     });
@@ -321,11 +317,14 @@ var List = function () {
                         this.elements.ul.appendChild(liChild);
                     }
                     elementIndex++;
+                    realItemsCount++;
                     if (this.autocomplete.components.panel.element.getBoundingClientRect().height > this.autocomplete.heightSpace) {
                         this.elements.ul.removeChild(liChild);
                         elementIndex--;
+                        realItemsCount--;
                         break;
                     }
+                    this.autocomplete.components.panel.components.pagination.perPage = realItemsCount;
                 }
 
                 if (childForCustomText) {
@@ -403,7 +402,12 @@ var List = function () {
         value: function updateSelection(index) {
             var currentIndex = this.selectedIndex;
             var children = this.elements.ul.children;
-            this.selectedIndex = Math.max(0, Math.min(children.length - 1, index));
+            if (index < 0) {
+                return this.autocomplete.components.panel.components.pagination.prev();
+            } else if (index > children.length - 1) {
+                return this.autocomplete.components.panel.components.pagination.next();
+            }
+            this.selectedIndex = index;
             var active = children[currentIndex];
             active && active.children[0].classList.remove('active');
             children[this.selectedIndex].children[0].classList.add('active');
@@ -420,7 +424,97 @@ var List = function () {
 
 exports.default = List;
 
-},{"../util/dom":21}],5:[function(require,module,exports){
+},{"../util/dom":22}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _dom = require('../util/dom');
+
+var _events = require('../util/events');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Pagination = function () {
+    function Pagination(_ref, _ref2, autocomplete) {
+        var style = _ref.style;
+        var onSelect = _ref2.onSelect;
+
+        _classCallCheck(this, Pagination);
+
+        this.currentStep = 0;
+        this.steps = [];
+        this.offset = 0;
+        this.perPage = Infinity;
+        this.autocomplete = autocomplete;
+        this.elements = {};
+
+        this.elements.goLeft = (0, _dom.div)({ className: style.paginationLeft }, (0, _dom.i)({ className: style.paginationGoLeftIcon }));
+
+        this.elements.goRight = (0, _dom.div)({ className: style.paginationRight }, (0, _dom.i)({ className: style.paginationGoRightIcon }));
+
+        this.elements.wrapper = (0, _dom.div)({ className: style.paginationWrapper }, this.elements.goLeft, this.elements.goRight);
+
+        this.prepareEvents();
+    }
+
+    _createClass(Pagination, [{
+        key: 'prepareEvents',
+        value: function prepareEvents() {
+            var _context,
+                _this = this;
+
+            (_context = this.elements.goLeft, _events.on).call(_context, 'click', function (event) {
+                event.preventDefault();
+                _this.prev();
+            });
+            (_context = this.elements.goRight, _events.on).call(_context, 'click', function (event) {
+                event.preventDefault();
+                _this.next();
+            });
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this.elements.wrapper.style.display = 'none';
+        }
+    }, {
+        key: 'show',
+        value: function show() {
+            this.elements.wrapper.style.display = 'block';
+        }
+    }, {
+        key: 'next',
+        value: function next() {
+            if (typeof this.autocomplete.components.panel.components.list.items[this.offset + this.perPage] === 'undefined') {
+                return;
+            }
+            this.currentStep++;
+            this.offset = this.steps[this.currentStep] = this.offset + this.perPage;
+            this.autocomplete.components.panel.components.list.render();
+        }
+    }, {
+        key: 'prev',
+        value: function prev() {
+            if (this.currentStep === 0) {
+                return;
+            }
+            this.currentStep--;
+            this.offset = this.steps[this.currentStep] || 0;
+            this.autocomplete.components.panel.components.list.render();
+        }
+    }]);
+
+    return Pagination;
+}();
+
+exports.default = Pagination;
+
+},{"../util/dom":22,"../util/events":23}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -441,6 +535,10 @@ var _List = require('./List');
 
 var _List2 = _interopRequireDefault(_List);
 
+var _Pagination = require('./Pagination');
+
+var _Pagination2 = _interopRequireDefault(_Pagination);
+
 var _dom = require('../util/dom');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -457,17 +555,21 @@ var Panel = function () {
         this.components = {
             searchInput: new _SearchInput2.default({ style: style }, undefined, autocomplete),
             errorView: new _ErrorView2.default({ style: style }),
-            list: new _List2.default({ style: style }, { onSelect: onSelect }, autocomplete)
+            list: new _List2.default({ style: style }, { onSelect: onSelect }, autocomplete),
+            pagination: new _Pagination2.default({ style: style }, { onSelect: onSelect }, autocomplete)
         };
 
         this.element = (0, _dom.div)({
             className: style.panel
-        }, this.components.searchInput.elements.wrapper, this.components.errorView.elements.wrapper, this.components.list.elements.wrapper);
+        }, this.components.searchInput.elements.wrapper, this.components.errorView.elements.wrapper, this.components.pagination.elements.wrapper, this.components.list.elements.wrapper);
     }
 
     _createClass(Panel, [{
         key: 'show',
         value: function show(results) {
+            this.components.pagination.currentStep = 0;
+            this.components.pagination.offset = 0;
+            this.components.pagination.perPage = Infinity;
             this.components.list.show(results.data);
         }
     }, {
@@ -490,7 +592,7 @@ var Panel = function () {
 
 exports.default = Panel;
 
-},{"../util/dom":21,"./ErrorView":2,"./List":4,"./SearchInput":7}],6:[function(require,module,exports){
+},{"../util/dom":22,"./ErrorView":2,"./List":4,"./Pagination":5,"./SearchInput":8}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -602,7 +704,7 @@ var PresentText = function () {
 
 exports.default = PresentText;
 
-},{"../sources/SelectSource":18,"../util/dom":21,"../util/events":22,"extend":1}],7:[function(require,module,exports){
+},{"../sources/SelectSource":19,"../util/dom":22,"../util/events":23,"extend":1}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -657,7 +759,7 @@ var SearchInput = function () {
 
 exports.default = SearchInput;
 
-},{"../sources/SelectSource":18,"../util/dom":21,"extend":1}],8:[function(require,module,exports){
+},{"../sources/SelectSource":19,"../util/dom":22,"extend":1}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -827,7 +929,12 @@ var StormBox = function (_Parent) {
             bottom: 'ac-bottom',
             openWrapper: 'ac-wrapper ac-open-wrapper',
             rightIcon: 'fa fa-search ac-icon',
-            loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon'
+            loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon',
+            paginationWrapper: 'ac-pagination-wrapper',
+            paginationLeft: 'ac-pagination-left',
+            paginationRight: 'ac-pagination-right',
+            paginationGoLeftIcon: 'fa fa-chevron-left',
+            paginationGoRightIcon: 'fa fa-chevron-right'
         }, style);
 
         _this.messages = (0, _extend2.default)({
@@ -904,7 +1011,7 @@ var StormBox = function (_Parent) {
 
 exports.default = StormBox;
 
-},{"../core/Core":9,"../mixins/Events":11,"../mixins/Finding":12,"../mixins/PanelControl":13,"../mixins/Positioning":14,"../mixins/Selecting":15,"../sources/SelectSource":18,"../util/debounce":20,"../util/dom":21,"./Icon":3,"./Panel":5,"./PresentText":6,"extend":1}],9:[function(require,module,exports){
+},{"../core/Core":10,"../mixins/Events":12,"../mixins/Finding":13,"../mixins/PanelControl":14,"../mixins/Positioning":15,"../mixins/Selecting":16,"../sources/SelectSource":19,"../util/debounce":21,"../util/dom":22,"./Icon":3,"./Panel":6,"./PresentText":7,"extend":1}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1086,7 +1193,7 @@ var Core = function () {
 Core.currentSerialKey = 0;
 exports.default = Core;
 
-},{"../components/StormBox":8}],10:[function(require,module,exports){
+},{"../components/StormBox":9}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1141,7 +1248,7 @@ if (typeof window !== 'undefined') {
     window.StormBoxWidget = _StormBox2.default;
 }
 
-},{"./components/StormBox":8,"./sources/AjaxSource":16,"./sources/ArraySource":17,"./sources/SelectSource":18,"./sources/Source":19}],11:[function(require,module,exports){
+},{"./components/StormBox":9,"./sources/AjaxSource":17,"./sources/ArraySource":18,"./sources/SelectSource":19,"./sources/Source":20}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1348,7 +1455,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{"../util/events":22,"../util/keys":23}],12:[function(require,module,exports){
+},{"../util/events":23,"../util/keys":24}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1451,7 +1558,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1524,7 +1631,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1577,7 +1684,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1673,7 +1780,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{"../components/StormBox":8}],16:[function(require,module,exports){
+},{"../components/StormBox":9}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1744,7 +1851,7 @@ var AjaxSource = function () {
 
 exports.default = AjaxSource;
 
-},{"./Source":19}],17:[function(require,module,exports){
+},{"./Source":20}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1790,7 +1897,7 @@ var ArraySource = function () {
 
 exports.default = ArraySource;
 
-},{"./Source":19}],18:[function(require,module,exports){
+},{"./Source":20}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1828,7 +1935,7 @@ var SelectSource = function () {
 
 exports.default = SelectSource;
 
-},{"./Source":19}],19:[function(require,module,exports){
+},{"./Source":20}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1863,7 +1970,7 @@ var Source = function () {
 
 exports.default = Source;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1886,7 +1993,7 @@ function debounce(func, wait, immediate) {
     };
 };
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1902,6 +2009,7 @@ exports.a = a;
 exports.i = i;
 exports.strong = strong;
 exports.span = span;
+exports.button = button;
 
 var _extend = require('extend');
 
@@ -1991,7 +2099,15 @@ function span(props) {
     return elem.apply(undefined, ['span', props].concat(children));
 };
 
-},{"extend":1}],22:[function(require,module,exports){
+function button(props) {
+    for (var _len10 = arguments.length, children = Array(_len10 > 1 ? _len10 - 1 : 0), _key10 = 1; _key10 < _len10; _key10++) {
+        children[_key10 - 1] = arguments[_key10];
+    }
+
+    return elem.apply(undefined, ['button', props].concat(children));
+};
+
+},{"extend":1}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2019,7 +2135,7 @@ function on(eventName, callback) {
     return this;
 }
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2035,5 +2151,5 @@ var ARROW_LEFT = exports.ARROW_LEFT = 37;
 var TAB = exports.TAB = 9;
 var SHIFT = exports.SHIFT = 16;
 
-},{}]},{},[10])(10)
+},{}]},{},[11])(11)
 });

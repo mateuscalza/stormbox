@@ -1,2072 +1,252 @@
 {
-	"data": [
-		{
-			"content": "João Buscapé",
-			"value": 42342342,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Maria"
-				},
-				{
-					"label": "Pai",
-					"content": "Fulano"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 30
-				},
-				{
-					"field": "occupation",
-					"content": "CEO",
-					"value": 3123213,
-					"hide": true
-				}
-			]
-		},
-		{
-			"content": "Beltrano",
-			"value": 42342343,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Clotildes"
-				},
-				{
-					"label": "Pai",
-					"content": "Ciclano"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 30
-				},
-				{
-					"field": "occupation",
-					"content": "Programmer",
-					"value": 2342342423,
-					"disabled": true
-				}
-			]
-		},
-		{
-			"content": "Mario Veroneze",
-			"value": 42342343,
-			"additional": [],
-			"others": [
-				{
-					"field": "age",
-					"value": 35
-				},
-				{
-					"field": "occupation",
-					"content": "Programmer",
-					"value": 1111,
-					"readonly": true
-				}
-			]
-		},
-		{
-			"content": "Patrick Perrony",
-			"value": 42342343,
-			"additional": [],
-			"others": [
-				{
-					"field": "age",
-					"value": "",
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Programmer",
-					"value": 1111,
-					"required": true
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		},
-		{
-			"content": "Chuck Norris",
-			"value": 9999999,
-			"additional": [
-				{
-					"label": "Mãe",
-					"content": "Sra. Norris"
-				},
-				{
-					"label": "Pai",
-					"content": "Sr. Norris"
-				}
-			],
-			"others": [
-				{
-					"field": "age",
-					"value": 347,
-					"disabled": true
-				},
-				{
-					"field": "occupation",
-					"content": "Chuck Norris",
-					"value": 99999999
-				}
-			]
-		}
-	],
-	"pagination": {
-		"total": 53,
-		"per_page": 30,
-		"current_page": 1
-	}
+  "data": [
+    {
+      "content": "João Buscapé",
+      "value": 42342342,
+      "additional": [
+        {
+          "label": "Mãe",
+          "content": "Maria"
+        },
+        {
+          "label": "Pai",
+          "content": "Fulano"
+        }
+      ],
+      "others": [
+        {
+          "field": "age",
+          "value": 30
+        },
+        {
+          "field": "occupation",
+          "content": "CEO",
+          "value": 3123213,
+          "hide": true
+        }
+      ]
+    },
+    {
+      "content": "Beltrano",
+      "value": 42342343,
+      "additional": [
+        {
+          "label": "Mãe",
+          "content": "Clotildes"
+        },
+        {
+          "label": "Pai",
+          "content": "Ciclano"
+        }
+      ],
+      "others": [
+        {
+          "field": "age",
+          "value": 30
+        },
+        {
+          "field": "occupation",
+          "content": "Programmer",
+          "value": 2342342423,
+          "disabled": true
+        }
+      ]
+    },
+    {
+      "content": "Mario Veroneze",
+      "value": 42342343,
+      "additional": [],
+      "others": [
+        {
+          "field": "age",
+          "value": 35
+        },
+        {
+          "field": "occupation",
+          "content": "Programmer",
+          "value": 1111,
+          "readonly": true
+        }
+      ]
+    },
+    {
+      "content": "Patrick Perrony",
+      "value": 42342343,
+      "additional": [],
+      "others": [
+        {
+          "field": "age",
+          "value": "",
+          "disabled": true
+        },
+        {
+          "field": "occupation",
+          "content": "Programmer",
+          "value": 1111,
+          "required": true
+        }
+      ]
+    },
+    {
+      "content": "Chuck Norris",
+      "value": 9999999,
+      "additional": [
+        {
+          "label": "Mãe",
+          "content": "Sra. Norris"
+        },
+        {
+          "label": "Pai",
+          "content": "Sr. Norris"
+        }
+      ],
+      "others": [
+        {
+          "field": "age",
+          "value": 347,
+          "disabled": true
+        },
+        {
+          "field": "occupation",
+          "content": "Chuck Norris",
+          "value": 99999999
+        }
+      ]
+    },
+    {
+      "content": "Random 1",
+      "value": 9999999,
+      "additional": [
+        {
+          "label": "Mãe",
+          "content": "Sra. Norris"
+        },
+        {
+          "label": "Pai",
+          "content": "Sr. Norris"
+        }
+      ],
+      "others": [
+        {
+          "field": "age",
+          "value": 347,
+          "disabled": true
+        },
+        {
+          "field": "occupation",
+          "content": "Chuck Norris",
+          "value": 99999999
+        }
+      ]
+    },
+    {
+      "content": "Random 2",
+      "value": 9999999,
+      "additional": [
+        {
+          "label": "Mãe",
+          "content": "Sra. Norris"
+        },
+        {
+          "label": "Pai",
+          "content": "Sr. Norris"
+        }
+      ],
+      "others": [
+        {
+          "field": "age",
+          "value": 347,
+          "disabled": true
+        },
+        {
+          "field": "occupation",
+          "content": "Chuck Norris",
+          "value": 99999999
+        }
+      ]
+    },
+    {
+      "content": "Random 3",
+      "value": 9999999,
+      "additional": [
+        {
+          "label": "Mãe",
+          "content": "Sra. Norris"
+        },
+        {
+          "label": "Pai",
+          "content": "Sr. Norris"
+        }
+      ],
+      "others": [
+        {
+          "field": "age",
+          "value": 347,
+          "disabled": true
+        },
+        {
+          "field": "occupation",
+          "content": "Chuck Norris",
+          "value": 99999999
+        }
+      ]
+    },
+    {
+      "content": "Random 4",
+      "value": 9999999,
+      "additional": [
+        {
+          "label": "Mãe",
+          "content": "Sra. Norris"
+        },
+        {
+          "label": "Pai",
+          "content": "Sr. Norris"
+        }
+      ],
+      "others": [
+        {
+          "field": "age",
+          "value": 347,
+          "disabled": true
+        },
+        {
+          "field": "occupation",
+          "content": "Chuck Norris",
+          "value": 99999999
+        }
+      ]
+    },
+    {
+      "content": "Random 5",
+      "value": 9999999,
+      "additional": [
+        {
+          "label": "Mãe",
+          "content": "Sra. Norris"
+        },
+        {
+          "label": "Pai",
+          "content": "Sr. Norris"
+        }
+      ],
+      "others": [
+        {
+          "field": "age",
+          "value": 347,
+          "disabled": true
+        },
+        {
+          "field": "occupation",
+          "content": "Chuck Norris",
+          "value": 99999999
+        }
+      ]
+    }
+  ],
+  "pagination": {
+    "total": 53,
+    "per_page": 30,
+    "current_page": 1
+  }
 }

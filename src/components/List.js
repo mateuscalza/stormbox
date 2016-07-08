@@ -24,6 +24,7 @@ export default class List {
 
     render() {
         if(this.items && this.autocomplete.open) {
+            this.autocomplete.components.panel.components.pagination.show();
             this.elements.ul.innerHTML = '';
             this.autocomplete.components.panel.element.style.maxHeight = null;
             this.searchInput = this.autocomplete.components.panel.components.searchInput;
@@ -55,7 +56,8 @@ export default class List {
                 this.elements.ul.appendChild(liChildForCustomText);
             }
 
-            for(let index = 0; index < length; index++) {
+            let realItemsCount = 0;
+            for(let index = this.autocomplete.components.panel.components.pagination.offset; index < length; index++) {
                 let mainText = span({
                     innerText: this.items[index].content
                 });
@@ -89,11 +91,14 @@ export default class List {
                     this.elements.ul.appendChild(liChild);
                 }
                 elementIndex++;
+                realItemsCount++;
                 if(this.autocomplete.components.panel.element.getBoundingClientRect().height > this.autocomplete.heightSpace) {
                     this.elements.ul.removeChild(liChild);
                     elementIndex--;
+                    realItemsCount--;
                     break;
                 }
+                this.autocomplete.components.panel.components.pagination.perPage = realItemsCount;
             }
 
 
@@ -166,7 +171,12 @@ export default class List {
     updateSelection(index) {
         const currentIndex = this.selectedIndex;
         const children = this.elements.ul.children;
-        this.selectedIndex = Math.max(0, Math.min(children.length - 1, index));
+        if(index < 0) {
+            return this.autocomplete.components.panel.components.pagination.prev();
+        } else if(index > children.length - 1) {
+            return this.autocomplete.components.panel.components.pagination.next();
+        }
+        this.selectedIndex = index;
         const active = children[currentIndex];
         active && active.children[0].classList.remove('active');
         children[this.selectedIndex].children[0].classList.add('active');

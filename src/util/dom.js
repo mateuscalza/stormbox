@@ -44,3 +44,7 @@ export function strong(props, ...children) {
 export function span(props, ...children) {
     return elem('span', props, ...children);
 };
+
+export function button(props, ...children) {
+    return elem('button', props, ...children);
+};

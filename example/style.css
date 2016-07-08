@@ -30,9 +30,9 @@ input {
     border-radius: 4px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: all ease-in-out 0.25;
+    -webkit-transition: all ease-in-out 0.25s;
     -o-transition: all ease-in-out 0.25s;
-    transition: all ease-in-out 0.25;
+    transition: all ease-in-out 0.25s;
     cursor: text;
 }
 input[disabled] {
@@ -76,9 +76,9 @@ input[type="button"], input[type="submit"] {
     border-radius: 4px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: all ease-in-out 0.25;
+    -webkit-transition: all ease-in-out 0.25s;
     -o-transition: all ease-in-out 0.25s;
-    transition: all ease-in-out 0.25;
+    transition: all ease-in-out 0.25s;
     cursor: pointer;
 }
 .ac-wrapper:focus .ac-present-text {
@@ -148,9 +148,9 @@ input[type="button"], input[type="submit"] {
     border-radius: 4px;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: all ease-in-out 0.25;
+    -webkit-transition: all ease-in-out 0.25s;
     -o-transition: all ease-in-out 0.25s;
-    transition: all ease-in-out 0.25;
+    transition: all ease-in-out 0.25s;
     cursor: pointer;
 }
 .ac-list-wrapper ul li {
@@ -205,9 +205,9 @@ input[type="button"], input[type="submit"] {
     border-radius: 4px;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-    -webkit-transition: all ease-in-out 0.25;
+    -webkit-transition: all ease-in-out 0.25s;
     -o-transition: all ease-in-out 0.25s;
-    transition: all ease-in-out 0.25;
+    transition: all ease-in-out 0.25s;
     cursor: text;
 }
 .ac-search-input:focus {
@@ -234,6 +234,26 @@ input[type="button"], input[type="submit"] {
 }
 .ac-open-wrapper.ac-top .ac-present-text {
     border-radius: 0 0 4px 4px;
+}
+.ac-pagination-wrapper {
+    padding: 0 10px 10px 10px;
+    display: none;
+}
+.ac-pagination-wrapper .ac-pagination-left, .ac-pagination-wrapper .ac-pagination-right {
+    display: inline-block;
+    margin-right: 5px;
+    padding: 5px 8px;
+    color: #f8ac59;
+    background-color: #fff;
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
+    cursor: pointer;
+}
+.ac-pagination-wrapper .ac-pagination-right {
+    float: right;
 }
 i.fa.ac-icon {
     position: absolute;

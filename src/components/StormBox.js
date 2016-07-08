@@ -99,7 +99,12 @@ export default class StormBox extends Parent {
             bottom: 'ac-bottom',
             openWrapper: 'ac-wrapper ac-open-wrapper',
             rightIcon: 'fa fa-search ac-icon',
-            loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon'
+            loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon',
+            paginationWrapper: 'ac-pagination-wrapper',
+            paginationLeft: 'ac-pagination-left',
+            paginationRight: 'ac-pagination-right',
+            paginationGoLeftIcon: 'fa fa-chevron-left',
+            paginationGoRightIcon: 'fa fa-chevron-right'
         }, style);
 
         this.messages = extend({
