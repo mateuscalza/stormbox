@@ -1,6 +1,6 @@
 {
   "name": "stormbox",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "StormBox Responsive Autocomplete: pure JS, with ES7 features, without jQuery, object-oriented.",
   "main": "dist/index.js",
   "scripts": {
@@ -13,12 +13,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mateuscalza/es7-autocomplete.git"
+    "url": "git+https://github.com/mateuscalza/stormbox.git"
   },
   "keywords": [
     "stormbox",
     "responsive",
     "autocomplete",
+    "combobox",
     "es7",
     "es6",
     "pure",
@@ -34,12 +35,12 @@
     "additional",
     "data"
   ],
-  "author": "Inovadora Sistemas",
+  "author": "Mateus Calza",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/mateuscalza/es7-autocomplete/issues"
+    "url": "https://github.com/mateuscalza/stormbox/issues"
   },
-  "homepage": "https://github.com/mateuscalza/es7-autocomplete#readme",
+  "homepage": "https://github.com/mateuscalza/stormbox#readme",
   "devDependencies": {
     "babel-cli": "^6.10.1",
     "babel-core": "^6.10.4",
