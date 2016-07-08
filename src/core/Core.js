@@ -1,4 +1,5 @@
 import StormBox from '../components/StormBox';
+import { div } from '../util/dom';
 
 export default class Core {
 
@@ -44,6 +45,18 @@ export default class Core {
             throw new Error('Field is not an autocomplete!', element);
         }
         return element.autoComplete;
+    }
+    
+    static responseToText(response) {
+        return div({ innerHTML: response }).innerText.replace(/[\n\r]/g, ' ');
+    }
+
+    static truncate(text, maxLength = 320) {
+        text = String(text).trim();
+        if(text.length > maxLength) {
+            return text.substr(0, maxLength) + '...';
+        }
+        return text;
     }
 
     static interpret(mixedValue) {

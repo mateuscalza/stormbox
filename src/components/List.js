@@ -99,6 +99,10 @@ export default class List {
                     break;
                 }
                 this.autocomplete.components.panel.components.pagination.perPage = realItemsCount;
+
+                if(realItemsCount === this.items.length) {
+                    this.autocomplete.components.panel.components.pagination.hide();
+                }
             }
 
 

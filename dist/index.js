@@ -325,6 +325,10 @@ var List = function () {
                         break;
                     }
                     this.autocomplete.components.panel.components.pagination.perPage = realItemsCount;
+
+                    if (realItemsCount === this.items.length) {
+                        this.autocomplete.components.panel.components.pagination.hide();
+                    }
                 }
 
                 if (childForCustomText) {
@@ -549,6 +553,10 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _StormBox = require('../components/StormBox');
+
+var _StormBox2 = _interopRequireDefault(_StormBox);
+
 var _SearchInput = require('./SearchInput');
 
 var _SearchInput2 = _interopRequireDefault(_SearchInput);
@@ -600,10 +608,9 @@ var Panel = function () {
         }
     }, {
         key: 'error',
-        value: function error(_ref3) {
-            var message = _ref3.message;
-
-            this.components.errorView.show(message);
+        value: function error(_error) {
+            console.error(_error);
+            this.components.errorView.show(_StormBox2.default.truncate(_StormBox2.default.responseToText(_error.message)));
         }
     }, {
         key: 'clear',
@@ -618,7 +625,7 @@ var Panel = function () {
 
 exports.default = Panel;
 
-},{"../util/dom":22,"./ErrorView":2,"./List":4,"./Pagination":5,"./SearchInput":8}],7:[function(require,module,exports){
+},{"../components/StormBox":9,"../util/dom":22,"./ErrorView":2,"./List":4,"./Pagination":5,"./SearchInput":8}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1051,6 +1058,8 @@ var _StormBox = require('../components/StormBox');
 
 var _StormBox2 = _interopRequireDefault(_StormBox);
 
+var _dom = require('../util/dom');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1108,6 +1117,22 @@ var Core = function () {
                 throw new Error('Field is not an autocomplete!', element);
             }
             return element.autoComplete;
+        }
+    }, {
+        key: 'responseToText',
+        value: function responseToText(response) {
+            return (0, _dom.div)({ innerHTML: response }).innerText.replace(/[\n\r]/g, ' ');
+        }
+    }, {
+        key: 'truncate',
+        value: function truncate(text) {
+            var maxLength = arguments.length <= 1 || arguments[1] === undefined ? 320 : arguments[1];
+
+            text = String(text).trim();
+            if (text.length > maxLength) {
+                return text.substr(0, maxLength) + '...';
+            }
+            return text;
         }
     }, {
         key: 'interpret',
@@ -1232,7 +1257,7 @@ exports.default = Core;
 
 window.isFrom = Core.isFrom;
 
-},{"../components/StormBox":9}],11:[function(require,module,exports){
+},{"../components/StormBox":9,"../util/dom":22}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1878,11 +1903,29 @@ var AjaxSource = function () {
                 _this.request.onreadystatechange = function () {
                     console.log('readyState change', _this.request.readyState, _this.request.status, _this.request);
                     if (_this.request.readyState == 4 && _this.request.status == 200) {
-                        var json = JSON.parse(_this.request.responseText);
+                        var json = void 0;
+                        try {
+                            json = JSON.parse(_this.request.responseText);
+                        } catch (err) {
+                            return reject(new Error('Parsing Error: invalid response. ' + _this.request.responseText.replace(/\n/, '')));
+                        }
                         _this.request = null;
                         resolve(json);
                     } else if (_this.request.readyState == 4 && _this.request.status != 200) {
-                        reject(new Error(_this.request.responseText));
+                        var error = 'Error Code: ' + _this.request.status;
+                        try {
+                            var parsedError = JSON.parse(_this.request.responseText);
+                            error += _this.request.statusText && _this.request.statusText.trim().length ? '; Status: ' + _this.request.statusText : '';
+                            if (parsedError.message) {
+                                error += parsedError.message && parsedError.message.trim().length ? '; Status: ' + parsedError.message.trim() : '';
+                            } else {
+                                error += _this.request.responseText && _this.request.responseText.trim().length ? '; Status: ' + _this.request.responseText.trim() : '';
+                            }
+                        } catch (err) {
+                            error += _this.request.statusText && _this.request.statusText.trim().length ? '; Status: ' + _this.request.statusText : '';
+                            error += _this.request.responseText && _this.request.responseText.trim().length ? '; Status: ' + _this.request.responseText.trim() : '';
+                        }
+                        reject(new Error(error));
                     }
                 };
                 _this.request.send();

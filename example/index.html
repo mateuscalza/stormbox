@@ -7,84 +7,91 @@
     <meta name="description" content="ES7 Autocomplete Example">
     <meta name="author" content="Inovadora Sistemas">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" media="screen" title="no title" charset="utf-8">
-    <link rel="stylesheet" href="/example/style.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"
+          media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="/example/style.flat.css" media="screen" title="no title" charset="utf-8">
 </head>
 
 <body>
-    <h1>StormBox Responsive AutoComplete</h1>
-    <form action="/" method="post">
-        <fieldset>
-            <legend>References</legend>
+<form action="/" method="post">
+    <h1><strong>StormBox</strong> Responsive AutoComplete</h1>
+
+    <fieldset>
+        <legend>References</legend>
+        <label>
             <p>Fields that follow as param to sources.</p>
             <input id="city" name="city" placeholder="City">
-        </fieldset>
+        </label>
+    </fieldset>
 
-        <fieldset>
-            <legend>AutoComplete</legend>
+    <fieldset style="border-color: #f8ac59">
+        <legend>AutoComplete</legend>
+        <label>
             <p>The <b>ultra super hyper mega</b> autocomplete.</p>
             <input id="user_id" name="user_id" type="hidden" value="92387">
-            <input id="text_user_id" name="text_user_id" type="text" value="Meu Usuário Salvo da Silva Pereira Buscapé de Tal">
-        </fieldset>
+            <input id="text_user_id" name="text_user_id" type="text"
+                   value="Meu Usuário Salvo da Silva Pereira Buscapé de Tal">
+        </label>
+    </fieldset>
 
-        <fieldset>
-            <legend>Other Fields</legend>
-            <p>Fields that will receive value from autocomplete response.</p>
-            <label>
-                <p>Age</p>
-                <input id="age" name="age" placeholder="Age">
-            </label>
-            <label>
-                <p>Occupation</p>
-                <input id="occupation" name="occupation" placeholder="Occupation" type="hidden">
-                <input id="text_occupation" name="text_occupation" placeholder="Occupation"type="text">
-            </label>
-        </fieldset>
+    <fieldset>
+        <legend>Other Fields</legend>
+        <p>Fields that will receive value from autocomplete response.</p>
+        <label>
+            <p>Age</p>
+            <input id="age" name="age" placeholder="Age">
+        </label>
+        <label>
+            <p>Occupation</p>
+            <input id="occupation" name="occupation" placeholder="Occupation" type="hidden">
+            <input id="text_occupation" name="text_occupation" placeholder="Occupation" type="text">
+        </label>
+    </fieldset>
 
-        <input type="submit" value="Store">
-    </form>
+    <input type="submit" value="Store">
+</form>
 
-    <script src="/dist/index.js"></script>
-    <script>
+<script src="/dist/index.js"></script>
+<script>
 
-        var userAc = new StormBoxWidget({
-            hiddenInput: StormBoxWidget.byId('user_id'),
-            textInput: StormBoxWidget.byId('text_user_id'),
-            source: new StormBoxWidget.AjaxSource('/example/source.json'),
-            messages: {
-                emptyItemName: 'Nenhum',
-                searchPlaceholder: 'Digite para buscar...'
-            },
-            references: {
-                city: StormBoxWidget.byId('city')
-            }
-        });
+    var userAc = new StormBoxWidget({
+        hiddenInput: StormBoxWidget.byId('user_id'),
+        textInput:   StormBoxWidget.byId('text_user_id'),
+        source:      new StormBoxWidget.AjaxSource('/example/source.json'),
+        messages:    {
+            emptyItemName:     'Nenhum',
+            searchPlaceholder: 'Digite para buscar...'
+        },
+        references:  {
+            city: StormBoxWidget.byId('city')
+        }
+    });
 
-         new StormBoxWidget({
-             hiddenInput: StormBoxWidget.byId('occupation'),
-             textInput: StormBoxWidget.byId('text_occupation'),
-             source: new StormBoxWidget.ArraySource([])
-         });
+    new StormBoxWidget({
+        hiddenInput: StormBoxWidget.byId('occupation'),
+        textInput:   StormBoxWidget.byId('text_occupation'),
+        source:      new StormBoxWidget.ArraySource([])
+    });
 
-        // autocomplete.byId('text_user_id').addEventListener('blur', function(event){
-        //     console.log('text blur working', event.target.value);
-        // });
-        // autocomplete.byId('text_user_id').addEventListener('change', function(event){
-        //     console.log('text change working', event.target.value);
-        // });
-        //
-        // autocomplete.byId('user_id').addEventListener('blur', function(event){
-        //     console.log('value blur working', event.target.value);
-        // });
-        // autocomplete.byId('user_id').addEventListener('change', function(event){
-        //     console.log('value change working', event.target.value);
-        // });
+    // autocomplete.byId('text_user_id').addEventListener('blur', function(event){
+    //     console.log('text blur working', event.target.value);
+    // });
+    // autocomplete.byId('text_user_id').addEventListener('change', function(event){
+    //     console.log('text change working', event.target.value);
+    // });
+    //
+    // autocomplete.byId('user_id').addEventListener('blur', function(event){
+    //     console.log('value blur working', event.target.value);
+    // });
+    // autocomplete.byId('user_id').addEventListener('change', function(event){
+    //     console.log('value change working', event.target.value);
+    // });
 
-    </script>
-    <script id="__bs_script__">
+</script>
+<script id="__bs_script__">
     //<![CDATA[
-        document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.2.13.0.js'><\/script>".replace("HOST", location.hostname));
+    document.write("<script async src='http://HOST:3000/browser-sync/browser-sync-client.2.13.0.js'><\/script>".replace("HOST", location.hostname));
     //]]>
-    </script>
+</script>
 </body>
 </html>

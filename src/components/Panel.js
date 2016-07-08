@@ -1,3 +1,4 @@
+import StormBox from '../components/StormBox';
 import SearchInput from './SearchInput';
 import ErrorView from './ErrorView';
 import List from './List';
@@ -31,8 +32,15 @@ export default class Panel {
         this.components.list.show(results.data);
     }
 
-    error({ message }) {
-        this.components.errorView.show(message);
+    error(error) {
+        console.error(error);
+        this.components.errorView.show(
+            StormBox.truncate(
+                StormBox.responseToText(
+                    error.message
+                )
+            )
+        );
     }
 
     clear() {
