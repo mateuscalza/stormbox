@@ -1,4 +1,4 @@
-# ES7 AUTOCOMPLETE (ComboBox)
+# StormBox Responsive AutoComplete
 Pure JS, with ES7 features, without jQuery, object-oriented.
 
 > **Caution!** This widget is under construction.
@@ -10,7 +10,7 @@ Avaible on CodePen:
 ## Install
 You can use NPM:
 ```sh
-$ npm install es7-autocomplete --save 
+$ npm install stormbox --save
 ```
 
 Or for a direct use, you can download zip. Only dist/index.min.js is necessary.

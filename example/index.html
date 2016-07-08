@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Autocomplete Example</title>
+    <title>Example of StormBox Responsive AutoComplete</title>
     <meta name="description" content="ES7 Autocomplete Example">
     <meta name="author" content="Inovadora Sistemas">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <h1>ES7 AutoComplete</h1>
+    <h1>StormBox Responsive AutoComplete</h1>
     <form action="/" method="post">
         <fieldset>
             <legend>References</legend>
@@ -47,23 +47,23 @@
     <script src="/dist/index.js"></script>
     <script>
 
-        var userAc = new AutoCompleteWidget({
-            hiddenInput: AutoCompleteWidget.byId('user_id'),
-            textInput: AutoCompleteWidget.byId('text_user_id'),
-            source: new AutoCompleteWidget.AjaxSource('/example/source.json'),
+        var userAc = new StormBoxWidget({
+            hiddenInput: StormBoxWidget.byId('user_id'),
+            textInput: StormBoxWidget.byId('text_user_id'),
+            source: new StormBoxWidget.AjaxSource('/example/source.json'),
             messages: {
                 emptyItemName: 'Nenhum',
                 searchPlaceholder: 'Digite para buscar...'
             },
             references: {
-                city: AutoCompleteWidget.byId('city')
+                city: StormBoxWidget.byId('city')
             }
         });
 
-         new AutoCompleteWidget({
-             hiddenInput: AutoCompleteWidget.byId('occupation'),
-             textInput: AutoCompleteWidget.byId('text_occupation'),
-             source: new AutoCompleteWidget.ArraySource([])
+         new StormBoxWidget({
+             hiddenInput: StormBoxWidget.byId('occupation'),
+             textInput: StormBoxWidget.byId('text_occupation'),
+             source: new StormBoxWidget.ArraySource([])
          });
 
         // autocomplete.byId('text_user_id').addEventListener('blur', function(event){

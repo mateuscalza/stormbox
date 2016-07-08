@@ -1,5 +1,3 @@
-import extend from 'extend';
-import SelectSource from '../sources/SelectSource';
 import SearchInput from './SearchInput';
 import ErrorView from './ErrorView';
 import List from './List';

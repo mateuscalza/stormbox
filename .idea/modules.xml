@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/es7-autocomplete.iml" filepath="$PROJECT_DIR$/.idea/es7-autocomplete.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/stormbox.iml" filepath="$PROJECT_DIR$/.idea/stormbox.iml" />
     </modules>
   </component>
 </project>

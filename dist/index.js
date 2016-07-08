@@ -1,10 +1,4 @@
-/*!
- * Autocomplete v3.0.0
- * Created by Mateus Calza.
- * With Inovadora Sistemas support.
- *
- * Licensed MIT.
- */(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AutoComplete = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.AutoComplete = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
 var hasOwn = Object.prototype.hasOwnProperty;
@@ -105,253 +99,6 @@ var _extend = require('extend');
 
 var _extend2 = _interopRequireDefault(_extend);
 
-var _PresentText = require('./PresentText');
-
-var _PresentText2 = _interopRequireDefault(_PresentText);
-
-var _Icon = require('./Icon');
-
-var _Icon2 = _interopRequireDefault(_Icon);
-
-var _Panel = require('./Panel');
-
-var _Panel2 = _interopRequireDefault(_Panel);
-
-var _SelectSource = require('../sources/SelectSource');
-
-var _SelectSource2 = _interopRequireDefault(_SelectSource);
-
-var _Core = require('../core/Core');
-
-var _Core2 = _interopRequireDefault(_Core);
-
-var _Events = require('../mixins/Events');
-
-var _Events2 = _interopRequireDefault(_Events);
-
-var _Finding = require('../mixins/Finding');
-
-var _Finding2 = _interopRequireDefault(_Finding);
-
-var _PanelControl = require('../mixins/PanelControl');
-
-var _PanelControl2 = _interopRequireDefault(_PanelControl);
-
-var _Selecting = require('../mixins/Selecting');
-
-var _Selecting2 = _interopRequireDefault(_Selecting);
-
-var _Positioning = require('../mixins/Positioning');
-
-var _Positioning2 = _interopRequireDefault(_Positioning);
-
-var _debounce = require('../util/debounce');
-
-var _debounce2 = _interopRequireDefault(_debounce);
-
-var _dom = require('../util/dom');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// Use mixins
-var Parent = (0, _Selecting2.default)((0, _PanelControl2.default)((0, _Finding2.default)((0, _Positioning2.default)((0, _Events2.default)(_Core2.default)))));
-
-var AutoComplete = function (_Parent) {
-    _inherits(AutoComplete, _Parent);
-
-    function AutoComplete(options) {
-        _classCallCheck(this, AutoComplete);
-
-        var hiddenInput = options.hiddenInput;
-        var textInput = options.textInput;
-        var source = options.source;
-        var selectInput = options.selectInput;
-        var _options$style = options.style;
-        var style = _options$style === undefined ? {} : _options$style;
-        var _options$customText = options.customText;
-        var customText = _options$customText === undefined ? true : _options$customText;
-        var _options$debounceTime = options.debounceTime;
-        var debounceTime = _options$debounceTime === undefined ? 600 : _options$debounceTime;
-        var _options$queryParam = options.queryParam;
-        var queryParam = _options$queryParam === undefined ? 'q' : _options$queryParam;
-        var _options$minLength = options.minLength;
-        var minLength = _options$minLength === undefined ? 1 : _options$minLength;
-        var _options$clearOnType = options.clearOnType;
-        var clearOnType = _options$clearOnType === undefined ? false : _options$clearOnType;
-        var _options$autoFind = options.autoFind;
-        var autoFind = _options$autoFind === undefined ? false : _options$autoFind;
-        var _options$autoSelectWh = options.autoSelectWhenOneResult;
-        var autoSelectWhenOneResult = _options$autoSelectWh === undefined ? true : _options$autoSelectWh;
-        var emptyItem = options.emptyItem;
-        var _options$messages = options.messages;
-        var messages = _options$messages === undefined ? {} : _options$messages;
-        var _options$references = options.references;
-        var references = _options$references === undefined ? {} : _options$references;
-        var _options$otherParams = options.otherParams;
-        var otherParams = _options$otherParams === undefined ? {} : _options$otherParams;
-        var _options$showValue = options.showValue;
-        var showValue = _options$showValue === undefined ? true : _options$showValue;
-        var _options$valueInOther = options.valueInOthersAs;
-        var valueInOthersAs = _options$valueInOther === undefined ? 'ID' : _options$valueInOther;
-
-
-        // Key
-
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(AutoComplete).call(this, options));
-
-        _this.key = AutoComplete.currentSerialKey++;
-
-        // Environment
-        _this.finding = false;
-        _this.open = false;
-        _this.typing = false;
-        _this.ignoreFocus = false;
-        _this.ignoreBlur = false;
-        _this.valueOnOpen = undefined;
-        _this.usedOtherFields = [];
-        _this.direction = 'down';
-
-        // Initial
-        _this.references = references;
-        _this.otherParams = otherParams;
-        _this.queryParam = queryParam;
-        _this.clearOnType = clearOnType;
-        _this.autoFind = autoFind;
-        _this.minLength = minLength;
-        _this.showValue = showValue;
-        _this.customText = customText;
-        _this.autoSelectWhenOneResult = autoSelectWhenOneResult;
-        _this.valueInOthersAs = valueInOthersAs;
-        _this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
-
-        // Source validation
-        if (!source && !selectInput) {
-            throw new Error('Set a source or a selectInput.');
-        }
-
-        // Set data source
-        _this.source = source || new _SelectSource2.default(selectInput);
-
-        // Set style props
-        _this.style = (0, _extend2.default)({
-            hiddenInput: 'ac-hidden-input',
-            textInput: 'ac-text-input',
-            panel: 'ac-panel',
-            listWrapper: 'ac-list-wrapper',
-            item: 'ac-item',
-            emptyItem: 'ac-empty-item',
-            customTextItem: 'ac-custom-text-item',
-            additional: 'ac-additional',
-            searchInput: 'ac-search-input',
-            searchInputWrapper: 'ac-search-input-wrapper',
-            presentText: 'ac-present-text',
-            presentCropText: 'ac-present-crop-text',
-            presentTextItems: 'ac-present-items',
-            presentInnerText: 'ac-present-inner-text',
-            presentInnerValue: 'ac-present-inner-value',
-            errorView: 'ac-error-view',
-            errorViewWrapper: 'ac-error-view-wrapper',
-            wrapper: 'ac-wrapper',
-            top: 'ac-top',
-            bottom: 'ac-bottom',
-            openWrapper: 'ac-wrapper ac-open-wrapper',
-            rightIcon: 'fa fa-search ac-icon',
-            loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon'
-        }, style);
-
-        _this.messages = (0, _extend2.default)({
-            searchPlaceholder: 'Search...',
-            emptyItemName: 'Empty'
-        }, messages);
-
-        // Set AutoComplete's elements
-        _this.elements = {
-            hiddenInput: hiddenInput,
-            textInput: textInput,
-            wrapper: (0, _dom.div)({
-                className: _this.style.wrapper
-            })
-        };
-
-        // Debouncing find
-        _this.debouncedFind = (0, _debounce2.default)(_this.find.bind(_this), debounceTime);
-        // Debouncing layout change
-        _this.debouncedLayoutChange = (0, _debounce2.default)(_this.layoutChange.bind(_this), 250);
-
-        // Set relative components
-        _this.components = {
-            presentText: new _PresentText2.default({ style: _this.style }, {}, _this),
-            icon: new _Icon2.default({ style: _this.style }),
-            panel: new _Panel2.default({ style: _this.style }, { onSelect: _this.select.bind(_this) }, _this)
-        };
-
-        // Prepare elements
-        _this.prepareElements();
-        return _this;
-    }
-
-    _createClass(AutoComplete, [{
-        key: 'prepareElements',
-        value: function prepareElements() {
-            // Turn wrapper focusable
-            this.elements.wrapper.setAttribute('tabindex', '0');
-            // Store hiddenInput value
-            this.value = this.elements.hiddenInput.value;
-            // Store textInput value (content)
-            this.content = this.elements.textInput.value;
-            // Add wrapper after hiddenInput
-            this.elements.textInput.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
-            // Remove old inputs
-            this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
-            this.elements.textInput.parentNode.removeChild(this.elements.textInput);
-            // Prepare hiddenInput
-            this.elements.hiddenInput.autoComplete = this;
-            this.elements.hiddenInput.type = 'hidden';
-            this.elements.hiddenInput.className = this.style.hiddenInput;
-            this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
-            // Prepare textInput
-            this.elements.textInput.autoComplete = this;
-            this.elements.textInput.type = 'hidden';
-            this.elements.textInput.className = this.style.textInput;
-            this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
-            // Set initial text
-            this.components.presentText.value(this.value);
-            this.components.presentText.text(this.content);
-            // Append wrapper's children
-            this.elements.wrapper.appendChild(this.elements.hiddenInput);
-            this.elements.wrapper.appendChild(this.elements.textInput);
-            this.elements.wrapper.appendChild(this.components.presentText.element);
-            this.elements.wrapper.appendChild(this.components.icon.element);
-            this.elements.wrapper.appendChild(this.components.panel.element);
-
-            this.prepareEvents();
-        }
-    }]);
-
-    return AutoComplete;
-}(Parent);
-
-exports.default = AutoComplete;
-
-},{"../core/Core":9,"../mixins/Events":11,"../mixins/Finding":12,"../mixins/PanelControl":13,"../mixins/Positioning":14,"../mixins/Selecting":15,"../sources/SelectSource":18,"../util/debounce":20,"../util/dom":21,"./Icon":4,"./Panel":6,"./PresentText":7,"extend":1}],3:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _extend = require('extend');
-
-var _extend2 = _interopRequireDefault(_extend);
-
 var _SelectSource = require('../sources/SelectSource');
 
 var _SelectSource2 = _interopRequireDefault(_SelectSource);
@@ -395,7 +142,7 @@ var SearchInput = function () {
 
 exports.default = SearchInput;
 
-},{"../sources/SelectSource":18,"../util/dom":21,"extend":1}],4:[function(require,module,exports){
+},{"../sources/SelectSource":18,"../util/dom":21,"extend":1}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -450,7 +197,7 @@ var Icon = function () {
 
 exports.default = Icon;
 
-},{"../sources/SelectSource":18,"../util/dom":21,"../util/events":22,"extend":1}],5:[function(require,module,exports){
+},{"../sources/SelectSource":18,"../util/dom":21,"../util/events":22,"extend":1}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -459,17 +206,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _extend = require('extend');
-
-var _extend2 = _interopRequireDefault(_extend);
-
-var _SelectSource = require('../sources/SelectSource');
-
-var _SelectSource2 = _interopRequireDefault(_SelectSource);
-
 var _dom = require('../util/dom');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -677,7 +414,7 @@ var List = function () {
 
 exports.default = List;
 
-},{"../sources/SelectSource":18,"../util/dom":21,"extend":1}],6:[function(require,module,exports){
+},{"../util/dom":21}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -685,14 +422,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _extend = require('extend');
-
-var _extend2 = _interopRequireDefault(_extend);
-
-var _SelectSource = require('../sources/SelectSource');
-
-var _SelectSource2 = _interopRequireDefault(_SelectSource);
 
 var _SearchInput = require('./SearchInput');
 
@@ -755,7 +484,7 @@ var Panel = function () {
 
 exports.default = Panel;
 
-},{"../sources/SelectSource":18,"../util/dom":21,"./ErrorView":3,"./List":5,"./SearchInput":8,"extend":1}],7:[function(require,module,exports){
+},{"../util/dom":21,"./ErrorView":2,"./List":4,"./SearchInput":7}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -867,7 +596,7 @@ var PresentText = function () {
 
 exports.default = PresentText;
 
-},{"../sources/SelectSource":18,"../util/dom":21,"../util/events":22,"extend":1}],8:[function(require,module,exports){
+},{"../sources/SelectSource":18,"../util/dom":21,"../util/events":22,"extend":1}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -922,7 +651,254 @@ var SearchInput = function () {
 
 exports.default = SearchInput;
 
-},{"../sources/SelectSource":18,"../util/dom":21,"extend":1}],9:[function(require,module,exports){
+},{"../sources/SelectSource":18,"../util/dom":21,"extend":1}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _extend = require('extend');
+
+var _extend2 = _interopRequireDefault(_extend);
+
+var _PresentText = require('./PresentText');
+
+var _PresentText2 = _interopRequireDefault(_PresentText);
+
+var _Icon = require('./Icon');
+
+var _Icon2 = _interopRequireDefault(_Icon);
+
+var _Panel = require('./Panel');
+
+var _Panel2 = _interopRequireDefault(_Panel);
+
+var _SelectSource = require('../sources/SelectSource');
+
+var _SelectSource2 = _interopRequireDefault(_SelectSource);
+
+var _Core = require('../core/Core');
+
+var _Core2 = _interopRequireDefault(_Core);
+
+var _Events = require('../mixins/Events');
+
+var _Events2 = _interopRequireDefault(_Events);
+
+var _Finding = require('../mixins/Finding');
+
+var _Finding2 = _interopRequireDefault(_Finding);
+
+var _PanelControl = require('../mixins/PanelControl');
+
+var _PanelControl2 = _interopRequireDefault(_PanelControl);
+
+var _Selecting = require('../mixins/Selecting');
+
+var _Selecting2 = _interopRequireDefault(_Selecting);
+
+var _Positioning = require('../mixins/Positioning');
+
+var _Positioning2 = _interopRequireDefault(_Positioning);
+
+var _debounce = require('../util/debounce');
+
+var _debounce2 = _interopRequireDefault(_debounce);
+
+var _dom = require('../util/dom');
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+// Use mixins
+var Parent = (0, _Selecting2.default)((0, _PanelControl2.default)((0, _Finding2.default)((0, _Positioning2.default)((0, _Events2.default)(_Core2.default)))));
+
+var StormBox = function (_Parent) {
+    _inherits(StormBox, _Parent);
+
+    function StormBox(options) {
+        _classCallCheck(this, StormBox);
+
+        var hiddenInput = options.hiddenInput;
+        var textInput = options.textInput;
+        var source = options.source;
+        var selectInput = options.selectInput;
+        var _options$style = options.style;
+        var style = _options$style === undefined ? {} : _options$style;
+        var _options$customText = options.customText;
+        var customText = _options$customText === undefined ? false : _options$customText;
+        var _options$debounceTime = options.debounceTime;
+        var debounceTime = _options$debounceTime === undefined ? 600 : _options$debounceTime;
+        var _options$queryParam = options.queryParam;
+        var queryParam = _options$queryParam === undefined ? 'q' : _options$queryParam;
+        var _options$minLength = options.minLength;
+        var minLength = _options$minLength === undefined ? 1 : _options$minLength;
+        var _options$clearOnType = options.clearOnType;
+        var clearOnType = _options$clearOnType === undefined ? false : _options$clearOnType;
+        var _options$autoFind = options.autoFind;
+        var autoFind = _options$autoFind === undefined ? false : _options$autoFind;
+        var _options$autoSelectWh = options.autoSelectWhenOneResult;
+        var autoSelectWhenOneResult = _options$autoSelectWh === undefined ? true : _options$autoSelectWh;
+        var emptyItem = options.emptyItem;
+        var _options$messages = options.messages;
+        var messages = _options$messages === undefined ? {} : _options$messages;
+        var _options$references = options.references;
+        var references = _options$references === undefined ? {} : _options$references;
+        var _options$otherParams = options.otherParams;
+        var otherParams = _options$otherParams === undefined ? {} : _options$otherParams;
+        var _options$showValue = options.showValue;
+        var showValue = _options$showValue === undefined ? true : _options$showValue;
+        var _options$valueInOther = options.valueInOthersAs;
+        var valueInOthersAs = _options$valueInOther === undefined ? 'ID' : _options$valueInOther;
+
+
+        // Key
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(StormBox).call(this, options));
+
+        _this.key = StormBox.currentSerialKey++;
+
+        // Environment
+        _this.finding = false;
+        _this.open = false;
+        _this.typing = false;
+        _this.ignoreFocus = false;
+        _this.ignoreBlur = false;
+        _this.valueOnOpen = undefined;
+        _this.usedOtherFields = [];
+        _this.direction = 'down';
+
+        // Initial
+        _this.references = references;
+        _this.otherParams = otherParams;
+        _this.queryParam = queryParam;
+        _this.clearOnType = clearOnType;
+        _this.autoFind = autoFind;
+        _this.minLength = minLength;
+        _this.showValue = showValue;
+        _this.customText = customText;
+        _this.autoSelectWhenOneResult = autoSelectWhenOneResult;
+        _this.valueInOthersAs = valueInOthersAs;
+        _this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
+
+        // Source validation
+        if (!source && !selectInput) {
+            throw new Error('Set a source or a selectInput.');
+        }
+
+        // Set data source
+        _this.source = source || new _SelectSource2.default(selectInput);
+
+        // Set style props
+        _this.style = (0, _extend2.default)({
+            hiddenInput: 'ac-hidden-input',
+            textInput: 'ac-text-input',
+            panel: 'ac-panel',
+            listWrapper: 'ac-list-wrapper',
+            item: 'ac-item',
+            emptyItem: 'ac-empty-item',
+            customTextItem: 'ac-custom-text-item',
+            additional: 'ac-additional',
+            searchInput: 'ac-search-input',
+            searchInputWrapper: 'ac-search-input-wrapper',
+            presentText: 'ac-present-text',
+            presentCropText: 'ac-present-crop-text',
+            presentTextItems: 'ac-present-items',
+            presentInnerText: 'ac-present-inner-text',
+            presentInnerValue: 'ac-present-inner-value',
+            errorView: 'ac-error-view',
+            errorViewWrapper: 'ac-error-view-wrapper',
+            wrapper: 'ac-wrapper',
+            top: 'ac-top',
+            bottom: 'ac-bottom',
+            openWrapper: 'ac-wrapper ac-open-wrapper',
+            rightIcon: 'fa fa-search ac-icon',
+            loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon'
+        }, style);
+
+        _this.messages = (0, _extend2.default)({
+            searchPlaceholder: 'Search...',
+            emptyItemName: 'Empty'
+        }, messages);
+
+        // Set StormBox's elements
+        _this.elements = {
+            hiddenInput: hiddenInput,
+            textInput: textInput,
+            wrapper: (0, _dom.div)({
+                className: _this.style.wrapper
+            })
+        };
+
+        // Debouncing find
+        _this.debouncedFind = (0, _debounce2.default)(_this.find.bind(_this), debounceTime);
+        // Debouncing layout change
+        _this.debouncedLayoutChange = (0, _debounce2.default)(_this.layoutChange.bind(_this), 250);
+
+        // Set relative components
+        _this.components = {
+            presentText: new _PresentText2.default({ style: _this.style }, {}, _this),
+            icon: new _Icon2.default({ style: _this.style }),
+            panel: new _Panel2.default({ style: _this.style }, { onSelect: _this.select.bind(_this) }, _this)
+        };
+
+        // Prepare elements
+        _this.prepareElements();
+        return _this;
+    }
+
+    _createClass(StormBox, [{
+        key: 'prepareElements',
+        value: function prepareElements() {
+            // Turn wrapper focusable
+            this.elements.wrapper.setAttribute('tabindex', '0');
+            // Store hiddenInput value
+            this.value = this.elements.hiddenInput.value;
+            // Store textInput value (content)
+            this.content = this.elements.textInput.value;
+            // Add wrapper after hiddenInput
+            this.elements.textInput.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
+            // Remove old inputs
+            this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
+            this.elements.textInput.parentNode.removeChild(this.elements.textInput);
+            // Prepare hiddenInput
+            this.elements.hiddenInput.autoComplete = this;
+            this.elements.hiddenInput.type = 'hidden';
+            this.elements.hiddenInput.className = this.style.hiddenInput;
+            this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
+            // Prepare textInput
+            this.elements.textInput.autoComplete = this;
+            this.elements.textInput.type = 'hidden';
+            this.elements.textInput.className = this.style.textInput;
+            this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
+            // Set initial text
+            this.components.presentText.value(this.value);
+            this.components.presentText.text(this.content);
+            // Append wrapper's children
+            this.elements.wrapper.appendChild(this.elements.hiddenInput);
+            this.elements.wrapper.appendChild(this.elements.textInput);
+            this.elements.wrapper.appendChild(this.components.presentText.element);
+            this.elements.wrapper.appendChild(this.components.icon.element);
+            this.elements.wrapper.appendChild(this.components.panel.element);
+
+            this.prepareEvents();
+        }
+    }]);
+
+    return StormBox;
+}(Parent);
+
+exports.default = StormBox;
+
+},{"../core/Core":9,"../mixins/Events":11,"../mixins/Finding":12,"../mixins/PanelControl":13,"../mixins/Positioning":14,"../mixins/Selecting":15,"../sources/SelectSource":18,"../util/debounce":20,"../util/dom":21,"./Icon":3,"./Panel":5,"./PresentText":6,"extend":1}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -969,7 +945,7 @@ var Core = function () {
     }, {
         key: 'autoCompleteByName',
         value: function autoCompleteByName(name) {
-            var element = AutoComplete.byName(name);
+            var element = StormBox.byName(name);
             if (!element) {
                 return null;
             }
@@ -1026,7 +1002,7 @@ var Core = function () {
 
             // Disabled
             if (typeof disabled === 'undefined' && typeof element.dataset['oldDisabled'] !== 'undefined') {
-                disabled = AutoComplete.interpret(element.dataset['oldDisabled']);
+                disabled = StormBox.interpret(element.dataset['oldDisabled']);
             }
             if (typeof disabled !== 'undefined') {
                 if (typeof element.dataset['oldDisabled'] === 'undefined') {
@@ -1037,7 +1013,7 @@ var Core = function () {
 
             // ReadOnly
             if (typeof readonly === 'undefined' && typeof element.dataset['oldReadOnly'] !== 'undefined') {
-                readonly = AutoComplete.interpret(element.dataset['oldReadOnly']);
+                readonly = StormBox.interpret(element.dataset['oldReadOnly']);
             }
             if (typeof readonly !== 'undefined') {
                 if (typeof element.dataset['oldReadOnly'] === 'undefined') {
@@ -1048,7 +1024,7 @@ var Core = function () {
 
             // Required
             if (typeof required === 'undefined' && typeof element.dataset['oldRequired'] !== 'undefined') {
-                required = AutoComplete.interpret(element.dataset['oldRequired']);
+                required = StormBox.interpret(element.dataset['oldRequired']);
             }
             if (typeof required !== 'undefined') {
                 if (typeof element.dataset['oldRequired'] === 'undefined') {
@@ -1059,7 +1035,7 @@ var Core = function () {
 
             // Visibility
             if (typeof visibility === 'undefined' && typeof element.dataset['oldVisibility'] !== 'undefined') {
-                visibility = AutoComplete.interpret(element.dataset['oldVisibility']);
+                visibility = StormBox.interpret(element.dataset['oldVisibility']);
             }
             if (typeof visibility !== 'undefined') {
                 if (typeof element.dataset['oldVisibility'] === 'undefined') {
@@ -1105,9 +1081,9 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _AutoComplete = require('./components/AutoComplete');
+var _StormBox = require('./components/StormBox');
 
-var _AutoComplete2 = _interopRequireDefault(_AutoComplete);
+var _StormBox2 = _interopRequireDefault(_StormBox);
 
 var _Source = require('./sources/Source');
 
@@ -1127,33 +1103,33 @@ var _ArraySource2 = _interopRequireDefault(_ArraySource);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_AutoComplete2.default.AjaxSource = _AjaxSource2.default; /**
-                                                           * ES7 AutoComplete
-                                                           *
-                                                           * @author Jackson Veroneze <jackson@inovadora.com.br>
-                                                           * @author Ladislau Perrony <ladislau.perrony@inovadora.com.br>
-                                                           * @author Mario Mendonça <mario@inovadora.com.br>
-                                                           * @author Mateus Calza <mateus@inovadora.com.br>
-                                                           * @author Patrick Nascimento <patrick@inovadora.com.br>
-                                                           * @license MIT
-                                                           * @version 1.0.0
-                                                           */
+_StormBox2.default.AjaxSource = _AjaxSource2.default; /**
+                                                       * ES7 AutoComplete
+                                                       *
+                                                       * @author Jackson Veroneze <jackson@inovadora.com.br>
+                                                       * @author Ladislau Perrony <ladislau.perrony@inovadora.com.br>
+                                                       * @author Mario Mendonça <mario@inovadora.com.br>
+                                                       * @author Mateus Calza <mateus@inovadora.com.br>
+                                                       * @author Patrick Nascimento <patrick@inovadora.com.br>
+                                                       * @license MIT
+                                                       * @version 1.0.0
+                                                       */
 
-_AutoComplete2.default.SelectSource = _SelectSource2.default;
-_AutoComplete2.default.ArraySource = _ArraySource2.default;
+_StormBox2.default.SelectSource = _SelectSource2.default;
+_StormBox2.default.ArraySource = _ArraySource2.default;
 
-_AutoComplete2.default.abstracts = {
+_StormBox2.default.abstracts = {
     Source: _Source2.default
 };
 
-exports.default = _AutoComplete2.default;
+exports.default = _StormBox2.default;
 
 
 if (typeof window !== 'undefined') {
-    window.AutoCompleteWidget = _AutoComplete2.default;
+    window.StormBoxWidget = _StormBox2.default;
 }
 
-},{"./components/AutoComplete":2,"./sources/AjaxSource":16,"./sources/ArraySource":17,"./sources/SelectSource":18,"./sources/Source":19}],11:[function(require,module,exports){
+},{"./components/StormBox":8,"./sources/AjaxSource":16,"./sources/ArraySource":17,"./sources/SelectSource":18,"./sources/Source":19}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1598,9 +1574,9 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _AutoComplete = require('../components/AutoComplete');
+var _StormBox = require('../components/StormBox');
 
-var _AutoComplete2 = _interopRequireDefault(_AutoComplete);
+var _StormBox2 = _interopRequireDefault(_StormBox);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1661,7 +1637,7 @@ exports.default = function (Parent) {
                         throw new Error('Element of other field \'' + others[index].field + '\' not found!');
                     }
 
-                    _AutoComplete2.default.projectElementSettings(element, others[index]);
+                    _StormBox2.default.projectElementSettings(element, others[index]);
                     if (indexInUsed === -1) {
                         // Set as used field
                         this.usedOtherFields[this.usedOtherFields.length] = others[index].field;
@@ -1676,7 +1652,7 @@ exports.default = function (Parent) {
                 for (var _index = 0; _index < revertLength; _index++) {
                     // Find element and project element to revert to oldest
                     var _element = document.querySelector('[name="' + fieldsToRevert[_index] + '"]');
-                    _AutoComplete2.default.projectElementSettings(_element, {});
+                    _StormBox2.default.projectElementSettings(_element, {});
                 }
             }
         }]);
@@ -1685,7 +1661,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{"../components/AutoComplete":2}],16:[function(require,module,exports){
+},{"../components/StormBox":8}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

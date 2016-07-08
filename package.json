@@ -1,7 +1,7 @@
 {
-  "name": "es7-autocomplete",
-  "version": "1.0.7",
-  "description": "Pure JS, with ES7 features, without jQuery, object-oriented.",
+  "name": "stormbox",
+  "version": "1.0.8",
+  "description": "StormBox Responsive Autocomplete: pure JS, with ES7 features, without jQuery, object-oriented.",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run build:debug && npm run build:min",
@@ -16,6 +16,8 @@
     "url": "git+https://github.com/mateuscalza/es7-autocomplete.git"
   },
   "keywords": [
+    "stormbox",
+    "responsive",
     "autocomplete",
     "es7",
     "es6",

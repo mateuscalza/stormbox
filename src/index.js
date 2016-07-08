@@ -10,24 +10,24 @@
  * @version 1.0.0
  */
 
-import AutoComplete from './components/AutoComplete';
+import StormBox from './components/StormBox';
 
 import Source from './sources/Source';
 import AjaxSource from './sources/AjaxSource';
 import SelectSource from './sources/SelectSource';
 import ArraySource from './sources/ArraySource';
 
-AutoComplete.AjaxSource = AjaxSource;
-AutoComplete.SelectSource = SelectSource;
-AutoComplete.ArraySource = ArraySource;
+StormBox.AjaxSource = AjaxSource;
+StormBox.SelectSource = SelectSource;
+StormBox.ArraySource = ArraySource;
 
-AutoComplete.abstracts = {
+StormBox.abstracts = {
     Source
 };
 
-export default AutoComplete;
+export default StormBox;
 
 if(typeof window !== 'undefined') {
-    window.AutoCompleteWidget = AutoComplete;
+    window.StormBoxWidget = StormBox;
 }
 

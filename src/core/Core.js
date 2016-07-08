@@ -26,7 +26,7 @@ export default class Core {
     }
 
     static autoCompleteByName(name) {
-        let element = AutoComplete.byName(name);
+        let element = StormBox.byName(name);
         if(!element) {
             return null;
         }
@@ -67,7 +67,7 @@ export default class Core {
 
         // Disabled
         if(typeof disabled === 'undefined' && typeof element.dataset['oldDisabled'] !== 'undefined') {
-            disabled = AutoComplete.interpret(element.dataset['oldDisabled']);
+            disabled = StormBox.interpret(element.dataset['oldDisabled']);
         }
         if(typeof disabled !== 'undefined') {
             if(typeof element.dataset['oldDisabled'] === 'undefined') {
@@ -78,7 +78,7 @@ export default class Core {
 
         // ReadOnly
         if(typeof readonly === 'undefined' && typeof element.dataset['oldReadOnly'] !== 'undefined') {
-            readonly = AutoComplete.interpret(element.dataset['oldReadOnly']);
+            readonly = StormBox.interpret(element.dataset['oldReadOnly']);
         }
         if(typeof readonly !== 'undefined') {
             if(typeof element.dataset['oldReadOnly'] === 'undefined') {
@@ -89,7 +89,7 @@ export default class Core {
 
         // Required
         if(typeof required === 'undefined' && typeof element.dataset['oldRequired'] !== 'undefined') {
-            required = AutoComplete.interpret(element.dataset['oldRequired']);
+            required = StormBox.interpret(element.dataset['oldRequired']);
         }
         if(typeof required !== 'undefined') {
             if(typeof element.dataset['oldRequired'] === 'undefined') {
@@ -100,7 +100,7 @@ export default class Core {
 
         // Visibility
         if(typeof visibility === 'undefined' && typeof element.dataset['oldVisibility'] !== 'undefined') {
-            visibility = AutoComplete.interpret(element.dataset['oldVisibility']);
+            visibility = StormBox.interpret(element.dataset['oldVisibility']);
         }
         if(typeof visibility !== 'undefined') {
             if(typeof element.dataset['oldVisibility'] === 'undefined') {

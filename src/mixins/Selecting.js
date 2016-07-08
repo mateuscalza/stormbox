@@ -1,4 +1,4 @@
-import AutoComplete from '../components/AutoComplete';
+import AutoComplete from '../components/StormBox';
 
 export default Parent => class extends Parent {
 

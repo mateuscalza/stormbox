@@ -1,6 +1,4 @@
-import extend from 'extend';
-import SelectSource from '../sources/SelectSource';
-import { div, input, ul, li, a, strong, span } from '../util/dom';
+import { div, ul, li, strong, span } from '../util/dom';
 
 export default class List {
     constructor({ style }, { onSelect }, autocomplete) {

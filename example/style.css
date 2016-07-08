@@ -1,6 +1,11 @@
 body, input, textarea, select {
     font-family: 'Open Sans', 'Helvetica Neue', helvetica, arial, sans-serif;
 }
+h1 {
+    font-size: 24px;
+    font-weight: lighter;
+    color: #2C2C2C;
+}
 label {
     display: block;
 }

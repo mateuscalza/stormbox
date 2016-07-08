@@ -15,7 +15,7 @@ import { div } from '../util/dom';
 // Use mixins
 const Parent = Selecting(PanelControl(Finding(Positioning(Events(Core)))));
 
-export default class AutoComplete extends Parent {
+export default class StormBox extends Parent {
     constructor(options) {
 
         const {
@@ -42,7 +42,7 @@ export default class AutoComplete extends Parent {
         super(options);
 
         // Key
-        this.key = AutoComplete.currentSerialKey++;
+        this.key = StormBox.currentSerialKey++;
 
         // Environment
         this.finding = false;
@@ -107,7 +107,7 @@ export default class AutoComplete extends Parent {
             emptyItemName: 'Empty'
         }, messages);
 
-        // Set AutoComplete's elements
+        // Set StormBox's elements
         this.elements = {
             hiddenInput,
             textInput,
