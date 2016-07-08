@@ -913,6 +913,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _StormBox = require('../components/StormBox');
+
+var _StormBox2 = _interopRequireDefault(_StormBox);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Core = function () {
@@ -951,7 +957,7 @@ var Core = function () {
     }, {
         key: 'autoCompleteByName',
         value: function autoCompleteByName(name) {
-            var element = StormBox.byName(name);
+            var element = _StormBox2.default.byName(name);
             if (!element) {
                 return null;
             }
@@ -1008,7 +1014,7 @@ var Core = function () {
 
             // Disabled
             if (typeof disabled === 'undefined' && typeof element.dataset['oldDisabled'] !== 'undefined') {
-                disabled = StormBox.interpret(element.dataset['oldDisabled']);
+                disabled = _StormBox2.default.interpret(element.dataset['oldDisabled']);
             }
             if (typeof disabled !== 'undefined') {
                 if (typeof element.dataset['oldDisabled'] === 'undefined') {
@@ -1019,7 +1025,7 @@ var Core = function () {
 
             // ReadOnly
             if (typeof readonly === 'undefined' && typeof element.dataset['oldReadOnly'] !== 'undefined') {
-                readonly = StormBox.interpret(element.dataset['oldReadOnly']);
+                readonly = _StormBox2.default.interpret(element.dataset['oldReadOnly']);
             }
             if (typeof readonly !== 'undefined') {
                 if (typeof element.dataset['oldReadOnly'] === 'undefined') {
@@ -1030,7 +1036,7 @@ var Core = function () {
 
             // Required
             if (typeof required === 'undefined' && typeof element.dataset['oldRequired'] !== 'undefined') {
-                required = StormBox.interpret(element.dataset['oldRequired']);
+                required = _StormBox2.default.interpret(element.dataset['oldRequired']);
             }
             if (typeof required !== 'undefined') {
                 if (typeof element.dataset['oldRequired'] === 'undefined') {
@@ -1041,7 +1047,7 @@ var Core = function () {
 
             // Visibility
             if (typeof visibility === 'undefined' && typeof element.dataset['oldVisibility'] !== 'undefined') {
-                visibility = StormBox.interpret(element.dataset['oldVisibility']);
+                visibility = _StormBox2.default.interpret(element.dataset['oldVisibility']);
             }
             if (typeof visibility !== 'undefined') {
                 if (typeof element.dataset['oldVisibility'] === 'undefined') {
@@ -1080,7 +1086,7 @@ var Core = function () {
 Core.currentSerialKey = 0;
 exports.default = Core;
 
-},{}],10:[function(require,module,exports){
+},{"../components/StormBox":8}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

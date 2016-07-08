@@ -1,3 +1,5 @@
+import StormBox from '../components/StormBox';
+
 export default class Core {
 
     static currentSerialKey = 0;
