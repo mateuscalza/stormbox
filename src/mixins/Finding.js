@@ -3,7 +3,6 @@ export default Parent => class extends Parent {
     find() {
         return new Promise((resolve, reject) => {
             if(this.finding) {
-                console.log('Let`s abort!');
                 this.source.abort();
                 this.findingEnd();
             }
@@ -28,6 +27,7 @@ export default Parent => class extends Parent {
                 .then(newResults => {
                     this.lastParams = params;
                     results = newResults;
+                    this.paginationData = newResults.pagination;
                     this.components.panel.show(results);
                     if(this.autoSelectWhenOneResult && (!this.open || !this.emptyItem) && results && results.data && results.data.length == 1) {
                         this.select({

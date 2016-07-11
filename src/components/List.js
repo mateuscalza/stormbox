@@ -92,7 +92,6 @@ export default class List {
                 }
                 elementIndex++;
                 realItemsCount++;
-                console.log('realItemsCount > this.autocomplete.minItemsLength', realItemsCount, this.autocomplete.minItemsLength);
                 if(this.autocomplete.components.panel.element.getBoundingClientRect().height > this.autocomplete.heightSpace && realItemsCount > this.autocomplete.minItemsLength) {
                     this.elements.ul.removeChild(liChild);
                     elementIndex--;
@@ -100,10 +99,10 @@ export default class List {
                     break;
                 }
                 this.autocomplete.components.panel.components.pagination.perPage = realItemsCount;
+            }
 
-                if(realItemsCount === this.items.length) {
-                    this.autocomplete.components.panel.components.pagination.hide();
-                }
+            if(!this.autocomplete.paginationData || this.autocomplete.paginationData.total <= realItemsCount) {
+                this.autocomplete.components.panel.components.pagination.hide();
             }
 
 

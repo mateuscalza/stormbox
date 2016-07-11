@@ -54,6 +54,7 @@ export default class StormBox extends Parent {
         this.lastParams = null;
         this.valueOnOpen = undefined;
         this.usedOtherFields = [];
+        this.paginationData = null;
         this.direction = 'down';
 
         // Initial

@@ -1,10 +1,4 @@
-/*!
- * StormBox Responsive Autocomplete v3.0.0
- * Created by Mateus Calza.
- * With Inovadora Sistemas support.
- *
- * Licensed MIT.
- */(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.StormBox = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.StormBox = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
 var hasOwn = Object.prototype.hasOwnProperty;
@@ -324,7 +318,6 @@ var List = function () {
                     }
                     elementIndex++;
                     realItemsCount++;
-                    console.log('realItemsCount > this.autocomplete.minItemsLength', realItemsCount, this.autocomplete.minItemsLength);
                     if (this.autocomplete.components.panel.element.getBoundingClientRect().height > this.autocomplete.heightSpace && realItemsCount > this.autocomplete.minItemsLength) {
                         this.elements.ul.removeChild(liChild);
                         elementIndex--;
@@ -332,10 +325,10 @@ var List = function () {
                         break;
                     }
                     this.autocomplete.components.panel.components.pagination.perPage = realItemsCount;
+                }
 
-                    if (realItemsCount === this.items.length) {
-                        this.autocomplete.components.panel.components.pagination.hide();
-                    }
+                if (!this.autocomplete.paginationData || this.autocomplete.paginationData.total <= realItemsCount) {
+                    this.autocomplete.components.panel.components.pagination.hide();
                 }
 
                 if (childForCustomText) {
@@ -911,6 +904,7 @@ var StormBox = function (_Parent) {
         _this.lastParams = null;
         _this.valueOnOpen = undefined;
         _this.usedOtherFields = [];
+        _this.paginationData = null;
         _this.direction = 'down';
 
         // Initial
@@ -1512,7 +1506,7 @@ exports.default = function (Parent) {
 };
 
 },{"../components/StormBox":9,"../util/events":23,"../util/keys":24}],13:[function(require,module,exports){
-'use strict';
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -1541,13 +1535,12 @@ exports.default = function (Parent) {
         }
 
         _createClass(_class, [{
-            key: 'find',
+            key: "find",
             value: function find() {
                 var _this2 = this;
 
                 return new Promise(function (resolve, reject) {
                     if (_this2.finding) {
-                        console.log('Let`s abort!');
                         _this2.source.abort();
                         _this2.findingEnd();
                     }
@@ -1559,7 +1552,7 @@ exports.default = function (Parent) {
                     var params = _extends({}, _this2.otherParams, _defineProperty({}, _this2.queryParam, query));
                     Object.keys(_this2.references).forEach(function (key) {
                         if (!_this2.references[key]) {
-                            throw new Error('Reference ' + key + ' is not valid!');
+                            throw new Error("Reference " + key + " is not valid!");
                         }
                         params[key] = _this2.references[key].value;
                     });
@@ -1568,6 +1561,7 @@ exports.default = function (Parent) {
                     _this2.source.find(params).then(function (newResults) {
                         _this2.lastParams = params;
                         results = newResults;
+                        _this2.paginationData = newResults.pagination;
                         _this2.components.panel.show(results);
                         if (_this2.autoSelectWhenOneResult && (!_this2.open || !_this2.emptyItem) && results && results.data && results.data.length == 1) {
                             _this2.select({
@@ -1593,7 +1587,7 @@ exports.default = function (Parent) {
                 });
             }
         }, {
-            key: 'feed',
+            key: "feed",
             value: function feed(offset) {
                 var _this3 = this;
 
@@ -1607,7 +1601,7 @@ exports.default = function (Parent) {
                 });
             }
         }, {
-            key: 'findingStart',
+            key: "findingStart",
             value: function findingStart() {
                 // Set flag
                 this.typing = false;
@@ -1616,7 +1610,7 @@ exports.default = function (Parent) {
                 this.components.icon.loadingStart();
             }
         }, {
-            key: 'findingEnd',
+            key: "findingEnd",
             value: function findingEnd() {
                 // Set flag
                 this.finding = false;
