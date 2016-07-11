@@ -473,13 +473,15 @@ var Pagination = function () {
             var _context,
                 _this = this;
 
-            (_context = this.elements.goLeft, _events.on).call(_context, 'click', function (event) {
+            (_context = this.elements.goLeft, _events.on).call(_context, 'mousedown', function (event) {
                 event.preventDefault();
                 _this.prev();
+                _this.autocomplete.components.panel.components.searchInput.elements.input.focus();
             });
-            (_context = this.elements.goRight, _events.on).call(_context, 'click', function (event) {
+            (_context = this.elements.goRight, _events.on).call(_context, 'mousedown', function (event) {
                 event.preventDefault();
                 _this.next();
+                _this.autocomplete.components.panel.components.searchInput.elements.input.focus();
             });
         }
     }, {
@@ -1491,8 +1493,10 @@ exports.default = function (Parent) {
                     this.ignoreBlur = true;
                     this.components.panel.components.searchInput.elements.input.focus();
                     this.ignoreFocus = true;
+                } else if (_StormBox2.default.isFrom(event.target, this.components.panel.components.pagination.elements.goLeft) || _StormBox2.default.isFrom(event.target, this.components.panel.components.pagination.elements.goRight)) {
+                    return;
                 } else if (document.activeElement === this.components.panel.components.searchInput.elements.input) {
-                    if (this.open && !_StormBox2.default.isFrom(event.target, this.components.panel.components.pagination.elements.goLeft) && !_StormBox2.default.isFrom(event.target, this.components.panel.components.pagination.elements.goRight)) {
+                    if (this.open) {
                         this.closePanel();
                     }
                     this.ignoreFocus = true;

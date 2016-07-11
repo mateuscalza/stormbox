@@ -157,14 +157,14 @@ export default (Parent) => class extends Parent {
             this.ignoreBlur = true;
             this.components.panel.components.searchInput.elements.input.focus();
             this.ignoreFocus = true;
+        } else if(
+            StormBox.isFrom(event.target, this.components.panel.components.pagination.elements.goLeft)
+            ||
+            StormBox.isFrom(event.target, this.components.panel.components.pagination.elements.goRight)
+        ) {
+            return;
         } else if(document.activeElement === this.components.panel.components.searchInput.elements.input) {
-            if(
-                this.open
-                &&
-                !StormBox.isFrom(event.target, this.components.panel.components.pagination.elements.goLeft)
-                &&
-                !StormBox.isFrom(event.target, this.components.panel.components.pagination.elements.goRight)
-            ) {
+            if(this.open) {
                 this.closePanel();
             }
             this.ignoreFocus = true;

@@ -21,13 +21,15 @@ export default class Pagination {
     }
 
     prepareEvents() {
-        this.elements.goLeft::on('click', event => {
+        this.elements.goLeft::on('mousedown', event => {
             event.preventDefault();
             this.prev();
+            this.autocomplete.components.panel.components.searchInput.elements.input.focus();
         });
-        this.elements.goRight::on('click', event => {
+        this.elements.goRight::on('mousedown', event => {
             event.preventDefault();
             this.next();
+            this.autocomplete.components.panel.components.searchInput.elements.input.focus();
         });
     }
 
