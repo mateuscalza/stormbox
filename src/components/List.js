@@ -122,11 +122,11 @@ export default class List {
 
     prepareItemEvents(element, data, elementIndex) {
         element.addEventListener('mouseenter', event => {
-            console.log(elementIndex);
             this.updateSelection(elementIndex);
         });
         element.addEventListener('mousedown', event => {
-            console.log(elementIndex);
+            event.preventDefault();
+            event.stopPropagation();
             this.updateSelection(elementIndex);
             this.onSelect(data);
             this.autocomplete.closePanel();
@@ -166,7 +166,6 @@ export default class List {
 
         if(document.activeElement != this.autocomplete.elements.wrapper) {
             this.autocomplete.ignoreFocus = true;
-            console.log(this.autocomplete.elements.wrapper);
             this.autocomplete.elements.wrapper.focus();
         }
 

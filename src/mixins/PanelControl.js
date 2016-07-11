@@ -22,6 +22,10 @@ export default Parent => class extends Parent {
     }
 
     closePanel() {
+        console.log('close!');
+        if(!this.open) {
+            return;
+        }
         this.open = false;
         this.elements.wrapper.className = this.style.wrapper;
         this.components.panel.element.style.display = 'none';

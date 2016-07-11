@@ -350,11 +350,11 @@ var List = function () {
             var _this2 = this;
 
             element.addEventListener('mouseenter', function (event) {
-                console.log(elementIndex);
                 _this2.updateSelection(elementIndex);
             });
             element.addEventListener('mousedown', function (event) {
-                console.log(elementIndex);
+                event.preventDefault();
+                event.stopPropagation();
                 _this2.updateSelection(elementIndex);
                 _this2.onSelect(data);
                 _this2.autocomplete.closePanel();
@@ -397,7 +397,6 @@ var List = function () {
 
             if (document.activeElement != this.autocomplete.elements.wrapper) {
                 this.autocomplete.ignoreFocus = true;
-                console.log(this.autocomplete.elements.wrapper);
                 this.autocomplete.elements.wrapper.focus();
             }
         }
@@ -1460,6 +1459,8 @@ exports.default = function (Parent) {
         }, {
             key: 'wrapperFocus',
             value: function wrapperFocus(event) {
+                console.log('open panel: event.isTrigger', event.isTrigger);
+                console.log('open panel: this.ignoreFocus', this.ignoreFocus);
                 if (!event.isTrigger && !this.ignoreFocus) {
                     this.openPanel();
                 }
@@ -1493,14 +1494,17 @@ exports.default = function (Parent) {
                     this.ignoreBlur = true;
                     this.components.panel.components.searchInput.elements.input.focus();
                     this.ignoreFocus = true;
-                } else if (_StormBox2.default.isFrom(event.target, this.components.panel.components.pagination.elements.goLeft) || _StormBox2.default.isFrom(event.target, this.components.panel.components.pagination.elements.goRight)) {
+                } else if (_StormBox2.default.isFrom(event.target, this.components.panel.components.pagination.elements.goLeft) || _StormBox2.default.isFrom(event.target, this.components.panel.components.pagination.elements.goRight) || event.target == this.components.panel.components.searchInput.elements.input) {
                     return;
                 } else if (document.activeElement === this.components.panel.components.searchInput.elements.input) {
-                    if (this.open) {
-                        this.closePanel();
+                    if (this.open && _StormBox2.default.isFrom(event.target, this.components.presentText.element)) {
+                        this.ignoreFocus = true;
                     }
-                    this.ignoreFocus = true;
+                    this.closePanel();
                     this.ignoreBlur = true;
+                } else {
+                    this.ignoreFocus = false;
+                    this.ignoreBlur = false;
                 }
             }
         }]);
@@ -1677,6 +1681,10 @@ exports.default = function (Parent) {
         }, {
             key: 'closePanel',
             value: function closePanel() {
+                console.log('close!');
+                if (!this.open) {
+                    return;
+                }
                 this.open = false;
                 this.elements.wrapper.className = this.style.wrapper;
                 this.components.panel.element.style.display = 'none';
@@ -1738,7 +1746,6 @@ exports.default = function (Parent) {
         }, {
             key: 'updateDirection',
             value: function updateDirection() {
-                console.log('direction: ' + this.direction);
                 if (this.direction === 'top') {
                     this.elements.wrapper.classList.remove(this.style.bottom);
                     this.elements.wrapper.classList.add(this.style.top);
@@ -1895,7 +1902,6 @@ var AjaxSource = function () {
 
             return new Promise(function (resolve, reject) {
                 _this.request.onreadystatechange = function () {
-                    console.log('readyState change', _this.request.readyState, _this.request.status, _this.request);
                     if (_this.request.readyState == 4 && _this.request.status == 200) {
                         var json = void 0;
                         try {

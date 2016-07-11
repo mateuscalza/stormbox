@@ -130,6 +130,8 @@ export default (Parent) => class extends Parent {
     }
 
     wrapperFocus(event) {
+        console.log('open panel: event.isTrigger', event.isTrigger)
+        console.log('open panel: this.ignoreFocus', this.ignoreFocus)
         if(!event.isTrigger && !this.ignoreFocus) {
             this.openPanel();
         }
@@ -161,14 +163,19 @@ export default (Parent) => class extends Parent {
             StormBox.isFrom(event.target, this.components.panel.components.pagination.elements.goLeft)
             ||
             StormBox.isFrom(event.target, this.components.panel.components.pagination.elements.goRight)
+            ||
+            event.target == this.components.panel.components.searchInput.elements.input
         ) {
             return;
         } else if(document.activeElement === this.components.panel.components.searchInput.elements.input) {
-            if(this.open) {
-                this.closePanel();
+            if(this.open && StormBox.isFrom(event.target, this.components.presentText.element)) {
+                this.ignoreFocus = true;
             }
-            this.ignoreFocus = true;
+            this.closePanel();
             this.ignoreBlur = true;
+        } else {
+            this.ignoreFocus = false;
+            this.ignoreBlur = false;
         }
     }
 };

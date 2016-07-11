@@ -9,7 +9,6 @@ export default Parent => class extends Parent {
     }
 
     updateDirection() {
-        console.log(`direction: ${this.direction}`);
         if(this.direction === 'top') {
             this.elements.wrapper.classList.remove(this.style.bottom);
             this.elements.wrapper.classList.add(this.style.top);
@@ -17,8 +16,6 @@ export default Parent => class extends Parent {
             this.elements.wrapper.classList.remove(this.style.top);
             this.elements.wrapper.classList.add(this.style.bottom);
         }
-
-
     }
 
 };
