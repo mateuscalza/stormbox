@@ -47,7 +47,12 @@ export default Parent => class extends Parent {
                     this.findingEnd();
                 })
                 .catch(error => {
-                    this.components.panel.error(error);
+                    if(error instanceof Error) {
+                        this.components.panel.error(error);
+                    } else {
+                        this.components.panel.warning(error);
+                    }
+                    
                     if (this.autoSelectWhenOneResult && (!this.open || !this.emptyItem) && results && results.data && results.data.length == 1) {
                         this.select({
                             content: results.data[0].content,

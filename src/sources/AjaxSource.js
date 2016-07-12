@@ -52,6 +52,9 @@ export default class AjaxSource {
                         const parsedError = JSON.parse(this.request.responseText);
                         error += this.request.statusText && this.request.statusText.trim().length ? `; Status: ${this.request.statusText}` : '';
                         if(parsedError.message) {
+                            if(this.request.status == 400) {
+                                return reject(parsedError);
+                            }
                             error += parsedError.message && parsedError.message.trim().length ? `; Status: ${parsedError.message.trim()}` : '';
                         } else {
                             error += this.request.responseText && this.request.responseText.trim().length ? `; Status: ${this.request.responseText.trim()}` : '';

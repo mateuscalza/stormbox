@@ -56,7 +56,7 @@ export default class Panel {
     }
 
     warning(warning) {
-        // this.components.list.hide();
+        this.components.list.hide();
         this.components.errorView.hide();
         this.components.warningView.show(
             StormBox.truncate(

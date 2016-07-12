@@ -3,11 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="aad62eb3-a8b8-42d1-8503-5886b1ae417e" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.js" afterPath="$PROJECT_DIR$/dist/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.min.js" afterPath="$PROJECT_DIR$/dist/index.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/StormBox.js" afterPath="$PROJECT_DIR$/src/components/StormBox.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/Core.js" afterPath="$PROJECT_DIR$/src/core/Core.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/mixins/Events.js" afterPath="$PROJECT_DIR$/src/mixins/Events.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Panel.js" afterPath="$PROJECT_DIR$/src/components/Panel.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/mixins/Finding.js" afterPath="$PROJECT_DIR$/src/mixins/Finding.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sources/AjaxSource.js" afterPath="$PROJECT_DIR$/src/sources/AjaxSource.js" />
     </list>
     <ignored path="es7-autocomplete.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,8 +41,8 @@
       <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="308">
-              <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+            <state relative-caret-position="272">
+              <caret line="75" column="17" selection-start-line="75" selection-start-column="17" selection-end-line="75" selection-end-column="17" />
               <folding />
             </state>
           </provider>
@@ -53,8 +51,8 @@
       <file leaf-file-name="AjaxSource.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/sources/AjaxSource.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="48" column="24" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
+            <state relative-caret-position="306">
+              <caret line="55" column="47" selection-start-line="55" selection-start-column="47" selection-end-line="55" selection-end-column="47" />
               <folding />
             </state>
           </provider>
@@ -72,7 +70,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Events.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Events.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/mixins/Events.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="88">
@@ -87,8 +85,8 @@
       <file leaf-file-name="Finding.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/mixins/Finding.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="74" column="17" selection-start-line="74" selection-start-column="17" selection-end-line="74" selection-end-column="17" />
+            <state relative-caret-position="288">
+              <caret line="52" column="51" selection-start-line="52" selection-start-column="51" selection-end-line="52" selection-end-column="51" />
               <folding />
             </state>
           </provider>
@@ -99,6 +97,18 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="137">
               <caret line="168" column="34" selection-start-line="168" selection-start-column="27" selection-end-line="168" selection-end-column="34" />
+              <folding>
+                <element signature="e#0#46#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Panel.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/Panel.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="417">
+              <caret line="60" column="41" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="41" />
               <folding>
                 <element signature="e#0#46#0" expanded="true" />
               </folding>
@@ -153,14 +163,14 @@
         <option value="$PROJECT_DIR$/src/components/WarningView.js" />
         <option value="$PROJECT_DIR$/src/components/Multiple.js" />
         <option value="$PROJECT_DIR$/example/index.html" />
-        <option value="$PROJECT_DIR$/src/components/Panel.js" />
         <option value="$PROJECT_DIR$/example/style.css" />
-        <option value="$PROJECT_DIR$/src/mixins/Finding.js" />
-        <option value="$PROJECT_DIR$/src/sources/AjaxSource.js" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/core/Core.js" />
         <option value="$PROJECT_DIR$/src/components/StormBox.js" />
         <option value="$PROJECT_DIR$/src/mixins/Events.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/sources/AjaxSource.js" />
+        <option value="$PROJECT_DIR$/src/mixins/Finding.js" />
+        <option value="$PROJECT_DIR$/src/components/Panel.js" />
       </list>
     </option>
   </component>
@@ -449,7 +459,7 @@
       <workItem from="1467977492959" duration="4452000" />
       <workItem from="1467982129302" duration="24455000" />
       <workItem from="1468237388920" duration="27853000" />
-      <workItem from="1468318959145" duration="20101000" />
+      <workItem from="1468318959145" duration="20897000" />
     </task>
     <task id="LOCAL-00001" summary="Renaming from AutoComplete to StormBox.">
       <created>1467977626753</created>
@@ -462,7 +472,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="110765000" />
+    <option name="totallyTimeSpent" value="111561000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -860,16 +870,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Panel.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#46#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/sources/ArraySource.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
@@ -912,28 +912,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/sources/AjaxSource.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="48" column="24" selection-start-line="48" selection-start-column="24" selection-end-line="48" selection-end-column="24" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/StormBox.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
           <caret line="168" column="20" selection-start-line="168" selection-start-column="12" selection-end-line="168" selection-end-column="20" />
           <folding>
             <element signature="e#0#28#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="75" column="17" selection-start-line="75" selection-start-column="17" selection-end-line="75" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mixins/Events.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="88">
+          <caret line="181" column="25" selection-start-line="181" selection-start-column="25" selection-end-line="181" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#46#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -948,14 +950,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/mixins/Finding.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="74" column="17" selection-start-line="74" selection-start-column="17" selection-end-line="74" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/core/Core.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="137">
@@ -966,10 +960,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/mixins/Events.js">
+    <entry file="file://$PROJECT_DIR$/src/sources/AjaxSource.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="88">
-          <caret line="181" column="25" selection-start-line="181" selection-start-column="25" selection-end-line="181" selection-end-column="25" />
+        <state relative-caret-position="306">
+          <caret line="55" column="47" selection-start-line="55" selection-start-column="47" selection-end-line="55" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/mixins/Finding.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="288">
+          <caret line="52" column="51" selection-start-line="52" selection-start-column="51" selection-end-line="52" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Panel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="60" column="41" selection-start-line="60" selection-start-column="41" selection-end-line="60" selection-end-column="41" />
           <folding>
             <element signature="e#0#46#0" expanded="true" />
           </folding>
