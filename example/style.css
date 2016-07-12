@@ -95,7 +95,7 @@ input[type="button"], input[type="submit"] {
 .ac-multiple {
     position: relative;
     width: 100%;
-    display: inline-block;
+    display: block;
     clear: both;
     border: 1px solid #ccc;
     background: #ecf0f1;
@@ -297,6 +297,20 @@ input[type="button"], input[type="submit"] {
 }
 
 .ac-error-view-wrapper {
+    padding: 0 10px 10px 10px;
+}
+
+.ac-warning-view {
+    width: 100%;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: #555555;
+    background-color: #ffde6d;
+    background-image: none;
+    border: 1px solid rgba(50, 50, 50, 0.1);
+}
+
+.ac-warning-view-wrapper {
     padding: 0 10px 10px 10px;
 }
 

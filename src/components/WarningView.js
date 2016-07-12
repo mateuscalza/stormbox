@@ -1,18 +1,18 @@
 import { div } from '../util/dom';
 
-export default class ErrorView {
+export default class WarningView {
     constructor({ style }) {
         this.elements = {};
 
-        this.elements.wrapper = div({ className: style.errorViewWrapper }, this.elements.error = div({
-            className: style.errorView
+        this.elements.wrapper = div({ className: style.warningViewWrapper }, this.elements.warning = div({
+            className: style.warningView
         }));
 
         this.hide();
     }
 
     show(message) {
-        this.elements.error.innerText = message;
+        this.elements.warning.innerText = message;
         this.elements.wrapper.style.display = 'block';
     }
 

@@ -1,5 +1,16 @@
 import Source from './Source';
 
+function nestedSerialize(params, history = []) {
+    return Object.keys(params).map(function (key) {
+        if(typeof params[key] === 'object' && params[key] !== null) {
+            return nestedSerialize(params[key], [...history, key]);
+        }
+        const keys = [...history, key];
+        const mainKey = keys.shift();
+        return encodeURIComponent(mainKey + (keys.length ? '[' + keys.join('][') + ']' : '')) + '=' + encodeURIComponent(params[key])
+    }).join('&');
+}
+
 export default class AjaxSource {
 
     constructor(url) {
@@ -9,9 +20,7 @@ export default class AjaxSource {
 
     prepareRequest(params) {
         this.request = new XMLHttpRequest();
-        const paramUrl = Object.keys(params).map(function (key) {
-            return encodeURIComponent(key) + '=' + encodeURIComponent(params[key])
-        }).join('&');
+        const paramUrl = nestedSerialize(params);
         this.request.open('GET', `${this.url}?${paramUrl}`, true);
     }
 

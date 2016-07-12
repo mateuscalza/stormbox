@@ -16,6 +16,7 @@ import {div} from '../util/dom';
 // Use mixins
 const Parent = Selecting(PanelControl(Finding(Positioning(Events(Core)))));
 
+
 export default class StormBox extends Parent {
     constructor(options) {
 
@@ -119,6 +120,8 @@ export default class StormBox extends Parent {
             presentInnerValue: 'ac-present-inner-value',
             errorView: 'ac-error-view',
             errorViewWrapper: 'ac-error-view-wrapper',
+            warningView: 'ac-warning-view',
+            warningViewWrapper: 'ac-warning-view-wrapper',
             wrapper: 'ac-wrapper',
             top: 'ac-top',
             bottom: 'ac-bottom',
@@ -137,10 +140,10 @@ export default class StormBox extends Parent {
 
         this.messages = extend({
             searchPlaceholder: 'Search...',
-            emptyItemName: 'Empty',
+            emptyItemName: 'No value',
             singularMultipleItems: 'item',
             pluralMultipleItems: 'items',
-            noData: 'Empty'
+            noData: 'No items'
         }, messages);
 
         // Set StormBox's elements

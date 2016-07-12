@@ -47,10 +47,9 @@ export default class Multiple {
             this.children.ul.appendChild(item);
         });
         if (!this.autocomplete.value.length) {
-            const item = li({}, i({
-                innerText: this.autocomplete.messages.noData
-            }));
-            this.children.ul.appendChild(item);
+            this.element.style.display = 'none';
+        } else {
+            this.element.style.display = 'block';
         }
     }
 }
