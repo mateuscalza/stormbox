@@ -2,7 +2,7 @@
   "data": [
     {
       "content": "João Buscapé",
-      "value": 42342342,
+      "value": 1,
       "additional": [
         {
           "label": "Mãe",
@@ -28,7 +28,7 @@
     },
     {
       "content": "Beltrano",
-      "value": 42342343,
+      "value": 2,
       "additional": [
         {
           "label": "Mãe",
@@ -54,7 +54,7 @@
     },
     {
       "content": "Mario Veroneze",
-      "value": 42342343,
+      "value": 3,
       "additional": [],
       "others": [
         {
@@ -71,7 +71,7 @@
     },
     {
       "content": "Patrick Perrony",
-      "value": 42342343,
+      "value": 4,
       "additional": [],
       "others": [
         {
@@ -89,7 +89,7 @@
     },
     {
       "content": "Chuck Norris",
-      "value": 9999999,
+      "value": 5,
       "additional": [
         {
           "label": "Mãe",
@@ -115,15 +115,15 @@
     },
     {
       "content": "Random 1",
-      "value": 9999999,
+      "value": 6,
       "additional": [
         {
           "label": "Mãe",
-          "content": "Sra. Norris"
+          "content": "Sra. Random"
         },
         {
           "label": "Pai",
-          "content": "Sr. Norris"
+          "content": "Sr. Random"
         }
       ],
       "others": [
@@ -131,25 +131,20 @@
           "field": "age",
           "value": 347,
           "disabled": true
-        },
-        {
-          "field": "occupation",
-          "content": "Chuck Norris",
-          "value": 99999999
         }
       ]
     },
     {
       "content": "Random 2",
-      "value": 9999999,
+      "value": 7,
       "additional": [
         {
           "label": "Mãe",
-          "content": "Sra. Norris"
+          "content": "Sra. Random"
         },
         {
           "label": "Pai",
-          "content": "Sr. Norris"
+          "content": "Sr. Random"
         }
       ],
       "others": [
@@ -157,25 +152,20 @@
           "field": "age",
           "value": 347,
           "disabled": true
-        },
-        {
-          "field": "occupation",
-          "content": "Chuck Norris",
-          "value": 99999999
         }
       ]
     },
     {
       "content": "Random 3",
-      "value": 9999999,
+      "value": 8,
       "additional": [
         {
           "label": "Mãe",
-          "content": "Sra. Norris"
+          "content": "Sra. Random"
         },
         {
           "label": "Pai",
-          "content": "Sr. Norris"
+          "content": "Sr. Random"
         }
       ],
       "others": [
@@ -183,25 +173,20 @@
           "field": "age",
           "value": 347,
           "disabled": true
-        },
-        {
-          "field": "occupation",
-          "content": "Chuck Norris",
-          "value": 99999999
         }
       ]
     },
     {
       "content": "Random 4",
-      "value": 9999999,
+      "value": 9,
       "additional": [
         {
           "label": "Mãe",
-          "content": "Sra. Norris"
+          "content": "Sra. Random"
         },
         {
           "label": "Pai",
-          "content": "Sr. Norris"
+          "content": "Sr. Random"
         }
       ],
       "others": [
@@ -209,25 +194,20 @@
           "field": "age",
           "value": 347,
           "disabled": true
-        },
-        {
-          "field": "occupation",
-          "content": "Chuck Norris",
-          "value": 99999999
         }
       ]
     },
     {
       "content": "Random 5",
-      "value": 9999999,
+      "value": 10,
       "additional": [
         {
           "label": "Mãe",
-          "content": "Sra. Norris"
+          "content": "Sra. Random"
         },
         {
           "label": "Pai",
-          "content": "Sr. Norris"
+          "content": "Sr. Random"
         }
       ],
       "others": [
@@ -235,11 +215,6 @@
           "field": "age",
           "value": 347,
           "disabled": true
-        },
-        {
-          "field": "occupation",
-          "content": "Chuck Norris",
-          "value": 99999999
         }
       ]
     }

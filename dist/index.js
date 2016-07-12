@@ -142,7 +142,7 @@ var SearchInput = function () {
 
 exports.default = SearchInput;
 
-},{"../sources/SelectSource":19,"../util/dom":22,"extend":1}],3:[function(require,module,exports){
+},{"../sources/SelectSource":20,"../util/dom":23,"extend":1}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -197,7 +197,7 @@ var Icon = function () {
 
 exports.default = Icon;
 
-},{"../sources/SelectSource":19,"../util/dom":22,"../util/events":23,"extend":1}],4:[function(require,module,exports){
+},{"../sources/SelectSource":20,"../util/dom":23,"../util/events":24,"extend":1}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -303,9 +303,13 @@ var List = function () {
                             }))));
                         }
                     }
+                    var alreadySelectedIcon = (0, _dom.i)();
+                    if (this.autocomplete.multiple && this.autocomplete.value.indexOf(String(this.items[index].value)) !== -1 || !this.autocomplete.multiple && this.autocomplete.value == this.items[index].value) {
+                        alreadySelectedIcon.className = this.style.alreadySelected;
+                    }
                     var innerChild = (0, _dom.div)({
                         className: this.style.item
-                    }, mainText);
+                    }, alreadySelectedIcon, mainText);
                     if (additionalChild) {
                         innerChild.appendChild(additionalChild);
                     }
@@ -338,7 +342,7 @@ var List = function () {
                 this.autocomplete.components.panel.element.style.maxHeight = Math.max(110, this.autocomplete.heightSpace) + 'px';
 
                 if (this.items.length >= 1) {
-                    this.updateSelection(1);
+                    this.updateSelection(this.autocomplete.emptyItem ? 1 : 0);
                 } else {
                     this.updateSelection(0);
                 }
@@ -357,7 +361,9 @@ var List = function () {
                 event.stopPropagation();
                 _this2.updateSelection(elementIndex);
                 _this2.onSelect(data);
-                _this2.autocomplete.closePanel();
+                if (!_this2.autocomplete.multiple) {
+                    _this2.autocomplete.closePanel();
+                }
             });
         }
     }, {
@@ -427,7 +433,81 @@ var List = function () {
 
 exports.default = List;
 
-},{"../util/dom":22}],5:[function(require,module,exports){
+},{"../util/dom":23}],5:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _dom = require('../util/dom');
+
+var _events = require('../util/events');
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Multiple = function () {
+    function Multiple(_ref, _ref2, autocomplete) {
+        var style = _ref.style;
+        var onSelect = _ref2.onSelect;
+
+        _classCallCheck(this, Multiple);
+
+        this.autocomplete = autocomplete;
+        this.style = style;
+        this.children = {};
+        this.children.ul = (0, _dom.ul)({});
+        this.element = (0, _dom.div)({ className: style.multipleWrapper }, this.children.ul);
+    }
+
+    _createClass(Multiple, [{
+        key: 'render',
+        value: function render() {
+            var _this = this;
+
+            if (!this.autocomplete.hiddenInputName || !this.autocomplete.textInputName) {
+                throw new Error('Params "hiddenInputName" and "textInputName" are required when multiple.');
+            }
+            this.children.ul.innerHTML = '';
+            this.autocomplete.value.forEach(function (value, index) {
+                var icon = (0, _dom.button)({}, (0, _dom.i)({ className: _this.style.multipleItemRemoveIcon }));
+                _events.on.call(icon, 'click', function (event) {
+                    event.preventDefault();
+                    _this.autocomplete.remove(index);
+                });
+                var text = (0, _dom.span)({
+                    innerText: _this.autocomplete.content[index]
+                });
+                var hiddenInput = (0, _dom.input)({
+                    type: 'hidden',
+                    name: _this.autocomplete.hiddenInputName + '[]',
+                    value: value
+                });
+                var textInput = (0, _dom.input)({
+                    type: 'hidden',
+                    name: _this.autocomplete.textInputName + '[]',
+                    value: _this.autocomplete.content[index]
+                });
+                var item = (0, _dom.li)({}, icon, text, hiddenInput, textInput);
+                _this.children.ul.appendChild(item);
+            });
+            if (!this.autocomplete.value.length) {
+                var item = (0, _dom.li)({}, (0, _dom.i)({
+                    innerText: this.autocomplete.messages.noData
+                }));
+                this.children.ul.appendChild(item);
+            }
+        }
+    }]);
+
+    return Multiple;
+}();
+
+exports.default = Multiple;
+
+},{"../util/dom":23,"../util/events":24}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -541,7 +621,7 @@ var Pagination = function () {
 
 exports.default = Pagination;
 
-},{"../util/dom":22,"../util/events":23}],6:[function(require,module,exports){
+},{"../util/dom":23,"../util/events":24}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -622,7 +702,7 @@ var Panel = function () {
 
 exports.default = Panel;
 
-},{"../components/StormBox":9,"../util/dom":22,"./ErrorView":2,"./List":4,"./Pagination":5,"./SearchInput":8}],7:[function(require,module,exports){
+},{"../components/StormBox":10,"../util/dom":23,"./ErrorView":2,"./List":4,"./Pagination":6,"./SearchInput":9}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -724,7 +804,7 @@ var PresentText = function () {
 
 exports.default = PresentText;
 
-},{"../util/dom":22,"../util/events":23}],8:[function(require,module,exports){
+},{"../util/dom":23,"../util/events":24}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -779,7 +859,7 @@ var SearchInput = function () {
 
 exports.default = SearchInput;
 
-},{"../sources/SelectSource":19,"../util/dom":22,"extend":1}],9:[function(require,module,exports){
+},{"../sources/SelectSource":20,"../util/dom":23,"extend":1}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -799,6 +879,10 @@ var _PresentText2 = _interopRequireDefault(_PresentText);
 var _Icon = require('./Icon');
 
 var _Icon2 = _interopRequireDefault(_Icon);
+
+var _Multiple = require('./Multiple');
+
+var _Multiple2 = _interopRequireDefault(_Multiple);
 
 var _Panel = require('./Panel');
 
@@ -888,6 +972,16 @@ var StormBox = function (_Parent) {
         var valueInOthersAs = _options$valueInOther === undefined ? 'ID' : _options$valueInOther;
         var _options$minItemsLeng = options.minItemsLength;
         var minItemsLength = _options$minItemsLeng === undefined ? 1 : _options$minItemsLeng;
+        var _options$multiple = options.multiple;
+        var multiple = _options$multiple === undefined ? false : _options$multiple;
+        var _options$anchorElemen = options.anchorElement;
+        var anchorElement = _options$anchorElemen === undefined ? null : _options$anchorElemen;
+        var _options$distinct = options.distinct;
+        var distinct = _options$distinct === undefined ? true : _options$distinct;
+        var _options$hiddenInputN = options.hiddenInputName;
+        var hiddenInputName = _options$hiddenInputN === undefined ? null : _options$hiddenInputN;
+        var _options$textInputNam = options.textInputName;
+        var textInputName = _options$textInputNam === undefined ? null : _options$textInputNam;
 
 
         // Key
@@ -909,6 +1003,9 @@ var StormBox = function (_Parent) {
         _this.direction = 'down';
 
         // Initial
+        _this.multiple = multiple;
+        _this.distinct = distinct;
+        _this.anchorElement = anchorElement;
         _this.references = references;
         _this.otherParams = otherParams;
         _this.queryParam = queryParam;
@@ -920,7 +1017,13 @@ var StormBox = function (_Parent) {
         _this.autoSelectWhenOneResult = autoSelectWhenOneResult;
         _this.valueInOthersAs = valueInOthersAs;
         _this.minItemsLength = minItemsLength;
-        _this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
+        _this.hiddenInputName = hiddenInputName;
+        _this.textInputName = textInputName;
+        _this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : hiddenInput && textInput && !(hiddenInput[0] || hiddenInput).hasAttribute('required') && !(textInput[0] || textInput).hasAttribute('required');
+
+        if (multiple) {
+            _this.emptyItem = false;
+        }
 
         // Source validation
         if (!source && !selectInput) {
@@ -959,12 +1062,18 @@ var StormBox = function (_Parent) {
             paginationLeft: 'ac-pagination-left',
             paginationRight: 'ac-pagination-right',
             paginationGoLeftIcon: 'fa fa-chevron-left',
-            paginationGoRightIcon: 'fa fa-chevron-right'
+            paginationGoRightIcon: 'fa fa-chevron-right',
+            multipleWrapper: 'ac-multiple',
+            multipleItemRemoveIcon: 'fa fa-remove',
+            alreadySelected: 'fa fa-check-circle ac-already-selected'
         }, style);
 
         _this.messages = (0, _extend2.default)({
             searchPlaceholder: 'Search...',
-            emptyItemName: 'Empty'
+            emptyItemName: 'Empty',
+            singularMultipleItems: 'item',
+            pluralMultipleItems: 'items',
+            noData: 'Empty'
         }, messages);
 
         // Set StormBox's elements
@@ -985,7 +1094,8 @@ var StormBox = function (_Parent) {
         _this.components = {
             presentText: new _PresentText2.default({ style: _this.style }, {}, _this),
             icon: new _Icon2.default({ style: _this.style }),
-            panel: new _Panel2.default({ style: _this.style }, { onSelect: _this.select.bind(_this) }, _this)
+            panel: new _Panel2.default({ style: _this.style }, { onSelect: _this.select.bind(_this) }, _this),
+            multiple: new _Multiple2.default({ style: _this.style }, { onRemove: _this.remove.bind(_this) }, _this)
         };
 
         // Prepare elements
@@ -998,35 +1108,97 @@ var StormBox = function (_Parent) {
         value: function prepareElements() {
             // Turn wrapper focusable
             this.elements.wrapper.setAttribute('tabindex', '0');
-            // Store hiddenInput value
-            this.value = this.elements.hiddenInput.value;
-            // Store textInput value (content)
-            this.content = this.elements.textInput.value;
-            // Add wrapper after hiddenInput
-            this.elements.textInput.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
-            // Remove old inputs
-            this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
-            this.elements.textInput.parentNode.removeChild(this.elements.textInput);
-            // Prepare hiddenInput
-            this.elements.hiddenInput.autoComplete = this;
-            this.elements.hiddenInput.type = 'hidden';
-            this.elements.hiddenInput.className = this.style.hiddenInput;
-            this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
-            // Prepare textInput
-            this.elements.textInput.autoComplete = this;
-            this.elements.textInput.type = 'hidden';
-            this.elements.textInput.className = this.style.textInput;
-            this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
-            // Set initial text
-            this.components.presentText.value(this.value);
-            this.components.presentText.text(this.content);
-            // Append wrapper's children
-            this.elements.wrapper.appendChild(this.elements.hiddenInput);
-            this.elements.wrapper.appendChild(this.elements.textInput);
-            this.elements.wrapper.appendChild(this.components.presentText.element);
-            this.elements.wrapper.appendChild(this.components.icon.element);
-            this.elements.wrapper.appendChild(this.components.panel.element);
+            if (!this.multiple) {
+                // Store hiddenInput value
+                this.value = this.elements.hiddenInput.value;
+                // Store textInput value (content)
+                this.content = this.elements.textInput.value;
 
+                // If no anchor, textInput is anchor
+                if (!this.anchorElement) {
+                    this.anchorElement = this.elements.textInput;
+                }
+
+                // Add wrapper after anchor
+                this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
+
+                // Remove old inputs
+                this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
+                this.elements.textInput.parentNode.removeChild(this.elements.textInput);
+
+                if (this.anchorElement.parentNode) {
+                    this.anchorElement.parentNode.removeChild(this.anchorElement);
+                }
+
+                // Prepare hiddenInput
+                this.elements.hiddenInput.autoComplete = this;
+                this.elements.hiddenInput.type = 'hidden';
+                this.elements.hiddenInput.className = this.style.hiddenInput;
+                this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
+                // Prepare textInput
+                this.elements.textInput.autoComplete = this;
+                this.elements.textInput.type = 'hidden';
+                this.elements.textInput.className = this.style.textInput;
+                this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
+
+                // Present values
+                this.components.presentText.value(this.value);
+                this.components.presentText.text(this.content);
+
+                // Put hiddens in DOM
+                this.elements.wrapper.appendChild(this.elements.hiddenInput);
+                this.elements.wrapper.appendChild(this.elements.textInput);
+
+                // Append wrapper's children
+                this.elements.wrapper.appendChild(this.components.presentText.element);
+                this.elements.wrapper.appendChild(this.components.icon.element);
+                this.elements.wrapper.appendChild(this.components.panel.element);
+            } else {
+                // Store hiddenInput value
+                this.value = this.elements.hiddenInput.map(function (element) {
+                    return element.value;
+                });
+                // Store textInput value (content)
+                this.content = this.elements.textInput.map(function (element) {
+                    return element.value;
+                });
+
+                if (!this.anchorElement && this.elements.hiddenInput[0]) {
+                    this.anchorElement = this.elements.hiddenInput[0];
+                }
+
+                // Add wrapper after anchor
+                this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
+
+                // Remove items from DOM
+                this.elements.hiddenInput.forEach(function (element) {
+                    return element.parentNode.removeChild(element);
+                });
+                this.elements.textInput.forEach(function (element) {
+                    return element.parentNode.removeChild(element);
+                });
+
+                if (this.anchorElement.parentNode) {
+                    this.anchorElement.parentNode.removeChild(this.anchorElement);
+                }
+
+                // Present values
+                this.components.presentText.value('');
+                if (this.value.length === 1) {
+                    this.components.presentText.text(this.value.length + ' ' + this.messages.singularMultipleItems);
+                } else if (this.value.length > 1) {
+                    this.components.presentText.text(this.value.length + ' ' + this.messages.pluralMultipleItems);
+                } else {
+                    this.components.presentText.text(' ');
+                }
+                this.components.multiple.render();
+
+                // Append wrapper's children
+                this.elements.wrapper.appendChild(this.components.presentText.element);
+                this.elements.wrapper.appendChild(this.components.icon.element);
+                this.elements.wrapper.appendChild(this.components.panel.element);
+                this.elements.wrapper.parentNode.insertBefore(this.components.multiple.element, this.elements.wrapper.nextSibling);
+            }
             this.prepareEvents();
         }
     }]);
@@ -1036,7 +1208,7 @@ var StormBox = function (_Parent) {
 
 exports.default = StormBox;
 
-},{"../core/Core":10,"../mixins/Events":12,"../mixins/Finding":13,"../mixins/PanelControl":14,"../mixins/Positioning":15,"../mixins/Selecting":16,"../sources/SelectSource":19,"../util/debounce":21,"../util/dom":22,"./Icon":3,"./Panel":6,"./PresentText":7,"extend":1}],10:[function(require,module,exports){
+},{"../core/Core":11,"../mixins/Events":13,"../mixins/Finding":14,"../mixins/PanelControl":15,"../mixins/Positioning":16,"../mixins/Selecting":17,"../sources/SelectSource":20,"../util/debounce":22,"../util/dom":23,"./Icon":3,"./Multiple":5,"./Panel":7,"./PresentText":8,"extend":1}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1063,18 +1235,28 @@ var Core = function () {
     _createClass(Core, null, [{
         key: 'byId',
         value: function byId(id) {
-            return document.getElementById(id);
+            var doc = arguments.length <= 1 || arguments[1] === undefined ? document : arguments[1];
+
+            return doc.getElementById(id);
         }
     }, {
         key: 'byName',
         value: function byName(name) {
             var index = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
+            var doc = arguments.length <= 2 || arguments[2] === undefined ? document : arguments[2];
 
-            var nodeListWithName = (this instanceof HTMLElement ? this : document).getElementsByName(name);
+            var nodeListWithName = (this instanceof HTMLElement ? this : doc).getElementsByName(name);
             if (!nodeListWithName.length || !nodeListWithName[index]) {
                 return null;
             }
             return nodeListWithName[index];
+        }
+    }, {
+        key: 'byArrayName',
+        value: function byArrayName(name) {
+            var doc = arguments.length <= 1 || arguments[1] === undefined ? document : arguments[1];
+
+            return Array.prototype.slice.call((this instanceof HTMLElement ? this : doc).getElementsByName(name + '[]'));
         }
     }, {
         key: 'autoCompleteByKey',
@@ -1137,6 +1319,14 @@ var Core = function () {
             } else {
                 return mixedValue;
             }
+        }
+    }, {
+        key: 'isArray',
+        value: function isArray(anyVariable) {
+            if (Object.prototype.toString.call(anyVariable) === '[object Array]') {
+                return true;
+            }
+            return false;
         }
     }, {
         key: 'projectElementSettings',
@@ -1248,7 +1438,7 @@ exports.default = Core;
 
 window.isFrom = Core.isFrom;
 
-},{"../components/StormBox":9,"../util/dom":22}],11:[function(require,module,exports){
+},{"../components/StormBox":10,"../util/dom":23}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1303,7 +1493,7 @@ if (typeof window !== 'undefined') {
     window.StormBoxWidget = _StormBox2.default;
 }
 
-},{"./components/StormBox":9,"./sources/AjaxSource":17,"./sources/ArraySource":18,"./sources/SelectSource":19,"./sources/Source":20}],12:[function(require,module,exports){
+},{"./components/StormBox":10,"./sources/AjaxSource":18,"./sources/ArraySource":19,"./sources/SelectSource":20,"./sources/Source":21}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1459,8 +1649,6 @@ exports.default = function (Parent) {
         }, {
             key: 'wrapperFocus',
             value: function wrapperFocus(event) {
-                console.log('open panel: event.isTrigger', event.isTrigger);
-                console.log('open panel: this.ignoreFocus', this.ignoreFocus);
                 if (!event.isTrigger && !this.ignoreFocus) {
                     this.openPanel();
                 }
@@ -1468,19 +1656,21 @@ exports.default = function (Parent) {
             }
         }, {
             key: 'blur',
-            value: function blur(event) {
+            value: function blur() {
                 if (!this.ignoreBlur) {
-                    var _context3;
+                    if (!_StormBox2.default.isArray(this.elements.hiddenInput)) {
+                        var _context3;
 
-                    if (this.value !== this.valueOnOpen) {
-                        var _context2;
+                        if (this.value !== this.valueOnOpen) {
+                            var _context2;
 
-                        this.valueOnOpen = this.value;
-                        (_context2 = this.elements.hiddenInput, _events.trigger).call(_context2, 'change');
-                        (_context2 = this.elements.textInput, _events.trigger).call(_context2, 'change');
+                            this.valueOnOpen = this.value;
+                            (_context2 = this.elements.hiddenInput, _events.trigger).call(_context2, 'change');
+                            (_context2 = this.elements.textInput, _events.trigger).call(_context2, 'change');
+                        }
+                        (_context3 = this.elements.hiddenInput, _events.trigger).call(_context3, 'blur');
+                        (_context3 = this.elements.textInput, _events.trigger).call(_context3, 'blur');
                     }
-                    (_context3 = this.elements.hiddenInput, _events.trigger).call(_context3, 'blur');
-                    (_context3 = this.elements.textInput, _events.trigger).call(_context3, 'blur');
                     this.closePanel();
                 }
                 this.ignoreBlur = false;
@@ -1513,7 +1703,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{"../components/StormBox":9,"../util/events":23,"../util/keys":24}],13:[function(require,module,exports){
+},{"../components/StormBox":10,"../util/events":24,"../util/keys":25}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1631,7 +1821,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1708,7 +1898,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1760,7 +1950,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1799,19 +1989,60 @@ exports.default = function (Parent) {
                 var additional = _ref.additional;
                 var others = _ref.others;
 
-                // Set instance data
-                this.value = value;
-                this.content = content;
+                if (!this.multiple) {
+                    // Set instance data
+                    this.value = value;
+                    this.content = content;
 
-                // Inject data in original inputs
-                this.elements.hiddenInput.value = value || '';
-                this.elements.textInput.value = content || '';
-                // Present text
-                this.components.presentText.value(value || '');
-                this.components.presentText.text(content || ' ');
+                    // Inject data in original inputs
+                    this.elements.hiddenInput.value = value || '';
+                    this.elements.textInput.value = content || '';
+                    // Present text
+                    this.components.presentText.value(value || '');
+                    this.components.presentText.text(content || ' ');
 
-                // Async set other fields data and clear previous
-                this.setOrClearOtherFields(others);
+                    // Async set other fields data and clear previous
+                    this.setOrClearOtherFields(others);
+                } else {
+                    var currentIndex = void 0;
+                    if (this.distinct && (currentIndex = this.value.indexOf(String(value))) !== -1) {
+                        this.value.splice(currentIndex, 1);
+                        this.content.splice(currentIndex, 1);
+                    } else {
+                        // Set instance data
+                        this.value.push(String(value));
+                        this.content.push(String(content));
+                    }
+
+                    this.components.multiple.render();
+                    this.components.panel.components.list.render();
+
+                    // Present text
+                    this.components.presentText.value('');
+                    if (this.value.length === 1) {
+                        this.components.presentText.text(this.value.length + ' ' + this.messages.singularMultipleItems);
+                    } else if (this.value.length > 1) {
+                        this.components.presentText.text(this.value.length + ' ' + this.messages.pluralMultipleItems);
+                    } else {
+                        this.components.presentText.text(' ');
+                    }
+                }
+            }
+        }, {
+            key: 'remove',
+            value: function remove(index) {
+                this.value.splice(index, 1);
+                this.content.splice(index, 1);
+                this.components.multiple.render();
+                this.components.panel.components.list.render();
+                this.components.presentText.value('');
+                if (this.value.length === 1) {
+                    this.components.presentText.text(this.value.length + ' ' + this.messages.singularMultipleItems);
+                } else if (this.value.length > 1) {
+                    this.components.presentText.text(this.value.length + ' ' + this.messages.pluralMultipleItems);
+                } else {
+                    this.components.presentText.text(' ');
+                }
             }
         }, {
             key: 'setOrClearOtherFields',
@@ -1856,7 +2087,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{"../components/StormBox":9}],17:[function(require,module,exports){
+},{"../components/StormBox":10}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1944,7 +2175,7 @@ var AjaxSource = function () {
 
 exports.default = AjaxSource;
 
-},{"./Source":20}],18:[function(require,module,exports){
+},{"./Source":21}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1990,7 +2221,7 @@ var ArraySource = function () {
 
 exports.default = ArraySource;
 
-},{"./Source":20}],19:[function(require,module,exports){
+},{"./Source":21}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2028,7 +2259,7 @@ var SelectSource = function () {
 
 exports.default = SelectSource;
 
-},{"./Source":20}],20:[function(require,module,exports){
+},{"./Source":21}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2063,7 +2294,7 @@ var Source = function () {
 
 exports.default = Source;
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2086,7 +2317,7 @@ function debounce(func, wait, immediate) {
     };
 };
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2200,7 +2431,7 @@ function button(props) {
     return elem.apply(undefined, ['button', props].concat(children));
 };
 
-},{"extend":1}],23:[function(require,module,exports){
+},{"extend":1}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2228,7 +2459,7 @@ function on(eventName, callback) {
     return this;
 }
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2244,5 +2475,5 @@ var ARROW_LEFT = exports.ARROW_LEFT = 37;
 var TAB = exports.TAB = 9;
 var SHIFT = exports.SHIFT = 16;
 
-},{}]},{},[11])(11)
+},{}]},{},[12])(12)
 });

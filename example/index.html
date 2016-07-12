@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css"
           media="screen" title="no title" charset="utf-8">
-    <link rel="stylesheet" href="/example/style.flat.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" href="/example/style.css" media="screen" title="no title" charset="utf-8">
 </head>
 
 <body>
@@ -25,7 +25,7 @@
     </fieldset>
 
     <fieldset>
-        <legend style="color: #f8ac59">AutoComplete</legend>
+        <legend style="color: #f8ac59">StormBox</legend>
         <label>
             <p>The <b>ultra super hyper mega</b> autocomplete.</p>
             <input id="user_id" name="user_id" type="hidden" value="92387">
@@ -48,9 +48,25 @@
         </label>
     </fieldset>
 
+    <fieldset>
+        <legend>Multiple</legend>
+        <p>StormBox with Multiple Items.</p>
+        <label>
+            <p>Select children</p>
+            <span id="children_anchor"></span>
+
+            <input name="children[]" type="hidden" value="1234">
+            <input name="text_children[]" placeholder="Children" type="text" value="Huguinho">
+
+            <input name="children[]" type="hidden" value="1236">
+            <input name="text_children[]" placeholder="Children" type="text" value="Luisinho">
+        </label>
+    </fieldset>
+
     <input type="submit" value="Store">
 </form>
 
+<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script src="/dist/index.js"></script>
 <script>
 
@@ -73,19 +89,42 @@
         source:      new StormBoxWidget.ArraySource([])
     });
 
-    // autocomplete.byId('text_user_id').addEventListener('blur', function(event){
-    //     console.log('text blur working', event.target.value);
-    // });
-    // autocomplete.byId('text_user_id').addEventListener('change', function(event){
-    //     console.log('text change working', event.target.value);
-    // });
+    new StormBoxWidget({
+        hiddenInput:     StormBoxWidget.byArrayName('children'),
+        textInput:       StormBoxWidget.byArrayName('text_children'),
+        hiddenInputName: 'children',
+        textInputName:       'text_children',
+        multiple:        true,
+        anchorElement:   StormBoxWidget.byId('children_anchor'),
+        source:          new StormBoxWidget.ArraySource([
+            {
+                "content": "Huguinho",
+                "value":   1234
+            },
+            {
+                "content": "Zézinho",
+                "value":   1235
+            },
+            {
+                "content": "Luisinho",
+                "value":   1236
+            }
+        ])
+    });
+
+    //    StormBoxWidget.byId('text_user_id').addEventListener('blur', function(event){
+    //         console.log('text blur working', event.target.value);
+    //     });
+    //    StormBoxWidget.byId('text_user_id').addEventListener('change', function(event){
+    //         console.log('text change working', event.target.value);
+    //     });
     //
-    // autocomplete.byId('user_id').addEventListener('blur', function(event){
-    //     console.log('value blur working', event.target.value);
-    // });
-    // autocomplete.byId('user_id').addEventListener('change', function(event){
-    //     console.log('value change working', event.target.value);
-    // });
+    //    StormBoxWidget.byId('user_id').addEventListener('blur', function(event){
+    //         console.log('value blur working', event.target.value);
+    //    });
+    //    StormBoxWidget.byId('user_id').addEventListener('change', function(event){
+    //         console.log('value change working', event.target.value);
+    //    });
 
 </script>
 <script id="__bs_script__">

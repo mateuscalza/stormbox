@@ -5,16 +5,20 @@ export default class Core {
 
     static currentSerialKey = 0;
 
-    static byId(id) {
-        return document.getElementById(id);
+    static byId(id, doc = document) {
+        return doc.getElementById(id);
     }
 
-    static byName(name, index = 0) {
-        let nodeListWithName = (this instanceof HTMLElement ? this : document).getElementsByName(name);
+    static byName(name, index = 0, doc = document) {
+        let nodeListWithName = (this instanceof HTMLElement ? this : doc).getElementsByName(name);
         if (!nodeListWithName.length || !nodeListWithName[index]) {
             return null;
         }
         return nodeListWithName[index];
+    }
+
+    static byArrayName(name, doc = document) {
+        return Array.prototype.slice.call((this instanceof HTMLElement ? this : doc).getElementsByName(name + '[]'));
     }
 
     static autoCompleteByKey(autocompleteKey) {
@@ -69,6 +73,13 @@ export default class Core {
         } else {
             return mixedValue;
         }
+    }
+    
+    static isArray(anyVariable) {
+        if(Object.prototype.toString.call( anyVariable ) === '[object Array]') {
+            return true;
+        }
+        return false;
     }
 
     static projectElementSettings(element, {content, value, disabled, readonly, required, visibility, removed, label}, {defaultDisplayShow = 'inline-block'} = {}) {

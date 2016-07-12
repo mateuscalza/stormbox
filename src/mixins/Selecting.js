@@ -3,19 +3,59 @@ import AutoComplete from '../components/StormBox';
 export default Parent => class extends Parent {
 
     select({ content, value, additional, others }) {
-        // Set instance data
-        this.value = value;
-        this.content = content;
+        if(!this.multiple) {
+            // Set instance data
+            this.value = value;
+            this.content = content;
 
-        // Inject data in original inputs
-        this.elements.hiddenInput.value = value || '';
-        this.elements.textInput.value = content || '';
-        // Present text
-        this.components.presentText.value(value || '');
-        this.components.presentText.text(content || ' ');
+            // Inject data in original inputs
+            this.elements.hiddenInput.value = value || '';
+            this.elements.textInput.value = content || '';
+            // Present text
+            this.components.presentText.value(value || '');
+            this.components.presentText.text(content || ' ');
 
-        // Async set other fields data and clear previous
-        this.setOrClearOtherFields(others);
+            // Async set other fields data and clear previous
+            this.setOrClearOtherFields(others);
+        } else {
+            let currentIndex;
+            if(this.distinct && (currentIndex = this.value.indexOf(String(value))) !== -1) {
+                this.value.splice(currentIndex, 1);
+                this.content.splice(currentIndex, 1);
+            } else {
+                // Set instance data
+                this.value.push(String(value));
+                this.content.push(String(content));
+            }
+
+            this.components.multiple.render();
+            this.components.panel.components.list.render();
+
+            // Present text
+            this.components.presentText.value('');
+            if(this.value.length === 1) {
+                this.components.presentText.text(`${this.value.length} ${this.messages.singularMultipleItems}`);
+            } else if(this.value.length > 1) {
+                this.components.presentText.text(`${this.value.length} ${this.messages.pluralMultipleItems}`);
+            } else {
+                this.components.presentText.text(' ');
+            }
+        }
+    }
+    
+    remove(index) {
+        this.value.splice(index, 1);
+        this.content.splice(index, 1);
+        this.components.multiple.render();
+        this.components.panel.components.list.render();
+        this.components.presentText.value('');
+        if(this.value.length === 1) {
+            this.components.presentText.text(`${this.value.length} ${this.messages.singularMultipleItems}`);
+        } else if(this.value.length > 1) {
+            this.components.presentText.text(`${this.value.length} ${this.messages.pluralMultipleItems}`);
+        } else {
+            this.components.presentText.text(' ');
+        }
     }
 
     setOrClearOtherFields(others = []) {

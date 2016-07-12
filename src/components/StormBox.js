@@ -1,6 +1,7 @@
 import extend from 'extend';
 import PresentText from './PresentText';
 import Icon from './Icon';
+import Multiple from './Multiple';
 import Panel from './Panel';
 import SelectSource from '../sources/SelectSource';
 import Core from '../core/Core';
@@ -10,7 +11,7 @@ import PanelControl from '../mixins/PanelControl';
 import Selecting from '../mixins/Selecting';
 import Positioning from '../mixins/Positioning';
 import debounce from '../util/debounce';
-import { div } from '../util/dom';
+import {div} from '../util/dom';
 
 // Use mixins
 const Parent = Selecting(PanelControl(Finding(Positioning(Events(Core)))));
@@ -37,7 +38,12 @@ export default class StormBox extends Parent {
             otherParams = {}, // Set more params to be passed to sources
             showValue = true, // Present value to user
             valueInOthersAs = 'ID', // Text to show "value" in additional data (if not string, is hide)
-            minItemsLength = 1 // Min obrigatory items per page (if no space, scroll)
+            minItemsLength = 1, // Min obrigatory items per page (if no space, scroll)
+            multiple = false, // Option to select multiple items
+            anchorElement = null, // Anchor element to be replaced by autocomplete
+            distinct = true, // When multiple, select only distinct items
+            hiddenInputName = null, // Required for multiple, name to create inputs with value
+            textInputName = null // Required for multiple, name to create inputs with value
         } = options;
 
         super(options);
@@ -58,6 +64,9 @@ export default class StormBox extends Parent {
         this.direction = 'down';
 
         // Initial
+        this.multiple = multiple;
+        this.distinct = distinct;
+        this.anchorElement = anchorElement;
         this.references = references;
         this.otherParams = otherParams;
         this.queryParam = queryParam;
@@ -69,10 +78,16 @@ export default class StormBox extends Parent {
         this.autoSelectWhenOneResult = autoSelectWhenOneResult;
         this.valueInOthersAs = valueInOthersAs;
         this.minItemsLength = minItemsLength;
-        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (!hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required'));
+        this.hiddenInputName = hiddenInputName;
+        this.textInputName = textInputName;
+        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (hiddenInput && textInput && !(hiddenInput[0] || hiddenInput).hasAttribute('required') && !(textInput[0] || textInput).hasAttribute('required'));
+
+        if (multiple) {
+            this.emptyItem = false;
+        }
 
         // Source validation
-        if(!source  && !selectInput) {
+        if (!source && !selectInput) {
             throw new Error('Set a source or a selectInput.');
         }
 
@@ -108,12 +123,18 @@ export default class StormBox extends Parent {
             paginationLeft: 'ac-pagination-left',
             paginationRight: 'ac-pagination-right',
             paginationGoLeftIcon: 'fa fa-chevron-left',
-            paginationGoRightIcon: 'fa fa-chevron-right'
+            paginationGoRightIcon: 'fa fa-chevron-right',
+            multipleWrapper: 'ac-multiple',
+            multipleItemRemoveIcon: 'fa fa-remove',
+            alreadySelected: 'fa fa-check-circle ac-already-selected'
         }, style);
 
         this.messages = extend({
             searchPlaceholder: 'Search...',
-            emptyItemName: 'Empty'
+            emptyItemName: 'Empty',
+            singularMultipleItems: 'item',
+            pluralMultipleItems: 'items',
+            noData: 'Empty'
         }, messages);
 
         // Set StormBox's elements
@@ -132,9 +153,10 @@ export default class StormBox extends Parent {
 
         // Set relative components
         this.components = {
-            presentText: new PresentText({ style: this.style }, {}, this),
-            icon: new Icon({ style: this.style }),
-            panel: new Panel({ style: this.style }, { onSelect: ::this.select }, this)
+            presentText: new PresentText({style: this.style}, {}, this),
+            icon: new Icon({style: this.style}),
+            panel: new Panel({style: this.style}, {onSelect: ::this.select}, this),
+            multiple: new Multiple({style: this.style}, {onRemove: ::this.remove}, this)
         };
 
         // Prepare elements
@@ -144,35 +166,91 @@ export default class StormBox extends Parent {
     prepareElements() {
         // Turn wrapper focusable
         this.elements.wrapper.setAttribute('tabindex', '0');
-        // Store hiddenInput value
-        this.value = this.elements.hiddenInput.value;
-        // Store textInput value (content)
-        this.content = this.elements.textInput.value;
-        // Add wrapper after hiddenInput
-        this.elements.textInput.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
-        // Remove old inputs
-        this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
-        this.elements.textInput.parentNode.removeChild(this.elements.textInput);
-        // Prepare hiddenInput
-        this.elements.hiddenInput.autoComplete = this;
-        this.elements.hiddenInput.type = 'hidden';
-        this.elements.hiddenInput.className = this.style.hiddenInput;
-        this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
-        // Prepare textInput
-        this.elements.textInput.autoComplete = this;
-        this.elements.textInput.type = 'hidden';
-        this.elements.textInput.className = this.style.textInput;
-        this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
-        // Set initial text
-        this.components.presentText.value(this.value);
-        this.components.presentText.text(this.content);
-        // Append wrapper's children
-        this.elements.wrapper.appendChild(this.elements.hiddenInput);
-        this.elements.wrapper.appendChild(this.elements.textInput);
-        this.elements.wrapper.appendChild(this.components.presentText.element);
-        this.elements.wrapper.appendChild(this.components.icon.element);
-        this.elements.wrapper.appendChild(this.components.panel.element);
+        if (!this.multiple) {
+            // Store hiddenInput value
+            this.value = this.elements.hiddenInput.value;
+            // Store textInput value (content)
+            this.content = this.elements.textInput.value;
 
+            // If no anchor, textInput is anchor
+            if (!this.anchorElement) {
+                this.anchorElement = this.elements.textInput;
+            }
+
+            // Add wrapper after anchor
+            this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling)
+
+            // Remove old inputs
+            this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
+            this.elements.textInput.parentNode.removeChild(this.elements.textInput);
+
+            if (this.anchorElement.parentNode) {
+                this.anchorElement.parentNode.removeChild(this.anchorElement);
+            }
+
+            // Prepare hiddenInput
+            this.elements.hiddenInput.autoComplete = this;
+            this.elements.hiddenInput.type = 'hidden';
+            this.elements.hiddenInput.className = this.style.hiddenInput;
+            this.elements.hiddenInput.dataset['autocompleteKey'] = this.key;
+            // Prepare textInput
+            this.elements.textInput.autoComplete = this;
+            this.elements.textInput.type = 'hidden';
+            this.elements.textInput.className = this.style.textInput;
+            this.elements.textInput.dataset['autocompleteTextKey'] = this.key;
+
+            // Present values
+            this.components.presentText.value(this.value);
+            this.components.presentText.text(this.content);
+
+            // Put hiddens in DOM
+            this.elements.wrapper.appendChild(this.elements.hiddenInput);
+            this.elements.wrapper.appendChild(this.elements.textInput);
+
+            // Append wrapper's children
+            this.elements.wrapper.appendChild(this.components.presentText.element);
+            this.elements.wrapper.appendChild(this.components.icon.element);
+            this.elements.wrapper.appendChild(this.components.panel.element);
+
+        } else {
+            // Store hiddenInput value
+            this.value = this.elements.hiddenInput.map(element => element.value);
+            // Store textInput value (content)
+            this.content = this.elements.textInput.map(element => element.value);
+
+            if (!this.anchorElement && this.elements.hiddenInput[0]) {
+                this.anchorElement = this.elements.hiddenInput[0];
+            }
+
+            // Add wrapper after anchor
+            this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling)
+
+            // Remove items from DOM
+            this.elements.hiddenInput.forEach(element => element.parentNode.removeChild(element));
+            this.elements.textInput.forEach(element => element.parentNode.removeChild(element));
+
+            if (this.anchorElement.parentNode) {
+                this.anchorElement.parentNode.removeChild(this.anchorElement);
+            }
+
+            // Present values
+            this.components.presentText.value('');
+            if (this.value.length === 1) {
+                this.components.presentText.text(`${this.value.length} ${this.messages.singularMultipleItems}`);
+            } else if (this.value.length > 1) {
+                this.components.presentText.text(`${this.value.length} ${this.messages.pluralMultipleItems}`);
+            } else {
+                this.components.presentText.text(' ');
+            }
+            this.components.multiple.render();
+
+            // Append wrapper's children
+            this.elements.wrapper.appendChild(this.components.presentText.element);
+            this.elements.wrapper.appendChild(this.components.icon.element);
+            this.elements.wrapper.appendChild(this.components.panel.element);
+            this.elements.wrapper.parentNode.insertBefore(this.components.multiple.element, this.elements.wrapper.nextSibling)
+
+        }
         this.prepareEvents();
     }
 

@@ -130,23 +130,23 @@ export default (Parent) => class extends Parent {
     }
 
     wrapperFocus(event) {
-        console.log('open panel: event.isTrigger', event.isTrigger)
-        console.log('open panel: this.ignoreFocus', this.ignoreFocus)
         if(!event.isTrigger && !this.ignoreFocus) {
             this.openPanel();
         }
         this.ignoreFocus = false;
     }
 
-    blur(event) {
+    blur() {
         if(!this.ignoreBlur) {
-            if(this.value !== this.valueOnOpen) {
-                this.valueOnOpen = this.value;
-                this.elements.hiddenInput::trigger('change');
-                this.elements.textInput::trigger('change');
+            if(!StormBox.isArray(this.elements.hiddenInput)) {
+                if(this.value !== this.valueOnOpen) {
+                    this.valueOnOpen = this.value;
+                    this.elements.hiddenInput::trigger('change');
+                    this.elements.textInput::trigger('change');
+                }
+                this.elements.hiddenInput::trigger('blur');
+                this.elements.textInput::trigger('blur');
             }
-            this.elements.hiddenInput::trigger('blur');
-            this.elements.textInput::trigger('blur');
             this.closePanel();
         }
         this.ignoreBlur = false;
