@@ -1114,7 +1114,8 @@ var StormBox = function (_Parent) {
             textInput: textInput,
             wrapper: (0, _dom.div)({
                 className: _this.style.wrapper
-            })
+            }),
+            label: null
         };
 
         // Debouncing find
@@ -1150,6 +1151,9 @@ var StormBox = function (_Parent) {
                 if (!this.anchorElement) {
                     this.anchorElement = this.elements.textInput;
                 }
+
+                // Find label
+                this.elements.label = StormBox.findLabel(this.anchorElement) || null;
 
                 // Add wrapper after anchor
                 this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
@@ -1195,9 +1199,18 @@ var StormBox = function (_Parent) {
                     return element.value;
                 });
 
-                if (!this.anchorElement && this.elements.hiddenInput[0]) {
-                    this.anchorElement = this.elements.hiddenInput[0];
+                // If no anchor, first textInput is anchor
+                if (!this.anchorElement && this.elements.textInput[0]) {
+                    this.anchorElement = this.elements.textInput[0];
                 }
+
+                // If still no anchor, throw error
+                if (!this.anchorElement) {
+                    throw new Error('StormBox anchor element missing!');
+                }
+
+                // Find label
+                this.elements.label = StormBox.findLabel(this.anchorElement) || null;
 
                 // Add wrapper after anchor
                 this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
@@ -1353,6 +1366,22 @@ var Core = function () {
         value: function isFrom(target, canditateParent) {
             while (target) {
                 if (target === canditateParent) return true;
+                target = target.parentNode;
+            }
+            return false;
+        }
+    }, {
+        key: 'findLabel',
+        value: function findLabel(target) {
+            var label = void 0;
+            if (target.id && (label = document.querySelector('label[for="' + target.id + '"]'))) {
+                return label;
+            }
+
+            var iterations = 0;
+            while (target) {
+                if (++iterations > 3) return false;
+                if (target.tagName === 'LABEL') return target;
                 target = target.parentNode;
             }
             return false;
@@ -1628,8 +1657,17 @@ exports.default = function (Parent) {
                 (_context = this.components.panel.components.searchInput.elements['input'], _events.on).call(_context, 'blur', this.blur.bind(this));
                 (_context = window, _events.on).call(_context, 'scroll', this.scroll.bind(this));
                 (_context = window, _events.on).call(_context, 'resize', this.resize.bind(this));
+                this.elements.label && (_context = this.elements.label, _events.on).call(_context, 'mouseup', this.labelMouseUp.bind(this));
 
                 this.debouncedLayoutChange();
+            }
+        }, {
+            key: 'labelMouseUp',
+            value: function labelMouseUp(event) {
+                if (_StormBox2.default.isFrom(event.target, this.elements.wrapper) || this.multiple && _StormBox2.default.isFrom(event.target, this.components.multiple.element)) {
+                    return;
+                }
+                this.elements.wrapper.focus();
             }
         }, {
             key: 'scroll',

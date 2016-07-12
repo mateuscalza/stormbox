@@ -40,6 +40,21 @@ export default class Core {
         return false;
     }
 
+    static findLabel(target) {
+        let label;
+        if(target.id && (label = document.querySelector(`label[for="${target.id}"]`))) {
+            return label;
+        }
+
+        let iterations = 0;
+        while (target) {
+            if(++iterations > 3) return false;
+            if (target.tagName === 'LABEL') return target;
+            target = target.parentNode;
+        }
+        return false;
+    }
+
     static autoCompleteByName(name) {
         let element = StormBox.byName(name);
         if (!element) {

@@ -152,7 +152,8 @@ export default class StormBox extends Parent {
             textInput,
             wrapper: div({
                 className: this.style.wrapper
-            })
+            }),
+            label: null
         };
 
         // Debouncing find
@@ -185,6 +186,9 @@ export default class StormBox extends Parent {
             if (!this.anchorElement) {
                 this.anchorElement = this.elements.textInput;
             }
+
+            // Find label
+            this.elements.label = StormBox.findLabel(this.anchorElement) || null;
 
             // Add wrapper after anchor
             this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling)
@@ -227,9 +231,18 @@ export default class StormBox extends Parent {
             // Store textInput value (content)
             this.content = this.elements.textInput.map(element => element.value);
 
-            if (!this.anchorElement && this.elements.hiddenInput[0]) {
-                this.anchorElement = this.elements.hiddenInput[0];
+            // If no anchor, first textInput is anchor
+            if (!this.anchorElement && this.elements.textInput[0]) {
+                this.anchorElement = this.elements.textInput[0];
             }
+
+            // If still no anchor, throw error
+            if(!this.anchorElement) {
+                throw new Error('StormBox anchor element missing!');
+            }
+
+            // Find label
+            this.elements.label = StormBox.findLabel(this.anchorElement) || null;
 
             // Add wrapper after anchor
             this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling)
