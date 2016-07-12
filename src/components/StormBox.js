@@ -43,7 +43,8 @@ export default class StormBox extends Parent {
             anchorElement = null, // Anchor element to be replaced by autocomplete, required for multiple
             distinct = true, // When multiple, select only distinct items
             hiddenInputName = null, // Required for multiple, name to create inputs with value
-            textInputName = null // Required for multiple, name to create inputs with value
+            textInputName = null, // Required for multiple, name to create inputs with value
+            softErrors = false // Soft errors, recommended for production
         } = options;
 
         super(options);
@@ -75,14 +76,15 @@ export default class StormBox extends Parent {
         this.minLength = minLength;
         this.showValue = showValue;
         this.customText = customText;
+        this.softErrors = softErrors;
         this.autoSelectWhenOneResult = autoSelectWhenOneResult;
         this.valueInOthersAs = valueInOthersAs;
         this.minItemsLength = minItemsLength;
         this.hiddenInputName = hiddenInputName;
         this.textInputName = textInputName;
-        if(typeof emptyItem !== 'undefined') {
+        if (typeof emptyItem !== 'undefined') {
             this.emptyItem = emptyItem;
-        } else if(!StormBox.isArray(hiddenInput) && hiddenInput && textInput) {
+        } else if (!StormBox.isArray(hiddenInput) && hiddenInput && textInput) {
             this.emptyItem = !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required')
         }
 

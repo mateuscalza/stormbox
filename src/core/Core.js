@@ -82,7 +82,7 @@ export default class Core {
         return false;
     }
 
-    static projectElementSettings(element, {content, value, disabled, readonly, required, visibility, removed, label}, {defaultDisplayShow = 'inline-block'} = {}) {
+    static projectElementSettings(element, {content, value, disabled, readonly, required, visibility, removed, label}, {defaultDisplayShow = 'inline-block'} = {}, softErrors) {
 
         // Value
         if (typeof value === 'undefined' && typeof element.dataset['oldValue'] !== 'undefined') {
@@ -150,7 +150,11 @@ export default class Core {
         if (typeof content !== 'undefined') {
             const textElement = document.querySelector(`[data-autocomplete-text-key="${element.dataset.autocompleteKey}"]`)
             if (!textElement) {
-                throw new Error('Unknow text element to ', element);
+                if(softErrors) {
+                    return console.warn('Unknow text element to ', element);
+                } else {
+                    throw new Error('Unknow text element to ', element);
+                }
             }
             if (typeof element.dataset['oldContent'] === 'undefined') {
                 element.dataset['oldContent'] = textElement.value;

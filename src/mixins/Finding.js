@@ -17,7 +17,11 @@ export default Parent => class extends Parent {
             };
             Object.keys(this.references).forEach(key => {
                 if (!this.references[key]) {
-                    throw new Error(`Reference ${key} is not valid!`);
+                    if (this.softErrors) {
+                        return console.warn(`Reference ${key} is not valid!`);
+                    } else {
+                        throw new Error(`Reference ${key} is not valid!`);
+                    }
                 }
                 params[key] = this.references[key].value;
             });

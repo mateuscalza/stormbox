@@ -994,6 +994,8 @@ var StormBox = function (_Parent) {
         var hiddenInputName = _options$hiddenInputN === undefined ? null : _options$hiddenInputN;
         var _options$textInputNam = options.textInputName;
         var textInputName = _options$textInputNam === undefined ? null : _options$textInputNam;
+        var _options$softErrors = options.softErrors;
+        var softErrors = _options$softErrors === undefined ? false : _options$softErrors;
 
 
         // Key
@@ -1026,6 +1028,7 @@ var StormBox = function (_Parent) {
         _this.minLength = minLength;
         _this.showValue = showValue;
         _this.customText = customText;
+        _this.softErrors = softErrors;
         _this.autoSelectWhenOneResult = autoSelectWhenOneResult;
         _this.valueInOthersAs = valueInOthersAs;
         _this.minItemsLength = minItemsLength;
@@ -1360,6 +1363,7 @@ var Core = function () {
 
             var _ref2$defaultDisplayS = _ref2.defaultDisplayShow;
             var defaultDisplayShow = _ref2$defaultDisplayS === undefined ? 'inline-block' : _ref2$defaultDisplayS;
+            var softErrors = arguments[3];
 
 
             // Value
@@ -1428,7 +1432,11 @@ var Core = function () {
             if (typeof content !== 'undefined') {
                 var textElement = document.querySelector('[data-autocomplete-text-key="' + element.dataset.autocompleteKey + '"]');
                 if (!textElement) {
-                    throw new Error('Unknow text element to ', element);
+                    if (softErrors) {
+                        return console.warn('Unknow text element to ', element);
+                    } else {
+                        throw new Error('Unknow text element to ', element);
+                    }
                 }
                 if (typeof element.dataset['oldContent'] === 'undefined') {
                     element.dataset['oldContent'] = textElement.value;
@@ -1766,7 +1774,11 @@ exports.default = function (Parent) {
                     var params = _extends({}, _this2.otherParams, _defineProperty({}, _this2.queryParam, query));
                     Object.keys(_this2.references).forEach(function (key) {
                         if (!_this2.references[key]) {
-                            throw new Error("Reference " + key + " is not valid!");
+                            if (_this2.softErrors) {
+                                return console.warn("Reference " + key + " is not valid!");
+                            } else {
+                                throw new Error("Reference " + key + " is not valid!");
+                            }
                         }
                         params[key] = _this2.references[key].value;
                     });
@@ -2020,6 +2032,8 @@ exports.default = function (Parent) {
                     this.setOrClearOtherFields(others);
                 } else {
                     var currentIndex = void 0;
+                    console.log('this.distinct', this.distinct);
+
                     if (this.distinct && (currentIndex = this.value.indexOf(String(value))) !== -1) {
                         this.value.splice(currentIndex, 1);
                         this.content.splice(currentIndex, 1);
@@ -2075,10 +2089,14 @@ exports.default = function (Parent) {
                     var element = document.querySelector('[name="' + others[index].field + '"]');
 
                     if (!element) {
-                        throw new Error('Element of other field \'' + others[index].field + '\' not found!');
+                        if (this.softErrors) {
+                            return console.warn('Element of other field \'' + others[index].field + '\' not found!');
+                        } else {
+                            throw new Error('Element of other field \'' + others[index].field + '\' not found!');
+                        }
                     }
 
-                    _StormBox2.default.projectElementSettings(element, others[index]);
+                    _StormBox2.default.projectElementSettings(element, others[index], this.softErrors);
                     if (indexInUsed === -1) {
                         // Set as used field
                         this.usedOtherFields[this.usedOtherFields.length] = others[index].field;
@@ -2093,7 +2111,7 @@ exports.default = function (Parent) {
                 for (var _index = 0; _index < revertLength; _index++) {
                     // Find element and project element to revert to oldest
                     var _element = document.querySelector('[name="' + fieldsToRevert[_index] + '"]');
-                    _StormBox2.default.projectElementSettings(_element, {});
+                    _StormBox2.default.projectElementSettings(_element, {}, this.softErrors);
                 }
             }
         }]);

@@ -69,6 +69,9 @@
 <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
 <script src="/dist/index.js"></script>
 <script>
+    // import StormBox from 'stormbox';
+    // or import from CDN (or downloaded ZIP)
+    // and use StormBoxWidget injected in window
 
     var userAc = new StormBoxWidget({
         hiddenInput: StormBoxWidget.byId('user_id'),
@@ -96,7 +99,6 @@
         textInputName: 'text_children',
         multiple: true,
         anchorElement: StormBoxWidget.byId('children_anchor'),
-        showValue: false,
         source: new StormBoxWidget.ArraySource([
             {
                 content: "Huguinho",
