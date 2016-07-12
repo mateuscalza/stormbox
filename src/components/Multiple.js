@@ -1,4 +1,4 @@
-import {div, ul, li, input, button, span, i, p} from '../util/dom';
+import {div, ul, li, input, button, span, i, p, strong} from '../util/dom';
 import {on} from '../util/events';
 
 export default class Multiple {
@@ -21,6 +21,9 @@ export default class Multiple {
                 event.preventDefault();
                 this.autocomplete.remove(index);
             });
+            const valueElement = strong({
+                innerText: value + ': '
+            });
             const text = span({
                 innerText: this.autocomplete.content[index]
             });
@@ -34,7 +37,13 @@ export default class Multiple {
                 name: this.autocomplete.textInputName + '[]',
                 value: this.autocomplete.content[index]
             });
-            const item = li({}, icon, text, hiddenInput, textInput);
+            let item;
+            if(this.autocomplete.showValue) {
+                item = li({}, icon, valueElement, text, hiddenInput, textInput);
+            } else {
+                item = li({}, icon, text, hiddenInput, textInput);
+            }
+
             this.children.ul.appendChild(item);
         });
         if (!this.autocomplete.value.length) {

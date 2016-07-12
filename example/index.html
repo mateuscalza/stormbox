@@ -72,42 +72,43 @@
 
     var userAc = new StormBoxWidget({
         hiddenInput: StormBoxWidget.byId('user_id'),
-        textInput:   StormBoxWidget.byId('text_user_id'),
-        source:      new StormBoxWidget.AjaxSource('/example/source.json'),
-        messages:    {
-            emptyItemName:     'Empty',
+        textInput: StormBoxWidget.byId('text_user_id'),
+        source: new StormBoxWidget.AjaxSource('/example/source.json'),
+        messages: {
+            emptyItemName: 'Empty',
             searchPlaceholder: 'Type to search...'
         },
-        references:  {
+        references: {
             city: StormBoxWidget.byId('city')
         }
     });
 
     new StormBoxWidget({
         hiddenInput: StormBoxWidget.byId('occupation'),
-        textInput:   StormBoxWidget.byId('text_occupation'),
-        source:      new StormBoxWidget.ArraySource([])
+        textInput: StormBoxWidget.byId('text_occupation'),
+        source: new StormBoxWidget.ArraySource([])
     });
 
     new StormBoxWidget({
-        hiddenInput:     StormBoxWidget.byArrayName('children'),
-        textInput:       StormBoxWidget.byArrayName('text_children'),
+        hiddenInput: StormBoxWidget.byArrayName('children'),
+        textInput: StormBoxWidget.byArrayName('text_children'),
         hiddenInputName: 'children',
-        textInputName:       'text_children',
-        multiple:        true,
-        anchorElement:   StormBoxWidget.byId('children_anchor'),
-        source:          new StormBoxWidget.ArraySource([
+        textInputName: 'text_children',
+        multiple: true,
+        anchorElement: StormBoxWidget.byId('children_anchor'),
+        showValue: false,
+        source: new StormBoxWidget.ArraySource([
             {
-                "content": "Huguinho",
-                "value":   1234
+                content: "Huguinho",
+                value: 1234
             },
             {
-                "content": "Zézinho",
-                "value":   1235
+                content: "Zézinho",
+                value: 1235
             },
             {
-                "content": "Luisinho",
-                "value":   1236
+                content: "Luisinho",
+                value: 1236
             }
         ])
     });

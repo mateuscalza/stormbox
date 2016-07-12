@@ -289,7 +289,7 @@ var List = function () {
                     });
                     var additionalChild = null;
                     if (this.items[index].additional && this.items[index].additional.length) {
-                        if (typeof this.autocomplete.valueInOthersAs !== 'string') {
+                        if (typeof this.autocomplete.valueInOthersAs !== 'string' || !this.autocomplete.showValue) {
                             additionalChild = _dom.div.call.apply(_dom.div, [null, {}].concat(_toConsumableArray(this.items[index].additional.map(function (_ref3) {
                                 var label = _ref3.label;
                                 var content = _ref3.content;
@@ -480,6 +480,9 @@ var Multiple = function () {
                     event.preventDefault();
                     _this.autocomplete.remove(index);
                 });
+                var valueElement = (0, _dom.strong)({
+                    innerText: value + ': '
+                });
                 var text = (0, _dom.span)({
                     innerText: _this.autocomplete.content[index]
                 });
@@ -493,7 +496,13 @@ var Multiple = function () {
                     name: _this.autocomplete.textInputName + '[]',
                     value: _this.autocomplete.content[index]
                 });
-                var item = (0, _dom.li)({}, icon, text, hiddenInput, textInput);
+                var item = void 0;
+                if (_this.autocomplete.showValue) {
+                    item = (0, _dom.li)({}, icon, valueElement, text, hiddenInput, textInput);
+                } else {
+                    item = (0, _dom.li)({}, icon, text, hiddenInput, textInput);
+                }
+
                 _this.children.ul.appendChild(item);
             });
             if (!this.autocomplete.value.length) {
@@ -1022,7 +1031,11 @@ var StormBox = function (_Parent) {
         _this.minItemsLength = minItemsLength;
         _this.hiddenInputName = hiddenInputName;
         _this.textInputName = textInputName;
-        _this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : hiddenInput && textInput && !(hiddenInput[0] || hiddenInput).hasAttribute('required') && !(textInput[0] || textInput).hasAttribute('required');
+        if (typeof emptyItem !== 'undefined') {
+            _this.emptyItem = emptyItem;
+        } else if (!StormBox.isArray(hiddenInput) && hiddenInput && textInput) {
+            _this.emptyItem = !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
+        }
 
         if (multiple) {
             _this.emptyItem = false;

@@ -40,7 +40,7 @@ export default class StormBox extends Parent {
             valueInOthersAs = 'ID', // Text to show "value" in additional data (if not string, is hide)
             minItemsLength = 1, // Min obrigatory items per page (if no space, scroll)
             multiple = false, // Option to select multiple items
-            anchorElement = null, // Anchor element to be replaced by autocomplete
+            anchorElement = null, // Anchor element to be replaced by autocomplete, required for multiple
             distinct = true, // When multiple, select only distinct items
             hiddenInputName = null, // Required for multiple, name to create inputs with value
             textInputName = null // Required for multiple, name to create inputs with value
@@ -80,7 +80,11 @@ export default class StormBox extends Parent {
         this.minItemsLength = minItemsLength;
         this.hiddenInputName = hiddenInputName;
         this.textInputName = textInputName;
-        this.emptyItem = typeof emptyItem !== 'undefined' ? emptyItem : (hiddenInput && textInput && !(hiddenInput[0] || hiddenInput).hasAttribute('required') && !(textInput[0] || textInput).hasAttribute('required'));
+        if(typeof emptyItem !== 'undefined') {
+            this.emptyItem = emptyItem;
+        } else if(!StormBox.isArray(hiddenInput) && hiddenInput && textInput) {
+            this.emptyItem = !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required')
+        }
 
         if (multiple) {
             this.emptyItem = false;
