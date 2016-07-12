@@ -31,7 +31,13 @@ export default class AjaxSource {
     send() {
         return new Promise((resolve, reject) => {
             this.request.onreadystatechange = () => {
-                if (this.request.readyState == 4 && this.request.status == 200) {
+                if(this.request.readyState != 4) {
+                    return;
+                }
+                if(this.request.status == 0) {
+                    return resolve('aborted');
+                }
+                if (this.request.status == 200) {
                     let json;
                     try {
                         json = JSON.parse(this.request.responseText);
@@ -40,7 +46,7 @@ export default class AjaxSource {
                     }
                     this.request = null;
                     resolve(json);
-                } else if (this.request.readyState == 4 && this.request.status != 200) {
+                } else {
                     let error = `Error Code: ${this.request.status}`;
                     try {
                         const parsedError = JSON.parse(this.request.responseText);

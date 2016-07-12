@@ -1787,7 +1787,7 @@ exports.default = function (Parent) {
 };
 
 },{"../components/StormBox":10,"../util/events":25,"../util/keys":26}],15:[function(require,module,exports){
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -1816,7 +1816,7 @@ exports.default = function (Parent) {
         }
 
         _createClass(_class, [{
-            key: "find",
+            key: 'find',
             value: function find() {
                 var _this2 = this;
 
@@ -1834,9 +1834,9 @@ exports.default = function (Parent) {
                     Object.keys(_this2.references).forEach(function (key) {
                         if (!_this2.references[key]) {
                             if (_this2.softErrors) {
-                                return console.warn("Reference " + key + " is not valid!");
+                                return console.warn('Reference ' + key + ' is not valid!');
                             } else {
-                                throw new Error("Reference " + key + " is not valid!");
+                                throw new Error('Reference ' + key + ' is not valid!');
                             }
                         }
                         params[key] = _this2.references[key].value;
@@ -1844,6 +1844,9 @@ exports.default = function (Parent) {
 
                     var results = { data: [] };
                     _this2.source.find(params).then(function (newResults) {
+                        if (newResults === 'aborted') {
+                            return;
+                        }
                         _this2.lastParams = params;
                         results = newResults;
                         _this2.paginationData = newResults.pagination;
@@ -1872,12 +1875,19 @@ exports.default = function (Parent) {
                 });
             }
         }, {
-            key: "feed",
+            key: 'feed',
             value: function feed(offset) {
                 var _this3 = this;
 
+                if (this.finding) {
+                    this.source.abort();
+                    this.findingEnd();
+                }
                 this.findingStart();
                 return this.source.find(_extends({}, this.lastParams, { offset: offset })).then(function (newResults) {
+                    if (newResults === 'aborted') {
+                        return [];
+                    }
                     _this3.findingEnd();
                     return newResults.data;
                 }).catch(function (error) {
@@ -1886,7 +1896,7 @@ exports.default = function (Parent) {
                 });
             }
         }, {
-            key: "findingStart",
+            key: 'findingStart',
             value: function findingStart() {
                 // Set flag
                 this.typing = false;
@@ -1895,7 +1905,7 @@ exports.default = function (Parent) {
                 this.components.icon.loadingStart();
             }
         }, {
-            key: "findingEnd",
+            key: 'findingEnd',
             value: function findingEnd() {
                 // Set flag
                 this.finding = false;
@@ -2240,7 +2250,13 @@ var AjaxSource = function () {
 
             return new Promise(function (resolve, reject) {
                 _this.request.onreadystatechange = function () {
-                    if (_this.request.readyState == 4 && _this.request.status == 200) {
+                    if (_this.request.readyState != 4) {
+                        return;
+                    }
+                    if (_this.request.status == 0) {
+                        return resolve('aborted');
+                    }
+                    if (_this.request.status == 200) {
                         var json = void 0;
                         try {
                             json = JSON.parse(_this.request.responseText);
@@ -2249,7 +2265,7 @@ var AjaxSource = function () {
                         }
                         _this.request = null;
                         resolve(json);
-                    } else if (_this.request.readyState == 4 && _this.request.status != 200) {
+                    } else {
                         var error = 'Error Code: ' + _this.request.status;
                         try {
                             var parsedError = JSON.parse(_this.request.responseText);

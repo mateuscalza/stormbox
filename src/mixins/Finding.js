@@ -29,6 +29,9 @@ export default Parent => class extends Parent {
             let results = {data: []};
             this.source.find(params)
                 .then(newResults => {
+                    if(newResults === 'aborted') {
+                        return;
+                    }
                     this.lastParams = params;
                     results = newResults;
                     this.paginationData = newResults.pagination;
@@ -60,9 +63,16 @@ export default Parent => class extends Parent {
     }
 
     feed(offset) {
+        if (this.finding) {
+            this.source.abort();
+            this.findingEnd();
+        }
         this.findingStart();
         return this.source.find({...this.lastParams, offset})
             .then(newResults => {
+                if(newResults === 'aborted') {
+                    return [];
+                }
                 this.findingEnd();
                 return newResults.data;
             })
