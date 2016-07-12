@@ -1,7 +1,7 @@
 export default Parent => class extends Parent {
 
     find() {
-        return new Promise((resolve, reject) => {
+        return new Promise(() => {
             if (this.finding) {
                 this.source.abort();
                 this.findingEnd();

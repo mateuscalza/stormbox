@@ -22,7 +22,6 @@ export default Parent => class extends Parent {
     }
 
     closePanel() {
-        console.log('close!');
         if(!this.open) {
             return;
         }

@@ -325,7 +325,7 @@ input[type="button"], input[type="submit"] {
 
 .ac-list-wrapper ul li .ac-item .ac-already-selected {
     padding-right: 5px;
-    color: #2ecc71;
+    color: #f8ac59;
 }
 .ac-list-wrapper ul li .ac-item.active .ac-already-selected {
     color: #fff;

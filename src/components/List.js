@@ -10,6 +10,7 @@ export default class List {
         this.items = null;
         this.selectedIndex = 0;
         this.searchInput = null;
+        this.lastSelectedIndex = null;
 
         this.elements.wrapper = div({className: style.listWrapper}, this.elements.ul = ul());
 
@@ -17,6 +18,7 @@ export default class List {
     }
 
     show(items = []) {
+        this.lastSelectedIndex = null;
         this.items = items;
         this.elements.wrapper.style.display = 'block';
         this.render();
@@ -120,7 +122,7 @@ export default class List {
             this.autocomplete.components.panel.element.style.maxHeight = Math.max(110, this.autocomplete.heightSpace) + 'px';
 
             if (this.items.length >= 1) {
-                this.updateSelection(this.autocomplete.emptyItem ? 1 : 0);
+                this.updateSelection(this.lastSelectedIndex !== null ? this.lastSelectedIndex : (this.autocomplete.emptyItem ? 1 : 0));
             } else {
                 this.updateSelection(0);
             }
@@ -188,6 +190,7 @@ export default class List {
         } else if (index > children.length - 1) {
             return this.autocomplete.components.panel.components.pagination.next();
         }
+        this.lastSelectedIndex = index;
         this.selectedIndex = index;
         const active = children[currentIndex];
         active && active.children[0].classList.remove('active');

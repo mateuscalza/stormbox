@@ -227,6 +227,7 @@ var List = function () {
         this.items = null;
         this.selectedIndex = 0;
         this.searchInput = null;
+        this.lastSelectedIndex = null;
 
         this.elements.wrapper = (0, _dom.div)({ className: style.listWrapper }, this.elements.ul = (0, _dom.ul)());
 
@@ -238,6 +239,7 @@ var List = function () {
         value: function show() {
             var items = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
 
+            this.lastSelectedIndex = null;
             this.items = items;
             this.elements.wrapper.style.display = 'block';
             this.render();
@@ -342,7 +344,7 @@ var List = function () {
                 this.autocomplete.components.panel.element.style.maxHeight = Math.max(110, this.autocomplete.heightSpace) + 'px';
 
                 if (this.items.length >= 1) {
-                    this.updateSelection(this.autocomplete.emptyItem ? 1 : 0);
+                    this.updateSelection(this.lastSelectedIndex !== null ? this.lastSelectedIndex : this.autocomplete.emptyItem ? 1 : 0);
                 } else {
                     this.updateSelection(0);
                 }
@@ -416,6 +418,7 @@ var List = function () {
             } else if (index > children.length - 1) {
                 return this.autocomplete.components.panel.components.pagination.next();
             }
+            this.lastSelectedIndex = index;
             this.selectedIndex = index;
             var active = children[currentIndex];
             active && active.children[0].classList.remove('active');
@@ -1737,7 +1740,7 @@ exports.default = function (Parent) {
             value: function find() {
                 var _this2 = this;
 
-                return new Promise(function (resolve, reject) {
+                return new Promise(function () {
                     if (_this2.finding) {
                         _this2.source.abort();
                         _this2.findingEnd();
@@ -1871,7 +1874,6 @@ exports.default = function (Parent) {
         }, {
             key: 'closePanel',
             value: function closePanel() {
-                console.log('close!');
                 if (!this.open) {
                     return;
                 }
