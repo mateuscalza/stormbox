@@ -82,7 +82,12 @@
     new StormBoxWidget({
         hiddenInput: StormBoxWidget.byId('occupation'),
         textInput: StormBoxWidget.byId('text_occupation'),
-        source: new StormBoxWidget.ArraySource([])
+        source: new StormBoxWidget.ArraySource([
+            {
+                content: 'Acrobata',
+                value: 3
+            }
+        ])
     });
 
     new StormBoxWidget({
@@ -94,15 +99,15 @@
         anchorElement: StormBoxWidget.byId('children_anchor'),
         source: new StormBoxWidget.ArraySource([
             {
-                content: "Huguinho",
+                content: 'Huguinho',
                 value: 1234
             },
             {
-                content: "Zézinho",
+                content: 'Zézinho',
                 value: 1235
             },
             {
-                content: "Luisinho",
+                content: 'Luisinho',
                 value: 1236
             }
         ])

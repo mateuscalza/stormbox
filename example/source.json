@@ -22,7 +22,7 @@
           "field": "occupation",
           "content": "CEO",
           "value": 3123213,
-          "hide": true
+          "visibility": false
         }
       ]
     },
@@ -53,7 +53,7 @@
       ]
     },
     {
-      "content": "Mario Veroneze",
+      "content": "Mario Barroneze",
       "value": 3,
       "additional": [],
       "others": [

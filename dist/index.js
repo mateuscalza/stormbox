@@ -707,7 +707,7 @@ var Panel = function () {
     }, {
         key: 'warning',
         value: function warning(_warning) {
-            // this.components.list.hide();
+            this.components.list.hide();
             this.components.errorView.hide();
             this.components.warningView.show(_StormBox2.default.truncate(_StormBox2.default.responseToText(_warning.message)));
         }
@@ -1445,7 +1445,6 @@ var Core = function () {
             var required = _ref.required;
             var visibility = _ref.visibility;
             var removed = _ref.removed;
-            var label = _ref.label;
 
             var _ref2 = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
 
@@ -1475,9 +1474,16 @@ var Core = function () {
             }
             if (typeof disabled !== 'undefined') {
                 if (typeof element.dataset['oldDisabled'] === 'undefined') {
-                    element.dataset['oldDisabled'] = element.disabled;
+                    element.dataset['oldDisabled'] = !!element.disabled;
                 }
                 element.disabled = disabled;
+                if (typeof element.autoComplete !== 'undefined' && _StormBox2.default.isArray(element.autoComplete.elements.textInput)) {
+                    element.autoComplete.elements.textInput.forEach(function (textInput) {
+                        textInput.disabled = disabled;
+                    });
+                } else if (typeof element.autoComplete !== 'undefined') {
+                    element.autoComplete.elements.textInput.disabled = disabled;
+                }
             }
 
             // ReadOnly
@@ -1486,9 +1492,16 @@ var Core = function () {
             }
             if (typeof readonly !== 'undefined') {
                 if (typeof element.dataset['oldReadOnly'] === 'undefined') {
-                    element.dataset['oldReadOnly'] = element.readonly;
+                    element.dataset['oldReadOnly'] = !!element.readonly;
                 }
-                element.readonly = readonly;
+                element.readOnly = readonly;
+                if (typeof element.autoComplete !== 'undefined' && _StormBox2.default.isArray(element.autoComplete.elements.textInput)) {
+                    element.autoComplete.elements.textInput.forEach(function (textInput) {
+                        textInput.readOnly = readonly;
+                    });
+                } else if (typeof element.autoComplete !== 'undefined') {
+                    element.autoComplete.elements.textInput.readOnly = readonly;
+                }
             }
 
             // Required
@@ -1500,6 +1513,13 @@ var Core = function () {
                     element.dataset['oldRequired'] = element.required;
                 }
                 element.required = required;
+                if (typeof element.autoComplete !== 'undefined' && _StormBox2.default.isArray(element.autoComplete.elements.textInput)) {
+                    element.autoComplete.elements.textInput.forEach(function (textInput) {
+                        textInput.required = required;
+                    });
+                } else if (typeof element.autoComplete !== 'undefined') {
+                    element.autoComplete.elements.textInput.required = required;
+                }
             }
 
             // Visibility
@@ -1511,6 +1531,13 @@ var Core = function () {
                     element.dataset['oldVisibility'] = element.style.display !== 'none';
                 }
                 element.style.display = visibility ? defaultDisplayShow : 'none';
+                if (typeof element.autoComplete !== 'undefined' && _StormBox2.default.isArray(element.autoComplete.elements.textInput)) {
+                    element.autoComplete.elements.textInput.forEach(function (textInput) {
+                        textInput.style.display = visibility ? defaultDisplayShow : 'none';
+                    });
+                } else if (typeof element.autoComplete !== 'undefined') {
+                    element.autoComplete.elements.textInput.style.display = visibility ? defaultDisplayShow : 'none';
+                }
             }
 
             // Content
@@ -1657,17 +1684,8 @@ exports.default = function (Parent) {
                 (_context = this.components.panel.components.searchInput.elements['input'], _events.on).call(_context, 'blur', this.blur.bind(this));
                 (_context = window, _events.on).call(_context, 'scroll', this.scroll.bind(this));
                 (_context = window, _events.on).call(_context, 'resize', this.resize.bind(this));
-                this.elements.label && (_context = this.elements.label, _events.on).call(_context, 'mouseup', this.labelMouseUp.bind(this));
-
+                this.elements.label && (_context = this.elements.label, _events.on).call(_context, 'mousedown', this.labelMouseDown.bind(this));
                 this.debouncedLayoutChange();
-            }
-        }, {
-            key: 'labelMouseUp',
-            value: function labelMouseUp(event) {
-                if (_StormBox2.default.isFrom(event.target, this.elements.wrapper) || this.multiple && _StormBox2.default.isFrom(event.target, this.components.multiple.element)) {
-                    return;
-                }
-                this.elements.wrapper.focus();
             }
         }, {
             key: 'scroll',
@@ -1818,6 +1836,16 @@ exports.default = function (Parent) {
                     this.ignoreBlur = false;
                 }
             }
+        }, {
+            key: 'labelMouseDown',
+            value: function labelMouseDown(event) {
+                if (_StormBox2.default.isFrom(event.target, this.elements.wrapper) || this.multiple && _StormBox2.default.isFrom(event.target, this.components.multiple.element)) {
+                    return;
+                }
+                event.preventDefault();
+                event.stopPropagation();
+                this.elements.wrapper.focus();
+            }
         }]);
 
         return _class;
@@ -1899,7 +1927,12 @@ exports.default = function (Parent) {
                         }
                         _this2.findingEnd();
                     }).catch(function (error) {
-                        _this2.components.panel.error(error);
+                        if (error instanceof Error) {
+                            _this2.components.panel.error(error);
+                        } else {
+                            _this2.components.panel.warning(error);
+                        }
+
                         if (_this2.autoSelectWhenOneResult && (!_this2.open || !_this2.emptyItem) && results && results.data && results.data.length == 1) {
                             _this2.select({
                                 content: results.data[0].content,
@@ -2309,6 +2342,9 @@ var AjaxSource = function () {
                             var parsedError = JSON.parse(_this.request.responseText);
                             error += _this.request.statusText && _this.request.statusText.trim().length ? '; Status: ' + _this.request.statusText : '';
                             if (parsedError.message) {
+                                if (_this.request.status == 400) {
+                                    return reject(parsedError);
+                                }
                                 error += parsedError.message && parsedError.message.trim().length ? '; Status: ' + parsedError.message.trim() : '';
                             } else {
                                 error += _this.request.responseText && _this.request.responseText.trim().length ? '; Status: ' + _this.request.responseText.trim() : '';

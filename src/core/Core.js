@@ -1,5 +1,5 @@
 import StormBox from '../components/StormBox';
-import { div } from '../util/dom';
+import {div} from '../util/dom';
 
 export default class Core {
 
@@ -42,13 +42,13 @@ export default class Core {
 
     static findLabel(target) {
         let label;
-        if(target.id && (label = document.querySelector(`label[for="${target.id}"]`))) {
+        if (target.id && (label = document.querySelector(`label[for="${target.id}"]`))) {
             return label;
         }
 
         let iterations = 0;
         while (target) {
-            if(++iterations > 3) return false;
+            if (++iterations > 3) return false;
             if (target.tagName === 'LABEL') return target;
             target = target.parentNode;
         }
@@ -65,14 +65,14 @@ export default class Core {
         }
         return element.autoComplete;
     }
-    
+
     static responseToText(response) {
-        return div({ innerHTML: response }).innerText.replace(/[\n\r]/g, ' ');
+        return div({innerHTML: response}).innerText.replace(/[\n\r]/g, ' ');
     }
 
     static truncate(text, maxLength = 320) {
         text = String(text).trim();
-        if(text.length > maxLength) {
+        if (text.length > maxLength) {
             return text.substr(0, maxLength) + '...';
         }
         return text;
@@ -89,15 +89,15 @@ export default class Core {
             return mixedValue;
         }
     }
-    
+
     static isArray(anyVariable) {
-        if(Object.prototype.toString.call( anyVariable ) === '[object Array]') {
+        if (Object.prototype.toString.call(anyVariable) === '[object Array]') {
             return true;
         }
         return false;
     }
 
-    static projectElementSettings(element, {content, value, disabled, readonly, required, visibility, removed, label}, {defaultDisplayShow = 'inline-block'} = {}, softErrors) {
+    static projectElementSettings(element, {content, value, disabled, readonly, required, visibility, removed}, {defaultDisplayShow = 'inline-block'} = {}, softErrors) {
 
         // Value
         if (typeof value === 'undefined' && typeof element.dataset['oldValue'] !== 'undefined') {
@@ -120,9 +120,16 @@ export default class Core {
         }
         if (typeof disabled !== 'undefined') {
             if (typeof element.dataset['oldDisabled'] === 'undefined') {
-                element.dataset['oldDisabled'] = element.disabled;
+                element.dataset['oldDisabled'] = !!element.disabled;
             }
             element.disabled = disabled;
+            if (typeof element.autoComplete !== 'undefined' && StormBox.isArray(element.autoComplete.elements.textInput)) {
+                element.autoComplete.elements.textInput.forEach(textInput => {
+                    textInput.disabled = disabled;
+                });
+            } else if (typeof element.autoComplete !== 'undefined') {
+                element.autoComplete.elements.textInput.disabled = disabled;
+            }
         }
 
         // ReadOnly
@@ -131,9 +138,16 @@ export default class Core {
         }
         if (typeof readonly !== 'undefined') {
             if (typeof element.dataset['oldReadOnly'] === 'undefined') {
-                element.dataset['oldReadOnly'] = element.readonly;
+                element.dataset['oldReadOnly'] = !!element.readonly;
             }
-            element.readonly = readonly;
+            element.readOnly = readonly;
+            if (typeof element.autoComplete !== 'undefined' && StormBox.isArray(element.autoComplete.elements.textInput)) {
+                element.autoComplete.elements.textInput.forEach(textInput => {
+                    textInput.readOnly = readonly;
+                });
+            } else if (typeof element.autoComplete !== 'undefined') {
+                element.autoComplete.elements.textInput.readOnly = readonly;
+            }
         }
 
         // Required
@@ -145,6 +159,13 @@ export default class Core {
                 element.dataset['oldRequired'] = element.required;
             }
             element.required = required;
+            if (typeof element.autoComplete !== 'undefined' && StormBox.isArray(element.autoComplete.elements.textInput)) {
+                element.autoComplete.elements.textInput.forEach(textInput => {
+                    textInput.required = required;
+                });
+            } else if (typeof element.autoComplete !== 'undefined') {
+                element.autoComplete.elements.textInput.required = required;
+            }
         }
 
         // Visibility
@@ -156,6 +177,13 @@ export default class Core {
                 element.dataset['oldVisibility'] = element.style.display !== 'none';
             }
             element.style.display = visibility ? defaultDisplayShow : 'none';
+            if (typeof element.autoComplete !== 'undefined' && StormBox.isArray(element.autoComplete.elements.textInput)) {
+                element.autoComplete.elements.textInput.forEach(textInput => {
+                    textInput.style.display = visibility ? defaultDisplayShow : 'none';
+                });
+            } else if (typeof element.autoComplete !== 'undefined') {
+                element.autoComplete.elements.textInput.style.display = visibility ? defaultDisplayShow : 'none';
+            }
         }
 
         // Content
@@ -165,7 +193,7 @@ export default class Core {
         if (typeof content !== 'undefined') {
             const textElement = document.querySelector(`[data-autocomplete-text-key="${element.dataset.autocompleteKey}"]`)
             if (!textElement) {
-                if(softErrors) {
+                if (softErrors) {
                     return console.warn('Unknow text element to ', element);
                 } else {
                     throw new Error('Unknow text element to ', element);
@@ -187,6 +215,5 @@ export default class Core {
     }
 
 }
-
 
 window.isFrom = Core.isFrom;

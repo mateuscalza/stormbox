@@ -25,7 +25,7 @@ export default (Parent) => class extends Parent {
         this.components.panel.components.searchInput.elements['input']::on('blur', ::this.blur);
         window::on('scroll', ::this.scroll);
         window::on('resize', ::this.resize);
-        this.elements.label && this.elements.label::on('mouseup', ::this.labelMouseUp);
+        this.elements.label && this.elements.label::on('mousedown', ::this.labelMouseDown);
         this.debouncedLayoutChange();
     }
 
@@ -179,7 +179,7 @@ export default (Parent) => class extends Parent {
         }
     }
 
-    labelMouseUp(event) {
+    labelMouseDown(event) {
         if(
             StormBox.isFrom(event.target, this.elements.wrapper)
             ||
@@ -191,6 +191,8 @@ export default (Parent) => class extends Parent {
         ) {
             return;
         }
+        event.preventDefault();
+        event.stopPropagation();
         this.elements.wrapper.focus();
     }
 };
