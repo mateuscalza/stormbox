@@ -146,7 +146,8 @@ export default class StormBox extends use(
             paginationGoLeftIcon: 'fa fa-chevron-left',
             paginationGoRightIcon: 'fa fa-chevron-right',
             multipleWrapper: 'ac-multiple',
-            multipleItemRemoveIcon: 'fa fa-remove',
+            multipleItemRemoveIcon: 'fa fa-remove ac-multiple-remove',
+            disabledMultipleItemRemoveIcon: 'fa fa-remove ac-multiple-remove ac-multiple-remove-disabled',
             alreadySelected: 'fa fa-check-circle ac-already-selected'
         }, style);
 
@@ -297,10 +298,14 @@ export default class StormBox extends use(
     relatedApply(fn) {
         if (!StormBox.isArray(this.elements.textInput)) {
             fn(this.elements.textInput);
+        } else {
+            this.elements.textInput.forEach(element => fn(element));
         }
 
         if (!StormBox.isArray(this.elements.hiddenInput)) {
             fn(this.elements.hiddenInput);
+        } else {
+            this.elements.hiddenInput.forEach(element => fn(element));
         }
 
         if (this.anchorElement != this.elements.textInput && this.anchorElement != this.elements.hiddenInput) {

@@ -132,6 +132,11 @@ input:not([type="checkbox"]):not([type="radio"])[type="button"], input:not([type
     cursor: pointer;
 }
 
+.ac-multiple ul li button .ac-multiple-remove-disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
 .ac-wrapper, .ac-wrapper *, .ac-wrapper *:before, .ac-wrapper *:after,
 .ac-multiple, .ac-multiple *, .ac-multiple *:before, .ac-multiple *:after {
     box-sizing: border-box;
@@ -362,10 +367,14 @@ i.fa.ac-icon {
     cursor: pointer;
     -webkit-box-shadow: -6px 0px 5px #fff;
     box-shadow: -6px 0px 5px #fff;
+    -webkit-transition: all ease-in-out 0.25s;
+    -o-transition: all ease-in-out 0.25s;
+    transition: all ease-in-out 0.25s;
 }
 
 .ac-disabled-wrapper .ac-present-text {
     background-color: #ecf0f1;
+    cursor: not-allowed;
 }
 
 .ac-disabled-wrapper i.fa.ac-icon {
@@ -375,6 +384,7 @@ i.fa.ac-icon {
 
 .ac-read-only-wrapper .ac-present-text {
     background-color: #ecf0f1;
+    cursor: not-allowed;
 }
 
 .ac-read-only-wrapper i.fa.ac-icon {

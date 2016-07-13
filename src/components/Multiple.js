@@ -16,7 +16,9 @@ export default class Multiple {
         }
         this.children.ul.innerHTML = '';
         this.autocomplete.value.forEach((value, index) => {
-            const icon = button({}, i({className: this.style.multipleItemRemoveIcon}));
+            const icon = button({}, i({
+                className: this.autocomplete.disabled || this.autocomplete.readOnly ? this.style.disabledMultipleItemRemoveIcon : this.style.multipleItemRemoveIcon
+            }));
             icon::on('click', event => {
                 event.preventDefault();
                 this.autocomplete.remove(index);

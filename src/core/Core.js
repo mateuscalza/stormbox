@@ -153,12 +153,12 @@ export default class Core {
                 element.dataset['oldDisabled'] = !!element.disabled;
             }
             element.disabled = disabled;
-            if (typeof element.autoComplete !== 'undefined' && StormBox.isArray(element.autoComplete.elements.textInput)) {
-                element.autoComplete.elements.textInput.forEach(textInput => {
-                    textInput.disabled = disabled;
-                });
-            } else if (typeof element.autoComplete !== 'undefined') {
-                element.autoComplete.elements.textInput.disabled = disabled;
+            if (typeof element.autoComplete !== 'undefined') {
+                if(disabled) {
+                    element.autoComplete.disable();
+                } else {
+                    element.autoComplete.enable();
+                }                
             }
         }
 
@@ -171,12 +171,12 @@ export default class Core {
                 element.dataset['oldReadOnly'] = !!element.readonly;
             }
             element.readOnly = readonly;
-            if (typeof element.autoComplete !== 'undefined' && StormBox.isArray(element.autoComplete.elements.textInput)) {
-                element.autoComplete.elements.textInput.forEach(textInput => {
-                    textInput.readOnly = readonly;
-                });
-            } else if (typeof element.autoComplete !== 'undefined') {
-                element.autoComplete.elements.textInput.readOnly = readonly;
+            if (typeof element.autoComplete !== 'undefined') {
+                if(readonly) {
+                    element.autoComplete.canRead();
+                } else {
+                    element.autoComplete.canReadAndWrite();
+                }
             }
         }
 
@@ -189,12 +189,12 @@ export default class Core {
                 element.dataset['oldRequired'] = element.required;
             }
             element.required = required;
-            if (typeof element.autoComplete !== 'undefined' && StormBox.isArray(element.autoComplete.elements.textInput)) {
-                element.autoComplete.elements.textInput.forEach(textInput => {
-                    textInput.required = required;
-                });
-            } else if (typeof element.autoComplete !== 'undefined') {
-                element.autoComplete.elements.textInput.required = required;
+            if (typeof element.autoComplete !== 'undefined') {
+                if(required) {
+                    element.autoComplete.required();
+                } else {
+                    element.autoComplete.optional();
+                }
             }
         }
 

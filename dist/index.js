@@ -486,7 +486,9 @@ var Multiple = function () {
             }
             this.children.ul.innerHTML = '';
             this.autocomplete.value.forEach(function (value, index) {
-                var icon = (0, _dom.button)({}, (0, _dom.i)({ className: _this.style.multipleItemRemoveIcon }));
+                var icon = (0, _dom.button)({}, (0, _dom.i)({
+                    className: _this.autocomplete.disabled || _this.autocomplete.readOnly ? _this.style.disabledMultipleItemRemoveIcon : _this.style.multipleItemRemoveIcon
+                }));
                 _events.on.call(icon, 'click', function (event) {
                     event.preventDefault();
                     _this.autocomplete.remove(index);
@@ -1134,7 +1136,8 @@ var StormBox = function (_use) {
             paginationGoLeftIcon: 'fa fa-chevron-left',
             paginationGoRightIcon: 'fa fa-chevron-right',
             multipleWrapper: 'ac-multiple',
-            multipleItemRemoveIcon: 'fa fa-remove',
+            multipleItemRemoveIcon: 'fa fa-remove ac-multiple-remove',
+            disabledMultipleItemRemoveIcon: 'fa fa-remove ac-multiple-remove ac-multiple-remove-disabled',
             alreadySelected: 'fa fa-check-circle ac-already-selected'
         }, style);
 
@@ -1295,10 +1298,18 @@ var StormBox = function (_use) {
         value: function relatedApply(fn) {
             if (!StormBox.isArray(this.elements.textInput)) {
                 fn(this.elements.textInput);
+            } else {
+                this.elements.textInput.forEach(function (element) {
+                    return fn(element);
+                });
             }
 
             if (!StormBox.isArray(this.elements.hiddenInput)) {
                 fn(this.elements.hiddenInput);
+            } else {
+                this.elements.hiddenInput.forEach(function (element) {
+                    return fn(element);
+                });
             }
 
             if (this.anchorElement != this.elements.textInput && this.anchorElement != this.elements.hiddenInput) {
@@ -1571,12 +1582,12 @@ var Core = function () {
                     element.dataset['oldDisabled'] = !!element.disabled;
                 }
                 element.disabled = disabled;
-                if (typeof element.autoComplete !== 'undefined' && _StormBox2.default.isArray(element.autoComplete.elements.textInput)) {
-                    element.autoComplete.elements.textInput.forEach(function (textInput) {
-                        textInput.disabled = disabled;
-                    });
-                } else if (typeof element.autoComplete !== 'undefined') {
-                    element.autoComplete.elements.textInput.disabled = disabled;
+                if (typeof element.autoComplete !== 'undefined') {
+                    if (disabled) {
+                        element.autoComplete.disable();
+                    } else {
+                        element.autoComplete.enable();
+                    }
                 }
             }
 
@@ -1589,12 +1600,12 @@ var Core = function () {
                     element.dataset['oldReadOnly'] = !!element.readonly;
                 }
                 element.readOnly = readonly;
-                if (typeof element.autoComplete !== 'undefined' && _StormBox2.default.isArray(element.autoComplete.elements.textInput)) {
-                    element.autoComplete.elements.textInput.forEach(function (textInput) {
-                        textInput.readOnly = readonly;
-                    });
-                } else if (typeof element.autoComplete !== 'undefined') {
-                    element.autoComplete.elements.textInput.readOnly = readonly;
+                if (typeof element.autoComplete !== 'undefined') {
+                    if (readonly) {
+                        element.autoComplete.canRead();
+                    } else {
+                        element.autoComplete.canReadAndWrite();
+                    }
                 }
             }
 
@@ -1607,12 +1618,12 @@ var Core = function () {
                     element.dataset['oldRequired'] = element.required;
                 }
                 element.required = required;
-                if (typeof element.autoComplete !== 'undefined' && _StormBox2.default.isArray(element.autoComplete.elements.textInput)) {
-                    element.autoComplete.elements.textInput.forEach(function (textInput) {
-                        textInput.required = required;
-                    });
-                } else if (typeof element.autoComplete !== 'undefined') {
-                    element.autoComplete.elements.textInput.required = required;
+                if (typeof element.autoComplete !== 'undefined') {
+                    if (required) {
+                        element.autoComplete.required();
+                    } else {
+                        element.autoComplete.optional();
+                    }
                 }
             }
 
@@ -2123,6 +2134,7 @@ exports.default = function (Parent) {
                 this.elements.wrapper.setAttribute('tabindex', '0');
                 this.elements.wrapper.className = this.style.wrapper;
                 this.components.icon.element.className = this.style.rightIcon;
+                this.multiple && this.components.multiple.render();
                 this.relatedApply(function (element) {
                     return element.disabled = false;
                 });
@@ -2138,6 +2150,7 @@ exports.default = function (Parent) {
                 this.closePanel();
                 this.elements.wrapper.className = this.style.disabledWrapper;
                 this.components.icon.element.className = this.style.disabledRightIcon;
+                this.multiple && this.components.multiple.render();
                 this.relatedApply(function (element) {
                     return element.disabled = true;
                 });
@@ -2156,6 +2169,7 @@ exports.default = function (Parent) {
                 this.elements.wrapper.setAttribute('tabindex', '0');
                 this.elements.wrapper.className = this.style.wrapper;
                 this.components.icon.element.className = this.style.rightIcon;
+                this.multiple && this.components.multiple.render();
                 this.relatedApply(function (element) {
                     return element.readOnly = false;
                 });
@@ -2171,6 +2185,7 @@ exports.default = function (Parent) {
                 this.closePanel();
                 this.elements.wrapper.className = this.style.readOnlyWrapper;
                 this.components.icon.element.className = this.style.readOnlyRightIcon;
+                this.multiple && this.components.multiple.render();
                 this.relatedApply(function (element) {
                     return element.readOnly = true;
                 });

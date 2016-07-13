@@ -12,6 +12,7 @@ export default Parent => class extends Parent {
         this.elements.wrapper.setAttribute('tabindex', '0');
         this.elements.wrapper.className = this.style.wrapper;
         this.components.icon.element.className = this.style.rightIcon;
+        this.multiple && this.components.multiple.render();
         this.relatedApply(element => element.disabled = false);
     }
 
@@ -24,6 +25,7 @@ export default Parent => class extends Parent {
         this.closePanel();
         this.elements.wrapper.className = this.style.disabledWrapper;
         this.components.icon.element.className = this.style.disabledRightIcon;
+        this.multiple && this.components.multiple.render();
         this.relatedApply(element => element.disabled = true);
     }
 
@@ -39,6 +41,7 @@ export default Parent => class extends Parent {
         this.elements.wrapper.setAttribute('tabindex', '0');
         this.elements.wrapper.className = this.style.wrapper;
         this.components.icon.element.className = this.style.rightIcon;
+        this.multiple && this.components.multiple.render();
         this.relatedApply(element => element.readOnly = false);
     }
 
@@ -51,6 +54,7 @@ export default Parent => class extends Parent {
         this.closePanel();
         this.elements.wrapper.className = this.style.readOnlyWrapper;
         this.components.icon.element.className = this.style.readOnlyRightIcon;
+        this.multiple && this.components.multiple.render();
         this.relatedApply(element => element.readOnly = true);
     }
 
