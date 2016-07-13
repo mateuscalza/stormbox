@@ -2,22 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="aad62eb3-a8b8-42d1-8503-5886b1ae417e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.js" afterPath="$PROJECT_DIR$/dist/index.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dist/index.min.js" afterPath="$PROJECT_DIR$/dist/index.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/index.html" afterPath="$PROJECT_DIR$/example/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/example/style.css" afterPath="$PROJECT_DIR$/example/style.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/List.js" afterPath="$PROJECT_DIR$/src/components/List.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Pagination.js" afterPath="$PROJECT_DIR$/src/components/Pagination.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/Panel.js" afterPath="$PROJECT_DIR$/src/components/Panel.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/PresentText.js" afterPath="$PROJECT_DIR$/src/components/PresentText.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/components/StormBox.js" afterPath="$PROJECT_DIR$/src/components/StormBox.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/mixins/Events.js" afterPath="$PROJECT_DIR$/src/mixins/Events.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/mixins/Finding.js" afterPath="$PROJECT_DIR$/src/mixins/Finding.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/mixins/Interface.js" afterPath="$PROJECT_DIR$/src/mixins/Interface.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/mixins/PanelControl.js" afterPath="$PROJECT_DIR$/src/mixins/PanelControl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/mixins/Replica.js" afterPath="$PROJECT_DIR$/src/mixins/Replica.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/sources/AjaxSource.js" afterPath="$PROJECT_DIR$/src/sources/AjaxSource.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="es7-autocomplete.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -70,7 +55,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Interface.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Interface.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/mixins/Interface.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="244">
@@ -80,11 +65,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="93">
-              <caret line="65" column="38" selection-start-line="65" selection-start-column="38" selection-end-line="65" selection-end-column="38" />
+            <state relative-caret-position="309">
+              <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -276,7 +261,6 @@
         <option value="$PROJECT_DIR$/src/core/Core.js" />
         <option value="$PROJECT_DIR$/src/mixins/Selecting.js" />
         <option value="$PROJECT_DIR$/src/util/curry.js" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/example/index.html" />
         <option value="$PROJECT_DIR$/example/style.css" />
         <option value="$PROJECT_DIR$/src/sources/AjaxSource.js" />
@@ -290,6 +274,7 @@
         <option value="$PROJECT_DIR$/src/mixins/Replica.js" />
         <option value="$PROJECT_DIR$/src/components/List.js" />
         <option value="$PROJECT_DIR$/src/mixins/Interface.js" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
@@ -516,7 +501,7 @@
       <workItem from="1467982129302" duration="24455000" />
       <workItem from="1468237388920" duration="27853000" />
       <workItem from="1468318959145" duration="26691000" />
-      <workItem from="1468405320596" duration="17588000" />
+      <workItem from="1468405320596" duration="17680000" />
     </task>
     <task id="LOCAL-00001" summary="Renaming from AutoComplete to StormBox.">
       <created>1467977626753</created>
@@ -529,7 +514,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="134943000" />
+    <option name="totallyTimeSpent" value="135035000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -981,14 +966,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="93">
-          <caret line="65" column="38" selection-start-line="65" selection-start-column="38" selection-end-line="65" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/mixins/Events.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-864">
@@ -1031,6 +1008,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="244">
           <caret line="60" column="22" selection-start-line="60" selection-start-column="22" selection-end-line="60" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="77" column="0" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
           <folding />
         </state>
       </provider>
