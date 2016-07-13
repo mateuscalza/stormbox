@@ -958,6 +958,10 @@ var _debounce2 = _interopRequireDefault(_debounce);
 
 var _dom = require('../util/dom');
 
+var _use2 = require('../util/use');
+
+var _use3 = _interopRequireDefault(_use2);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -966,11 +970,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// Use mixins
-var Parent = (0, _Replica2.default)((0, _Interface2.default)((0, _Selecting2.default)((0, _PanelControl2.default)((0, _Finding2.default)((0, _Positioning2.default)((0, _Events2.default)(_Core2.default)))))));
-
-var StormBox = function (_Parent) {
-    _inherits(StormBox, _Parent);
+var StormBox = function (_use) {
+    _inherits(StormBox, _use);
 
     function StormBox(options) {
         _classCallCheck(this, StormBox);
@@ -1288,11 +1289,11 @@ var StormBox = function (_Parent) {
     }]);
 
     return StormBox;
-}(Parent);
+}((0, _use3.default)(_Core2.default, _Events2.default, _Positioning2.default, _Finding2.default, _PanelControl2.default, _Selecting2.default, _Interface2.default, _Replica2.default));
 
 exports.default = StormBox;
 
-},{"../core/Core":12,"../mixins/Events":14,"../mixins/Finding":15,"../mixins/Interface":16,"../mixins/PanelControl":17,"../mixins/Positioning":18,"../mixins/Replica":19,"../mixins/Selecting":20,"../sources/SelectSource":23,"../util/debounce":25,"../util/dom":26,"./Icon":3,"./Multiple":5,"./Panel":7,"./PresentText":8,"extend":1}],11:[function(require,module,exports){
+},{"../core/Core":12,"../mixins/Events":14,"../mixins/Finding":15,"../mixins/Interface":16,"../mixins/PanelControl":17,"../mixins/Positioning":18,"../mixins/Replica":19,"../mixins/Selecting":20,"../sources/SelectSource":23,"../util/debounce":25,"../util/dom":26,"../util/use":29,"./Icon":3,"./Multiple":5,"./Panel":7,"./PresentText":8,"extend":1}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2903,6 +2904,33 @@ var ARROW_RIGHT = exports.ARROW_RIGHT = 39;
 var ARROW_LEFT = exports.ARROW_LEFT = 37;
 var TAB = exports.TAB = 9;
 var SHIFT = exports.SHIFT = 16;
+
+},{}],29:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+exports.default = function () {
+    var MainExtendedParent = arguments.length <= 0 || arguments[0] === undefined ? function () {
+        function _class() {
+            _classCallCheck(this, _class);
+        }
+
+        return _class;
+    }() : arguments[0];
+
+    for (var _len = arguments.length, mixins = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+        mixins[_key - 1] = arguments[_key];
+    }
+
+    return mixins.reduce(function (NewParent, Mixin) {
+        return Mixin(NewParent);
+    }, MainExtendedParent);
+};
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 },{}]},{},[13])(13)
 });

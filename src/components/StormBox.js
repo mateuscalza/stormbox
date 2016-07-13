@@ -14,11 +14,18 @@ import Replica from '../mixins/Replica';
 import Interface from '../mixins/Interface';
 import debounce from '../util/debounce';
 import {div} from '../util/dom';
+import use from '../util/use';
 
-// Use mixins
-const Parent = Replica(Interface(Selecting(PanelControl(Finding(Positioning(Events(Core)))))));
-
-export default class StormBox extends Parent {
+export default class StormBox extends use(
+    Core,
+    Events,
+    Positioning,
+    Finding,
+    PanelControl,
+    Selecting,
+    Interface,
+    Replica
+) {
     constructor(options) {
 
         const {
