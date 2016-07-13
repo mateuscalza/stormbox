@@ -73,7 +73,7 @@ input[disabled] {
     cursor: not-allowed;
 }
 
-input[type="button"], input[type="submit"] {
+input:not([type="checkbox"]):not([type="radio"])[type="button"], input:not([type="checkbox"]):not([type="radio"])[type="submit"] {
     width: 250px;
     background-color: #ccc;
     -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -369,7 +369,8 @@ i.fa.ac-icon {
 }
 
 .ac-disabled-wrapper i.fa.ac-icon {
-    box-shadow: none;
+    -webkit-box-shadow: -6px 0px 5px #ecf0f1;
+    box-shadow: -6px 0px 5px #ecf0f1;
 }
 
 .ac-read-only-wrapper .ac-present-text {
@@ -377,7 +378,8 @@ i.fa.ac-icon {
 }
 
 .ac-read-only-wrapper i.fa.ac-icon {
-    box-shadow: none;
+    -webkit-box-shadow: -6px 0px 5px #ecf0f1;
+    box-shadow: -6px 0px 5px #ecf0f1;
 }
 
 i.fa.ac-icon.ac-loading-icon {

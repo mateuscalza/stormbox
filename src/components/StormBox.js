@@ -70,6 +70,7 @@ export default class StormBox extends use(
         this.ignoreFocus = false;
         this.ignoreBlur = false;
         this.lastParams = null;
+        this.forcedSearch = false;
         this.valueOnOpen = undefined;
         this.usedOtherFields = [];
         this.paginationData = null;
@@ -175,7 +176,7 @@ export default class StormBox extends use(
         // Set relative components
         this.components = {
             presentText: new PresentText({style: this.style}, {}, this),
-            icon: new Icon({style: this.style}),
+            icon: new Icon({style: this.style}, {}, this),
             panel: new Panel({style: this.style}, {onSelect: ::this.select}, this),
             multiple: new Multiple({style: this.style}, {onRemove: ::this.remove}, this)
         };

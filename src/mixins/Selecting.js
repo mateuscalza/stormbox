@@ -19,8 +19,6 @@ export default Parent => class extends Parent {
             this.setOrClearOtherFields(others);
         } else {
             let currentIndex;
-            console.log('this.distinct', this.distinct);
-
             if (this.distinct && (currentIndex = this.value.indexOf(String(value))) !== -1) {
                 this.value.splice(currentIndex, 1);
                 this.content.splice(currentIndex, 1);

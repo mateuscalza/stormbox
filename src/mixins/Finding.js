@@ -7,7 +7,8 @@ export default Parent => class extends Parent {
                 this.findingEnd();
             }
             const query = this.components.panel.components.searchInput.value();
-            if (query.length < this.minLength) {
+            if (query.length < this.minLength && !this.forcedSearch) {
+                this.forcedSearch = false;
                 return;
             }
             this.findingStart();

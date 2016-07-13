@@ -43,7 +43,7 @@
         </label>
         <label>
             <p>Occupation</p>
-            <input id="occupation" name="occupation" placeholder="Occupation" type="hidden">
+            <input id="occupation" name="occupation" type="hidden">
             <input id="text_occupation" name="text_occupation" placeholder="Occupation" type="text">
         </label>
         <label>
@@ -54,7 +54,7 @@
         </label>
         <div class="group">
             <label>
-                <input name="who_are" type="radio" value="chuck-norris">He is Chuck Norris
+                <input name="who_are" type="radio" value="chuck-norris" disabled>He is Chuck Norris
             </label>
             <label>
                 <input name="who_are" type="radio" value="nobody" checked>Nobody
@@ -68,6 +68,23 @@
         <label>
             <p>Select children</p>
             <input type="hidden" id="children_anchor">
+        </label>
+    </fieldset>
+
+    <fieldset>
+        <legend>Disabled and ReadOnly</legend>
+        <p>StormBox with Multiple Items.</p>
+
+        <label>
+            <p>Disabled</p>
+            <input name="disabled_example" type="hidden" value="123" disabled>
+            <input name="text_disabled_example" placeholder="Disabled example" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed nulla feugiat." type="text" disabled>
+        </label>
+
+        <label>
+            <p>Read Only</p>
+            <input name="read_only_example" type="hidden" value="123" readonly>
+            <input name="text_read_only_example" placeholder="Read only example" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sed nulla feugiat." type="text" readonly>
         </label>
     </fieldset>
 
@@ -125,6 +142,18 @@
                 value: 1236
             }
         ])
+    });
+
+    new StormBoxWidget({
+        hiddenInput: StormBoxWidget.byName('disabled_example'),
+        textInput: StormBoxWidget.byName('text_disabled_example'),
+        source: new StormBoxWidget.ArraySource([])
+    });
+
+    new StormBoxWidget({
+        hiddenInput: StormBoxWidget.byName('read_only_example'),
+        textInput: StormBoxWidget.byName('text_read_only_example'),
+        source: new StormBoxWidget.ArraySource([])
     });
 
     //    StormBoxWidget.byId('text_user_id').addEventListener('blur', function(event){

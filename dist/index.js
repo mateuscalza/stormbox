@@ -141,36 +141,54 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _extend = require('extend');
-
-var _extend2 = _interopRequireDefault(_extend);
-
-var _SelectSource = require('../sources/SelectSource');
-
-var _SelectSource2 = _interopRequireDefault(_SelectSource);
-
 var _dom = require('../util/dom');
 
 var _events = require('../util/events');
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Icon = function () {
-    function Icon(_ref) {
+    function Icon(_ref, undefined, autocomplete) {
         var style = _ref.style;
+
+        var _context;
 
         _classCallCheck(this, Icon);
 
         this.style = style;
+        this.autocomplete = autocomplete;
+        this.wasOpen = false;
 
         this.element = (0, _dom.i)({
             className: style.rightIcon
         });
+
+        (_context = this.element, _events.on).call(_context, 'click', this.click.bind(this));
+        (_context = this.element, _events.on).call(_context, 'mousedown', this.mouseDown.bind(this));
     }
 
     _createClass(Icon, [{
+        key: 'mouseDown',
+        value: function mouseDown(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (this.autocomplete.components.panel.components.list.items && this.autocomplete.open) {
+                this.autocomplete.closePanel();
+            } else if (this.autocomplete.components.panel.components.list.items) {
+                this.autocomplete.elements.wrapper.focus();
+            }
+        }
+    }, {
+        key: 'click',
+        value: function click(event) {
+            if (this.autocomplete.components.panel.components.list.items || this.autocomplete.disabled || this.autocomplete.readOnly) {
+                return;
+            }
+            this.autocomplete.forcedSearch = true;
+            this.autocomplete.debouncedFind();
+            this.autocomplete.elements.wrapper.focus();
+        }
+    }, {
         key: 'loadingStart',
         value: function loadingStart() {
             this.element.className = this.style.loadingRightIcon;
@@ -187,7 +205,7 @@ var Icon = function () {
 
 exports.default = Icon;
 
-},{"../sources/SelectSource":23,"../util/dom":26,"../util/events":27,"extend":1}],4:[function(require,module,exports){
+},{"../util/dom":26,"../util/events":27}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1040,6 +1058,7 @@ var StormBox = function (_use) {
         _this.ignoreFocus = false;
         _this.ignoreBlur = false;
         _this.lastParams = null;
+        _this.forcedSearch = false;
         _this.valueOnOpen = undefined;
         _this.usedOtherFields = [];
         _this.paginationData = null;
@@ -1145,7 +1164,7 @@ var StormBox = function (_use) {
         // Set relative components
         _this.components = {
             presentText: new _PresentText2.default({ style: _this.style }, {}, _this),
-            icon: new _Icon2.default({ style: _this.style }),
+            icon: new _Icon2.default({ style: _this.style }, {}, _this),
             panel: new _Panel2.default({ style: _this.style }, { onSelect: _this.select.bind(_this) }, _this),
             multiple: new _Multiple2.default({ style: _this.style }, { onRemove: _this.remove.bind(_this) }, _this)
         };
@@ -1967,7 +1986,8 @@ exports.default = function (Parent) {
                         _this2.findingEnd();
                     }
                     var query = _this2.components.panel.components.searchInput.value();
-                    if (query.length < _this2.minLength) {
+                    if (query.length < _this2.minLength && !_this2.forcedSearch) {
+                        _this2.forcedSearch = false;
                         return;
                     }
                     _this2.findingStart();
