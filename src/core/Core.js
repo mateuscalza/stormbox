@@ -21,6 +21,10 @@ export default class Core {
         return Array.prototype.slice.call((this instanceof HTMLElement ? this : doc).getElementsByName(name + '[]'));
     }
 
+    static allByName(name, doc = document) {
+        return Array.prototype.slice.call((this instanceof HTMLElement ? this : doc).getElementsByName(name));
+    }
+
     static autoCompleteByKey(autocompleteKey) {
         let element = document.querySelector(`[data-autocomplete-key="${autocompleteKey}"]`);
         if (!element) {
@@ -104,10 +108,36 @@ export default class Core {
             value = element.dataset['oldValue'];
         }
         if (typeof value !== 'undefined') {
-            if (typeof element.dataset['oldValue'] === 'undefined') {
-                element.dataset['oldValue'] = element.value;
+            if (element.getAttribute('type') === 'checkbox') {
+                if (typeof element.dataset['oldValue'] === 'undefined') {
+                    element.dataset['oldValue'] = element.checked;
+                }
+                element.checked = StormBox.interpret(value);
+            } else if (element.getAttribute('type') === 'radio') {
+                if (typeof element.dataset['oldValue'] === 'undefined') {
+                    const currentValue = StormBox.allByName(element.name).filter(element => element.checked);
+
+                    element.dataset['oldValue'] = currentValue[0] ? currentValue[0].value : NaN;
+                }
+
+                const matchItems = StormBox.allByName(element.name);
+
+                matchItems.forEach(element => {
+                    element.checked = false;
+                    return element;
+                });
+
+                matchItems
+                    .filter(element => element.value == value)
+                    .forEach(element => {
+                        element.checked = true
+                    });
+            } else {
+                if (typeof element.dataset['oldValue'] === 'undefined') {
+                    element.dataset['oldValue'] = element.value;
+                }
+                element.value = value;
             }
-            element.value = value;
             if (typeof element.autoComplete !== 'undefined') {
                 element.autoComplete.components.presentText.value(value || '');
                 element.autoComplete.value = value;

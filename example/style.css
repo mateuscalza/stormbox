@@ -20,7 +20,7 @@ h1 strong {
     border-bottom: 2px solid #f8ac59;
 }
 
-label {
+label, .group {
     float: left;
     width: 100%;
     max-width: 300px;
@@ -46,7 +46,7 @@ p {
     margin: 0;
 }
 
-input {
+input:not([type="checkbox"]):not([type="radio"]), textarea {
     display: inline-block;
     width: 100%;
     height: 35px;

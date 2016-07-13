@@ -1390,6 +1390,13 @@ var Core = function () {
             return Array.prototype.slice.call((this instanceof HTMLElement ? this : doc).getElementsByName(name + '[]'));
         }
     }, {
+        key: 'allByName',
+        value: function allByName(name) {
+            var doc = arguments.length <= 1 || arguments[1] === undefined ? document : arguments[1];
+
+            return Array.prototype.slice.call((this instanceof HTMLElement ? this : doc).getElementsByName(name));
+        }
+    }, {
         key: 'autoCompleteByKey',
         value: function autoCompleteByKey(autocompleteKey) {
             var element = document.querySelector('[data-autocomplete-key="' + autocompleteKey + '"]');
@@ -1498,10 +1505,38 @@ var Core = function () {
                 value = element.dataset['oldValue'];
             }
             if (typeof value !== 'undefined') {
-                if (typeof element.dataset['oldValue'] === 'undefined') {
-                    element.dataset['oldValue'] = element.value;
+                if (element.getAttribute('type') === 'checkbox') {
+                    if (typeof element.dataset['oldValue'] === 'undefined') {
+                        element.dataset['oldValue'] = element.checked;
+                    }
+                    element.checked = _StormBox2.default.interpret(value);
+                } else if (element.getAttribute('type') === 'radio') {
+                    if (typeof element.dataset['oldValue'] === 'undefined') {
+                        var currentValue = _StormBox2.default.allByName(element.name).filter(function (element) {
+                            return element.checked;
+                        });
+
+                        element.dataset['oldValue'] = currentValue[0] ? currentValue[0].value : NaN;
+                    }
+
+                    var matchItems = _StormBox2.default.allByName(element.name);
+
+                    matchItems.forEach(function (element) {
+                        element.checked = false;
+                        return element;
+                    });
+
+                    matchItems.filter(function (element) {
+                        return element.value == value;
+                    }).forEach(function (element) {
+                        element.checked = true;
+                    });
+                } else {
+                    if (typeof element.dataset['oldValue'] === 'undefined') {
+                        element.dataset['oldValue'] = element.value;
+                    }
+                    element.value = value;
                 }
-                element.value = value;
                 if (typeof element.autoComplete !== 'undefined') {
                     element.autoComplete.components.presentText.value(value || '');
                     element.autoComplete.value = value;

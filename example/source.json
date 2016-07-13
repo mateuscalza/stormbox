@@ -110,6 +110,14 @@
           "field": "occupation",
           "content": "Chuck Norris",
           "value": 99999999
+        },
+        {
+          "field": "has_super_powers",
+          "value": true
+        },
+        {
+          "field": "who_are",
+          "value": "chuck-norris"
         }
       ]
     },
