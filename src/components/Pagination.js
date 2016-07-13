@@ -1,8 +1,8 @@
-import { div, i } from '../util/dom';
-import { on } from '../util/events';
+import {div, i} from '../util/dom';
+import {on} from '../util/events';
 
 export default class Pagination {
-    constructor({ style }, { onSelect }, autocomplete) {
+    constructor({style}, {onSelect}, autocomplete) {
         this.currentStep = 0;
         this.end = false;
         this.steps = [];
@@ -11,11 +11,11 @@ export default class Pagination {
         this.autocomplete = autocomplete;
         this.elements = {};
 
-        this.elements.goLeft = div({ className: style.paginationLeft }, i({ className: style.paginationGoLeftIcon }));
+        this.elements.goLeft = div({className: style.paginationLeft}, i({className: style.paginationGoLeftIcon}));
 
-        this.elements.goRight = div({ className: style.paginationRight }, i({ className: style.paginationGoRightIcon }));
+        this.elements.goRight = div({className: style.paginationRight}, i({className: style.paginationGoRightIcon}));
 
-        this.elements.wrapper = div({ className: style.paginationWrapper }, this.elements.goLeft, this.elements.goRight);
+        this.elements.wrapper = div({className: style.paginationWrapper}, this.elements.goLeft, this.elements.goRight);
 
         this.prepareEvents();
     }
@@ -43,13 +43,13 @@ export default class Pagination {
 
     next() {
         const items = this.autocomplete.components.panel.components.list.items;
-        if(typeof items[this.offset + this.perPage] === 'undefined') {
-            if(this.end) {
+        if (typeof items[this.offset + this.perPage] === 'undefined') {
+            if (this.end) {
                 return;
             }
             this.feed(this.offset + this.perPage)
                 .then(newItems => {
-                    if(!newItems.length) {
+                    if (!newItems.length) {
                         this.end = true;
                     } else {
                         items.push.apply(items, newItems);
@@ -66,7 +66,7 @@ export default class Pagination {
     }
 
     prev() {
-        if(this.currentStep === 0) {
+        if (this.currentStep === 0) {
             return;
         }
         this.currentStep--;

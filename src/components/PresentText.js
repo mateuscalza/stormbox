@@ -1,8 +1,8 @@
-import { div } from '../util/dom';
-import { on } from '../util/events';
+import {div} from '../util/dom';
+import {on} from '../util/events';
 
 export default class PresentText {
-    constructor({ style: { presentText, presentInnerText, presentCropText, presentInnerValue, presentTextItems } }, undefined, autocomplete) {
+    constructor({style: {presentText, presentInnerText, presentCropText, presentInnerValue, presentTextItems}}, undefined, autocomplete) {
         this.autocomplete = autocomplete;
         this.elements = {};
 
@@ -33,7 +33,7 @@ export default class PresentText {
     }
 
     scrollToShow() {
-        if(!this.autocomplete.open) {
+        if (!this.autocomplete.open) {
             // Prepare transition
             this.elements.items.style.webkitTransition = 'left linear 3s';
             this.elements.items.style.mozTransition = 'left linear 3s';
@@ -42,12 +42,12 @@ export default class PresentText {
 
             // Floor and set min as 0 to diff between crop width and sum innerText width with innerValue
             this.elements.items.style.left = '-' + Math.max(0, Math.floor(
-                (this.elements.innerValue.style.display === 'none' ? 0 : this.elements.innerValue.getBoundingClientRect().width)
-                +
-                this.elements.inner.getBoundingClientRect().width
-                -
-                this.elements.crop.getBoundingClientRect().width
-            )) + 'px';
+                    (this.elements.innerValue.style.display === 'none' ? 0 : this.elements.innerValue.getBoundingClientRect().width)
+                    +
+                    this.elements.inner.getBoundingClientRect().width
+                    -
+                    this.elements.crop.getBoundingClientRect().width
+                )) + 'px';
         }
     }
 
@@ -67,7 +67,7 @@ export default class PresentText {
     }
 
     value(value = '') {
-        if(this.autocomplete.showValue && String(value).length) {
+        if (this.autocomplete.showValue && String(value).length) {
             this.elements.innerValue.innerText = value;
             this.elements.innerValue.style.display = 'inline-block';
         } else {

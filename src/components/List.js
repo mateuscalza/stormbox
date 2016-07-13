@@ -157,6 +157,9 @@ export default class List {
     }
 
     selectCurrent() {
+        if(!this.items) {
+            return;
+        }
         if (this.autocomplete.emptyItem && this.selectedIndex == 0) {
             this.onSelect({
                 content: null,

@@ -1,6 +1,6 @@
 import StormBox from '../components/StormBox';
-import { trigger, on } from '../util/events';
-import { ENTER, SPACE, ESC, SHIFT, TAB, ARROW_UP, ARROW_DOWN, ARROW_LEFT, ARROW_RIGHT } from '../util/keys';
+import {trigger, on} from '../util/events';
+import {ENTER, SPACE, ESC, SHIFT, TAB, ARROW_UP, ARROW_DOWN, ARROW_LEFT, ARROW_RIGHT} from '../util/keys';
 
 const ignoredKeysOnSearch = [
     ENTER,
@@ -38,7 +38,7 @@ export default (Parent) => class extends Parent {
     }
 
     layoutChange() {
-        if(!this.open) {
+        if (!this.open) {
             return;
         }
 
@@ -47,21 +47,21 @@ export default (Parent) => class extends Parent {
 
         const lastDirection = this.direction;
 
-        if( // Set to top?
-            topSpace > bottomSpace // Top space greater than bottom
-            &&
-            bottomSpace < 300
+        if ( // Set to top?
+        topSpace > bottomSpace // Top space greater than bottom
+        &&
+        bottomSpace < 300
         ) {
             this.direction = 'top';
         } else {
             this.direction = 'bottom';
         }
 
-        if(lastDirection !== this.direction) {
+        if (lastDirection !== this.direction) {
             this.updateDirection();
         }
 
-        if(this.direction === 'top') {
+        if (this.direction === 'top') {
             this.heightSpace = topSpace;
         } else {
             this.heightSpace = bottomSpace;
@@ -91,15 +91,15 @@ export default (Parent) => class extends Parent {
     }
 
     keyUp(event) {
-        if(event.keyCode === ESC) {
+        if (event.keyCode === ESC) {
             this.closePanel();
             this.ignoreFocus = true;
             this.elements.wrapper.focus();
-        } else if(event.target === this.elements.wrapper && event.keyCode == SPACE) {
+        } else if (event.target === this.elements.wrapper && event.keyCode == SPACE) {
             event.preventDefault();
             event.stopPropagation();
             this.togglePanel();
-        } else if(
+        } else if (
             event.keyCode == ARROW_UP
             ||
             event.keyCode == ARROW_DOWN
@@ -108,10 +108,10 @@ export default (Parent) => class extends Parent {
         ) {
             event.preventDefault();
             event.stopPropagation();
-        } else if(ignoredKeysOnSearch.indexOf(event.keyCode) == -1) {
-            if(!this.typing) {
+        } else if (ignoredKeysOnSearch.indexOf(event.keyCode) == -1) {
+            if (!this.typing) {
                 this.typing = true;
-                if(this.clearOnType) {
+                if (this.clearOnType) {
                     this.select({
                         content: null,
                         value: null
@@ -124,22 +124,22 @@ export default (Parent) => class extends Parent {
     }
 
     iconOrTextClick(event) {
-        if(document.activeElement === this.elements.wrapper) {
+        if (document.activeElement === this.elements.wrapper) {
             //this.togglePanel();
         }
     }
 
     wrapperFocus(event) {
-        if(!event.isTrigger && !this.ignoreFocus) {
+        if (!event.isTrigger && !this.ignoreFocus) {
             this.openPanel();
         }
         this.ignoreFocus = false;
     }
 
     blur() {
-        if(!this.ignoreBlur) {
-            if(!StormBox.isArray(this.elements.hiddenInput)) {
-                if(this.value !== this.valueOnOpen) {
+        if (!this.ignoreBlur) {
+            if (!StormBox.isArray(this.elements.hiddenInput)) {
+                if (this.value !== this.valueOnOpen) {
                     this.valueOnOpen = this.value;
                     this.elements.hiddenInput::trigger('change');
                     this.elements.textInput::trigger('change');
@@ -153,13 +153,13 @@ export default (Parent) => class extends Parent {
     }
 
     wrapperMouseDown(event) {
-        if(!this.open && document.activeElement === this.elements.wrapper) {
+        if (!this.open && document.activeElement === this.elements.wrapper) {
             this.openPanel();
-        } else if(this.open && document.activeElement === this.elements.wrapper) {
+        } else if (this.open && document.activeElement === this.elements.wrapper) {
             this.ignoreBlur = true;
             this.components.panel.components.searchInput.elements.input.focus();
             this.ignoreFocus = true;
-        } else if(
+        } else if (
             StormBox.isFrom(event.target, this.components.panel.components.pagination.elements.goLeft)
             ||
             StormBox.isFrom(event.target, this.components.panel.components.pagination.elements.goRight)
@@ -167,8 +167,8 @@ export default (Parent) => class extends Parent {
             event.target == this.components.panel.components.searchInput.elements.input
         ) {
             return;
-        } else if(document.activeElement === this.components.panel.components.searchInput.elements.input) {
-            if(this.open && StormBox.isFrom(event.target, this.components.presentText.element)) {
+        } else if (document.activeElement === this.components.panel.components.searchInput.elements.input) {
+            if (this.open && StormBox.isFrom(event.target, this.components.presentText.element)) {
                 this.ignoreFocus = true;
             }
             this.closePanel();
@@ -180,7 +180,7 @@ export default (Parent) => class extends Parent {
     }
 
     labelMouseDown(event) {
-        if(
+        if (
             StormBox.isFrom(event.target, this.elements.wrapper)
             ||
             (

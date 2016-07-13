@@ -1,23 +1,22 @@
 export default Parent => class extends Parent {
 
-    enable({ childrenApply = true } = {}) {
-        if(!this.disabled) {
+    enable() {
+        if (!this.disabled) {
             return;
         }
         this.disabled = false;
         // If still readOnly ignore reconstruction
-        if(this.readOnly) {
+        if (this.readOnly) {
             return;
         }
         this.elements.wrapper.setAttribute('tabindex', '0');
         this.elements.wrapper.className = this.style.wrapper;
         this.components.icon.element.className = this.style.rightIcon;
-        console.log('enabled', this);
-        childrenApply && console.warn('children stay unchanged');
+        this.relatedApply(element => element.disabled = false);
     }
-    
-    disable({ childrenApply = true } = {}) {
-        if(this.disabled) {
+
+    disable() {
+        if (this.disabled) {
             return;
         }
         this.disabled = true;
@@ -25,28 +24,26 @@ export default Parent => class extends Parent {
         this.closePanel();
         this.elements.wrapper.className = this.style.disabledWrapper;
         this.components.icon.element.className = this.style.disabledRightIcon;
-        console.log('disabled', this);
-        childrenApply && console.warn('children stay unchanged');
+        this.relatedApply(element => element.disabled = true);
     }
 
-    canReadAndWrite({ childrenApply = true } = {}) {
-        if(!this.readOnly) {
+    canReadAndWrite() {
+        if (!this.readOnly) {
             return;
         }
         this.readOnly = false;
         // If still disabled ignore reconstruction
-        if(this.disabled) {
+        if (this.disabled) {
             return;
         }
         this.elements.wrapper.setAttribute('tabindex', '0');
         this.elements.wrapper.className = this.style.wrapper;
         this.components.icon.element.className = this.style.rightIcon;
-        console.log('can read and write', this);
-        childrenApply && console.warn('children stay unchanged');
+        this.relatedApply(element => element.readOnly = false);
     }
 
-    canRead({ childrenApply = true } = {}) {
-        if(this.readOnly) {
+    canRead() {
+        if (this.readOnly) {
             return;
         }
         this.readOnly = true;
@@ -54,27 +51,24 @@ export default Parent => class extends Parent {
         this.closePanel();
         this.elements.wrapper.className = this.style.readOnlyWrapper;
         this.components.icon.element.className = this.style.readOnlyRightIcon;
-        console.log('can read', this);
-        childrenApply && console.warn('children stay unchanged');
+        this.relatedApply(element => element.readOnly = true);
     }
 
-    required({ childrenApply = true } = {}) {
-        if(!this.emptyItem || this.multiple) {
+    required() {
+        if (this.emptyItem === false || this.multiple) {
             return;
         }
         this.emptyItem = false;
         this.closePanel();
-        console.log('can read', this);
-        childrenApply && console.warn('children stay unchanged');
+        this.relatedApply(element => element.required = true);
     }
-    
-    optional({ childrenApply = true } = {}) {
-        if(this.emptyItem) {
+
+    optional() {
+        if (this.emptyItem === true) {
             return;
         }
         this.emptyItem = true;
         this.closePanel();
-        console.log('can read', this);
-        childrenApply && console.warn('children stay unchanged');
+        this.relatedApply(element => element.required = false);
     }
 };

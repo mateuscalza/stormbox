@@ -375,6 +375,9 @@ var List = function () {
     }, {
         key: 'selectCurrent',
         value: function selectCurrent() {
+            if (!this.items) {
+                return;
+            }
             if (this.autocomplete.emptyItem && this.selectedIndex == 0) {
                 this.onSelect({
                     content: null,
@@ -1061,12 +1064,7 @@ var StormBox = function (_Parent) {
         _this.minItemsLength = minItemsLength;
         _this.hiddenInputName = hiddenInputName;
         _this.textInputName = textInputName;
-        if (typeof emptyItem !== 'undefined') {
-            _this.emptyItem = emptyItem;
-        } else if (!StormBox.isArray(hiddenInput) && hiddenInput && textInput) {
-            _this.emptyItem = !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required');
-        }
-
+        _this.emptyItem = emptyItem;
         if (multiple) {
             _this.emptyItem = false;
         }
@@ -1271,6 +1269,21 @@ var StormBox = function (_Parent) {
                 this.elements.wrapper.parentNode.insertBefore(this.components.multiple.element, this.elements.wrapper.nextSibling);
             }
             this.prepareEvents();
+        }
+    }, {
+        key: 'relatedApply',
+        value: function relatedApply(fn) {
+            if (!StormBox.isArray(this.elements.textInput)) {
+                fn(this.elements.textInput);
+            }
+
+            if (!StormBox.isArray(this.elements.hiddenInput)) {
+                fn(this.elements.hiddenInput);
+            }
+
+            if (this.anchorElement != this.elements.textInput && this.anchorElement != this.elements.hiddenInput) {
+                fn(this.anchorElement);
+            }
         }
     }]);
 
@@ -2043,11 +2056,6 @@ exports.default = function (Parent) {
         _createClass(_class, [{
             key: 'enable',
             value: function enable() {
-                var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-                var _ref$childrenApply = _ref.childrenApply;
-                var childrenApply = _ref$childrenApply === undefined ? true : _ref$childrenApply;
-
                 if (!this.disabled) {
                     return;
                 }
@@ -2059,17 +2067,13 @@ exports.default = function (Parent) {
                 this.elements.wrapper.setAttribute('tabindex', '0');
                 this.elements.wrapper.className = this.style.wrapper;
                 this.components.icon.element.className = this.style.rightIcon;
-                console.log('enabled', this);
-                childrenApply && console.warn('children stay unchanged');
+                this.relatedApply(function (element) {
+                    return element.disabled = false;
+                });
             }
         }, {
             key: 'disable',
             value: function disable() {
-                var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-                var _ref2$childrenApply = _ref2.childrenApply;
-                var childrenApply = _ref2$childrenApply === undefined ? true : _ref2$childrenApply;
-
                 if (this.disabled) {
                     return;
                 }
@@ -2078,17 +2082,13 @@ exports.default = function (Parent) {
                 this.closePanel();
                 this.elements.wrapper.className = this.style.disabledWrapper;
                 this.components.icon.element.className = this.style.disabledRightIcon;
-                console.log('disabled', this);
-                childrenApply && console.warn('children stay unchanged');
+                this.relatedApply(function (element) {
+                    return element.disabled = true;
+                });
             }
         }, {
             key: 'canReadAndWrite',
             value: function canReadAndWrite() {
-                var _ref3 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-                var _ref3$childrenApply = _ref3.childrenApply;
-                var childrenApply = _ref3$childrenApply === undefined ? true : _ref3$childrenApply;
-
                 if (!this.readOnly) {
                     return;
                 }
@@ -2100,17 +2100,13 @@ exports.default = function (Parent) {
                 this.elements.wrapper.setAttribute('tabindex', '0');
                 this.elements.wrapper.className = this.style.wrapper;
                 this.components.icon.element.className = this.style.rightIcon;
-                console.log('can read and write', this);
-                childrenApply && console.warn('children stay unchanged');
+                this.relatedApply(function (element) {
+                    return element.readOnly = false;
+                });
             }
         }, {
             key: 'canRead',
             value: function canRead() {
-                var _ref4 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-                var _ref4$childrenApply = _ref4.childrenApply;
-                var childrenApply = _ref4$childrenApply === undefined ? true : _ref4$childrenApply;
-
                 if (this.readOnly) {
                     return;
                 }
@@ -2119,40 +2115,33 @@ exports.default = function (Parent) {
                 this.closePanel();
                 this.elements.wrapper.className = this.style.readOnlyWrapper;
                 this.components.icon.element.className = this.style.readOnlyRightIcon;
-                console.log('can read', this);
-                childrenApply && console.warn('children stay unchanged');
+                this.relatedApply(function (element) {
+                    return element.readOnly = true;
+                });
             }
         }, {
             key: 'required',
             value: function required() {
-                var _ref5 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-                var _ref5$childrenApply = _ref5.childrenApply;
-                var childrenApply = _ref5$childrenApply === undefined ? true : _ref5$childrenApply;
-
-                if (!this.emptyItem || this.multiple) {
+                if (this.emptyItem === false || this.multiple) {
                     return;
                 }
                 this.emptyItem = false;
                 this.closePanel();
-                console.log('can read', this);
-                childrenApply && console.warn('children stay unchanged');
+                this.relatedApply(function (element) {
+                    return element.required = true;
+                });
             }
         }, {
             key: 'optional',
             value: function optional() {
-                var _ref6 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-                var _ref6$childrenApply = _ref6.childrenApply;
-                var childrenApply = _ref6$childrenApply === undefined ? true : _ref6$childrenApply;
-
-                if (this.emptyItem) {
+                if (this.emptyItem === true) {
                     return;
                 }
                 this.emptyItem = true;
                 this.closePanel();
-                console.log('can read', this);
-                childrenApply && console.warn('children stay unchanged');
+                this.relatedApply(function (element) {
+                    return element.required = false;
+                });
             }
         }]);
 
@@ -2326,65 +2315,23 @@ exports.default = function (Parent) {
         _createClass(_class, [{
             key: 'relatedReplica',
             value: function relatedReplica() {
-                if (!_StormBox2.default.isArray(this.elements.textInput)) {
-                    this.observe(this.elements.textInput);
-                }
+                var _this2 = this;
 
-                if (!_StormBox2.default.isArray(this.elements.hiddenInput)) {
-                    this.observe(this.elements.hiddenInput);
-                }
-
-                if (this.anchorElement != this.elements.textInput && this.anchorElement != this.elements.hiddenInput) {
-                    this.observe(this.anchorElement);
-                }
-            }
-        }, {
-            key: 'observe',
-            value: function observe(element) {
-                this.replica(element);
-                var selfStormBox = this;
-
-                Object.defineProperties(element, {
-                    disabled: {
-                        set: function set(value) {
-                            if (value) {
-                                selfStormBox.disable({ childrenApply: false });
-                            } else {
-                                selfStormBox.enable({ childrenApply: false });
-                            }
-                        }
-                    },
-                    readOnly: {
-                        set: function set(value) {
-                            if (value) {
-                                selfStormBox.canRead({ childrenApply: false });
-                            } else {
-                                selfStormBox.canReadAndWrite({ childrenApply: false });
-                            }
-                        }
-                    },
-                    required: {
-                        set: function set(value) {
-                            if (value) {
-                                selfStormBox.required({ childrenApply: false });
-                            } else {
-                                selfStormBox.optional({ childrenApply: false });
-                            }
-                        }
-                    }
+                this.relatedApply(function (element) {
+                    return _this2.replica(element);
                 });
             }
         }, {
             key: 'replica',
             value: function replica(element) {
                 if (element.disabled || element.hasAttribute('disabled')) {
-                    this.disable({ childrenApply: false });
+                    this.disable();
                 }
                 if (element.readOnly || element.hasAttribute('readonly')) {
-                    this.canRead({ childrenApply: false });
+                    this.canRead();
                 }
                 if (element.required || element.hasAttribute('required')) {
-                    this.required({ childrenApply: false });
+                    this.required();
                 }
             }
         }]);

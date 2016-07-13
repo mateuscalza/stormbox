@@ -29,7 +29,7 @@ export default Parent => class extends Parent {
             let results = {data: []};
             this.source.find(params)
                 .then(newResults => {
-                    if(newResults === 'aborted') {
+                    if (newResults === 'aborted') {
                         return;
                     }
                     this.lastParams = params;
@@ -47,12 +47,12 @@ export default Parent => class extends Parent {
                     this.findingEnd();
                 })
                 .catch(error => {
-                    if(error instanceof Error) {
+                    if (error instanceof Error) {
                         this.components.panel.error(error);
                     } else {
                         this.components.panel.warning(error);
                     }
-                    
+
                     if (this.autoSelectWhenOneResult && (!this.open || !this.emptyItem) && results && results.data && results.data.length == 1) {
                         this.select({
                             content: results.data[0].content,
@@ -75,7 +75,7 @@ export default Parent => class extends Parent {
         this.findingStart();
         return this.source.find({...this.lastParams, offset})
             .then(newResults => {
-                if(newResults === 'aborted') {
+                if (newResults === 'aborted') {
                     return [];
                 }
                 this.findingEnd();

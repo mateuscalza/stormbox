@@ -199,7 +199,7 @@ export default class StormBox extends Parent {
 
             // Clone props and observe set
             this.relatedReplica();
-            
+
             // Remove old inputs
             this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
             this.elements.textInput.parentNode.removeChild(this.elements.textInput);
@@ -244,7 +244,7 @@ export default class StormBox extends Parent {
             }
 
             // If still no anchor, throw error
-            if(!this.anchorElement) {
+            if (!this.anchorElement) {
                 throw new Error('StormBox anchor element missing!');
             }
 
@@ -256,7 +256,7 @@ export default class StormBox extends Parent {
 
             // Clone props and observe set
             this.relatedReplica();
-            
+
             // Remove items from DOM
             this.elements.hiddenInput.forEach(element => element.parentNode.removeChild(element));
             this.elements.textInput.forEach(element => element.parentNode.removeChild(element));
@@ -284,6 +284,20 @@ export default class StormBox extends Parent {
 
         }
         this.prepareEvents();
+    }
+    
+    relatedApply(fn) {
+        if (!StormBox.isArray(this.elements.textInput)) {
+            fn(this.elements.textInput);
+        }
+
+        if (!StormBox.isArray(this.elements.hiddenInput)) {
+            fn(this.elements.hiddenInput);
+        }
+
+        if (this.anchorElement != this.elements.textInput && this.anchorElement != this.elements.hiddenInput) {
+            fn(this.anchorElement);
+        }
     }
 
 }

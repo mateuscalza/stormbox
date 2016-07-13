@@ -4,17 +4,17 @@ import ErrorView from './ErrorView';
 import WarningView from './WarningView';
 import List from './List';
 import Pagination from './Pagination';
-import { div } from '../util/dom';
+import {div} from '../util/dom';
 
 export default class Panel {
-    constructor({ style }, { onSelect }, autocomplete) {
+    constructor({style}, {onSelect}, autocomplete) {
         this.autocomplete = autocomplete;
         this.components = {
-            searchInput: new SearchInput({ style }, undefined, autocomplete),
-            errorView: new ErrorView({ style }),
-            warningView: new WarningView({ style }),
-            list: new List({ style }, { onSelect }, autocomplete),
-            pagination: new Pagination({ style }, { onSelect }, autocomplete)
+            searchInput: new SearchInput({style}, undefined, autocomplete),
+            errorView: new ErrorView({style}),
+            warningView: new WarningView({style}),
+            list: new List({style}, {onSelect}, autocomplete),
+            pagination: new Pagination({style}, {onSelect}, autocomplete)
         };
 
         this.element = div(
@@ -30,7 +30,7 @@ export default class Panel {
     }
 
     show(results) {
-        if(results.data.length === 0) {
+        if (results.data.length === 0) {
             this.warning({
                 message: this.autocomplete.messages.noData
             });

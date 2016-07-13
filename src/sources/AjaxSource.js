@@ -2,7 +2,7 @@ import Source from './Source';
 
 function nestedSerialize(params, history = []) {
     return Object.keys(params).map(function (key) {
-        if(typeof params[key] === 'object' && params[key] !== null) {
+        if (typeof params[key] === 'object' && params[key] !== null) {
             return nestedSerialize(params[key], [...history, key]);
         }
         const keys = [...history, key];
@@ -24,7 +24,7 @@ export default class AjaxSource {
         this.request = new XMLHttpRequest();
         const paramUrl = nestedSerialize(params);
         this.request.open('GET', `${this.url}?${paramUrl}`, true);
-        if(this.headerXMLHttpRequest) {
+        if (this.headerXMLHttpRequest) {
             this.request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
         }
         this.beforeSend && this.beforeSend(this.request);
@@ -37,10 +37,10 @@ export default class AjaxSource {
     send() {
         return new Promise((resolve, reject) => {
             this.request.onreadystatechange = () => {
-                if(this.request.readyState != 4) {
+                if (this.request.readyState != 4) {
                     return;
                 }
-                if(this.request.status == 0) {
+                if (this.request.status == 0) {
                     return resolve('aborted');
                 }
                 if (this.request.status == 200) {
@@ -57,8 +57,8 @@ export default class AjaxSource {
                     try {
                         const parsedError = JSON.parse(this.request.responseText);
                         error += this.request.statusText && this.request.statusText.trim().length ? `; Status: ${this.request.statusText}` : '';
-                        if(parsedError.message) {
-                            if(this.request.status >= 400 && this.request.status < 500) {
+                        if (parsedError.message) {
+                            if (this.request.status >= 400 && this.request.status < 500) {
                                 return reject(parsedError);
                             }
                             error += parsedError.message && parsedError.message.trim().length ? `; Status: ${parsedError.message.trim()}` : '';

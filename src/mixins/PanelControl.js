@@ -1,10 +1,10 @@
 export default Parent => class extends Parent {
 
     openPanel() {
-        if(this.disabled || this.readOnly) {
+        if (this.disabled || this.readOnly) {
             return;
         }
-        
+
         this.open = true;
         this.valueOnOpen = this.value;
         this.elements.wrapper.className = this.style.openWrapper;
@@ -13,7 +13,7 @@ export default Parent => class extends Parent {
         this.components.panel.components.searchInput.elements.input.focus();
         this.components.panel.components.searchInput.elements.input.setSelectionRange(0, this.components.panel.components.searchInput.elements.input.value.length);
 
-        if(this.autoFind) {
+        if (this.autoFind) {
             this.debouncedFind();
         }
 
@@ -26,7 +26,7 @@ export default Parent => class extends Parent {
     }
 
     closePanel() {
-        if(!this.open) {
+        if (!this.open) {
             return;
         }
         this.open = false;
@@ -39,7 +39,7 @@ export default Parent => class extends Parent {
     }
 
     togglePanel() {
-        if(!this.open){
+        if (!this.open) {
             this.openPanel();
         } else {
             this.closePanel();

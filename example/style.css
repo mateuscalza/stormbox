@@ -100,20 +100,24 @@ input[type="button"], input[type="submit"] {
     border: 1px solid #ccc;
     background: #ecf0f1;
 }
+
 .ac-multiple ul {
     margin: 0;
     padding: 0;
     list-style: none;
 }
+
 .ac-multiple ul li {
     padding: 5px 3px;
     border-bottom: 1px solid #ccc;
     font-size: 14px;
     color: #555555
 }
+
 .ac-multiple ul li:last-child {
     border-bottom: none;
 }
+
 .ac-multiple ul li button {
     display: inline-block;
     height: 30px;
@@ -341,6 +345,7 @@ input[type="button"], input[type="submit"] {
     padding-right: 5px;
     color: #f8ac59;
 }
+
 .ac-list-wrapper ul li .ac-item.active .ac-already-selected {
     color: #fff;
 }
