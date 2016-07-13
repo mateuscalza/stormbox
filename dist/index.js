@@ -772,9 +772,11 @@ var PresentText = function () {
             className: presentCropText
         }, this.elements.items);
 
-        this.element = (_context = (_context = (0, _dom.div)({
+        (_context = (_context = this.autocomplete.elements.wrapper, _events.on).call(_context, 'mouseenter', this.scrollToShow.bind(this)), _events.on).call(_context, 'mouseleave', this.scrollToHide.bind(this));
+
+        this.element = (0, _dom.div)({
             className: presentText
-        }, this.elements.crop), _events.on).call(_context, 'mouseenter', this.scrollToShow.bind(this)), _events.on).call(_context, 'mouseout', this.scrollToHide.bind(this));
+        }, this.elements.crop);
     }
 
     _createClass(PresentText, [{
@@ -793,7 +795,7 @@ var PresentText = function () {
         }
     }, {
         key: 'scrollToHide',
-        value: function scrollToHide() {
+        value: function scrollToHide(event) {
             // Prepare transition
             this.elements.items.style.webkitTransition = 'left linear 600ms';
             this.elements.items.style.mozTransition = 'left linear 600ms';
@@ -2625,7 +2627,7 @@ var AjaxSource = function () {
                             var parsedError = JSON.parse(_this.request.responseText);
                             error += _this.request.statusText && _this.request.statusText.trim().length ? '; Status: ' + _this.request.statusText : '';
                             if (parsedError.message) {
-                                if (_this.request.status == 400) {
+                                if (_this.request.status >= 400 && _this.request.status < 500) {
                                     return reject(parsedError);
                                 }
                                 error += parsedError.message && parsedError.message.trim().length ? '; Status: ' + parsedError.message.trim() : '';

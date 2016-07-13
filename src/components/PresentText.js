@@ -22,11 +22,13 @@ export default class PresentText {
             className: presentCropText
         }, this.elements.items);
 
+        this.autocomplete.elements.wrapper
+            ::on('mouseenter', ::this.scrollToShow)
+            ::on('mouseleave', ::this.scrollToHide);
+
         this.element = div({
             className: presentText
-        }, this.elements.crop)
-            ::on('mouseenter', ::this.scrollToShow)
-            ::on('mouseout', ::this.scrollToHide);
+        }, this.elements.crop);
 
     }
 
@@ -49,7 +51,7 @@ export default class PresentText {
         }
     }
 
-    scrollToHide() {
+    scrollToHide(event) {
         // Prepare transition
         this.elements.items.style.webkitTransition = 'left linear 600ms';
         this.elements.items.style.mozTransition = 'left linear 600ms';
