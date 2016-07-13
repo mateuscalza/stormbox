@@ -64,7 +64,13 @@ export default class List {
                     innerText: this.items[index].content
                 });
                 let additionalChild = null;
-                if (this.items[index].additional && this.items[index].additional.length) {
+                if (
+                    (this.items[index].additional && this.items[index].additional.length)
+                    ||
+                    typeof this.autocomplete.valueInOthersAs === 'string'
+                    ||
+                    this.autocomplete.showValue
+                ) {
                     if (typeof this.autocomplete.valueInOthersAs !== 'string' || !this.autocomplete.showValue) {
                         additionalChild = div.call(null, {}, ...this.items[index].additional.map(({label, content}) => {
                             return div({className: this.style.additional}, strong({innerText: `${label}: `}), span({innerText: content}));

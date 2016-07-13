@@ -296,7 +296,7 @@ var List = function () {
                         innerText: this.items[index].content
                     });
                     var additionalChild = null;
-                    if (this.items[index].additional && this.items[index].additional.length) {
+                    if (this.items[index].additional && this.items[index].additional.length || typeof this.autocomplete.valueInOthersAs === 'string' || this.autocomplete.showValue) {
                         if (typeof this.autocomplete.valueInOthersAs !== 'string' || !this.autocomplete.showValue) {
                             additionalChild = _dom.div.call.apply(_dom.div, [null, {}].concat(_toConsumableArray(this.items[index].additional.map(function (_ref3) {
                                 var label = _ref3.label;
