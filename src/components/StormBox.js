@@ -10,12 +10,13 @@ import Finding from '../mixins/Finding';
 import PanelControl from '../mixins/PanelControl';
 import Selecting from '../mixins/Selecting';
 import Positioning from '../mixins/Positioning';
+import Replica from '../mixins/Replica';
+import Interface from '../mixins/Interface';
 import debounce from '../util/debounce';
 import {div} from '../util/dom';
 
 // Use mixins
-const Parent = Selecting(PanelControl(Finding(Positioning(Events(Core)))));
-
+const Parent = Replica(Interface(Selecting(PanelControl(Finding(Positioning(Events(Core)))))));
 
 export default class StormBox extends Parent {
     constructor(options) {
@@ -45,7 +46,9 @@ export default class StormBox extends Parent {
             distinct = true, // When multiple, select only distinct items
             hiddenInputName = null, // Required for multiple, name to create inputs with value
             textInputName = null, // Required for multiple, name to create inputs with value
-            softErrors = false // Soft errors, recommended for production
+            softErrors = false, // Soft errors, recommended for production
+            disabled = false, // Is disabled
+            readOnly = false // Is disabled
         } = options;
 
         super(options);
@@ -66,6 +69,8 @@ export default class StormBox extends Parent {
         this.direction = 'down';
 
         // Initial
+        this.disabled = disabled;
+        this.readOnly = readOnly;
         this.multiple = multiple;
         this.distinct = distinct;
         this.anchorElement = anchorElement;
@@ -83,12 +88,7 @@ export default class StormBox extends Parent {
         this.minItemsLength = minItemsLength;
         this.hiddenInputName = hiddenInputName;
         this.textInputName = textInputName;
-        if (typeof emptyItem !== 'undefined') {
-            this.emptyItem = emptyItem;
-        } else if (!StormBox.isArray(hiddenInput) && hiddenInput && textInput) {
-            this.emptyItem = !hiddenInput.hasAttribute('required') && !textInput.hasAttribute('required')
-        }
-
+        this.emptyItem = emptyItem;
         if (multiple) {
             this.emptyItem = false;
         }
@@ -126,8 +126,12 @@ export default class StormBox extends Parent {
             top: 'ac-top',
             bottom: 'ac-bottom',
             openWrapper: 'ac-wrapper ac-open-wrapper',
+            disabledWrapper: 'ac-wrapper ac-disabled-wrapper',
+            readOnlyWrapper: 'ac-wrapper ac-read-only-wrapper',
             rightIcon: 'fa fa-search ac-icon',
             loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon',
+            disabledRightIcon: 'fa fa-ban ac-icon',
+            readOnlyRightIcon: 'fa fa-info ac-icon',
             paginationWrapper: 'ac-pagination-wrapper',
             paginationLeft: 'ac-pagination-left',
             paginationRight: 'ac-pagination-right',
@@ -193,6 +197,9 @@ export default class StormBox extends Parent {
             // Add wrapper after anchor
             this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling)
 
+            // Clone props and observe set
+            this.relatedReplica();
+            
             // Remove old inputs
             this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
             this.elements.textInput.parentNode.removeChild(this.elements.textInput);
@@ -247,6 +254,9 @@ export default class StormBox extends Parent {
             // Add wrapper after anchor
             this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling)
 
+            // Clone props and observe set
+            this.relatedReplica();
+            
             // Remove items from DOM
             this.elements.hiddenInput.forEach(element => element.parentNode.removeChild(element));
             this.elements.textInput.forEach(element => element.parentNode.removeChild(element));

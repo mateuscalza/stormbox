@@ -359,6 +359,22 @@ i.fa.ac-icon {
     box-shadow: -6px 0px 5px #fff;
 }
 
+.ac-disabled-wrapper .ac-present-text {
+    background-color: #ecf0f1;
+}
+
+.ac-disabled-wrapper i.fa.ac-icon {
+    box-shadow: none;
+}
+
+.ac-read-only-wrapper .ac-present-text {
+    background-color: #ecf0f1;
+}
+
+.ac-read-only-wrapper i.fa.ac-icon {
+    box-shadow: none;
+}
+
 i.fa.ac-icon.ac-loading-icon {
     -webkit-animation: rotating 500ms linear infinite;
     -moz-animation: rotating 500ms linear infinite;

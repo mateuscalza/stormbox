@@ -13,15 +13,21 @@ function nestedSerialize(params, history = []) {
 
 export default class AjaxSource {
 
-    constructor(url) {
+    constructor(url, headerXMLHttpRequest = true, beforeSend = null) {
         this.url = url;
         this.request = null;
+        this.headerXMLHttpRequest = headerXMLHttpRequest;
+        this.beforeSend = beforeSend;
     }
 
     prepareRequest(params) {
         this.request = new XMLHttpRequest();
         const paramUrl = nestedSerialize(params);
         this.request.open('GET', `${this.url}?${paramUrl}`, true);
+        if(this.headerXMLHttpRequest) {
+            this.request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        }
+        this.beforeSend && this.beforeSend(this.request);
     }
 
     abort() {

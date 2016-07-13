@@ -1,6 +1,10 @@
 export default Parent => class extends Parent {
 
     openPanel() {
+        if(this.disabled || this.readOnly) {
+            return;
+        }
+        
         this.open = true;
         this.valueOnOpen = this.value;
         this.elements.wrapper.className = this.style.openWrapper;

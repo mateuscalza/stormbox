@@ -132,7 +132,7 @@ var ErrorView = function () {
 
 exports.default = ErrorView;
 
-},{"../util/dom":24}],3:[function(require,module,exports){
+},{"../util/dom":26}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -187,7 +187,7 @@ var Icon = function () {
 
 exports.default = Icon;
 
-},{"../sources/SelectSource":21,"../util/dom":24,"../util/events":25,"extend":1}],4:[function(require,module,exports){
+},{"../sources/SelectSource":23,"../util/dom":26,"../util/events":27,"extend":1}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -426,7 +426,7 @@ var List = function () {
 
 exports.default = List;
 
-},{"../util/dom":24}],5:[function(require,module,exports){
+},{"../util/dom":26}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -508,7 +508,7 @@ var Multiple = function () {
 
 exports.default = Multiple;
 
-},{"../util/dom":24,"../util/events":25}],6:[function(require,module,exports){
+},{"../util/dom":26,"../util/events":27}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -622,7 +622,7 @@ var Pagination = function () {
 
 exports.default = Pagination;
 
-},{"../util/dom":24,"../util/events":25}],7:[function(require,module,exports){
+},{"../util/dom":26,"../util/events":27}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -725,7 +725,7 @@ var Panel = function () {
 
 exports.default = Panel;
 
-},{"../components/StormBox":10,"../util/dom":24,"./ErrorView":2,"./List":4,"./Pagination":6,"./SearchInput":9,"./WarningView":11}],8:[function(require,module,exports){
+},{"../components/StormBox":10,"../util/dom":26,"./ErrorView":2,"./List":4,"./Pagination":6,"./SearchInput":9,"./WarningView":11}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -827,7 +827,7 @@ var PresentText = function () {
 
 exports.default = PresentText;
 
-},{"../util/dom":24,"../util/events":25}],9:[function(require,module,exports){
+},{"../util/dom":26,"../util/events":27}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -882,7 +882,7 @@ var SearchInput = function () {
 
 exports.default = SearchInput;
 
-},{"../sources/SelectSource":21,"../util/dom":24,"extend":1}],10:[function(require,module,exports){
+},{"../sources/SelectSource":23,"../util/dom":26,"extend":1}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -939,6 +939,14 @@ var _Positioning = require('../mixins/Positioning');
 
 var _Positioning2 = _interopRequireDefault(_Positioning);
 
+var _Replica = require('../mixins/Replica');
+
+var _Replica2 = _interopRequireDefault(_Replica);
+
+var _Interface = require('../mixins/Interface');
+
+var _Interface2 = _interopRequireDefault(_Interface);
+
 var _debounce = require('../util/debounce');
 
 var _debounce2 = _interopRequireDefault(_debounce);
@@ -954,7 +962,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 // Use mixins
-var Parent = (0, _Selecting2.default)((0, _PanelControl2.default)((0, _Finding2.default)((0, _Positioning2.default)((0, _Events2.default)(_Core2.default)))));
+var Parent = (0, _Replica2.default)((0, _Interface2.default)((0, _Selecting2.default)((0, _PanelControl2.default)((0, _Finding2.default)((0, _Positioning2.default)((0, _Events2.default)(_Core2.default)))))));
 
 var StormBox = function (_Parent) {
     _inherits(StormBox, _Parent);
@@ -1007,6 +1015,10 @@ var StormBox = function (_Parent) {
         var textInputName = _options$textInputNam === undefined ? null : _options$textInputNam;
         var _options$softErrors = options.softErrors;
         var softErrors = _options$softErrors === undefined ? false : _options$softErrors;
+        var _options$disabled = options.disabled;
+        var disabled = _options$disabled === undefined ? false : _options$disabled;
+        var _options$readOnly = options.readOnly;
+        var readOnly = _options$readOnly === undefined ? false : _options$readOnly;
 
 
         // Key
@@ -1028,6 +1040,8 @@ var StormBox = function (_Parent) {
         _this.direction = 'down';
 
         // Initial
+        _this.disabled = disabled;
+        _this.readOnly = readOnly;
         _this.multiple = multiple;
         _this.distinct = distinct;
         _this.anchorElement = anchorElement;
@@ -1088,8 +1102,12 @@ var StormBox = function (_Parent) {
             top: 'ac-top',
             bottom: 'ac-bottom',
             openWrapper: 'ac-wrapper ac-open-wrapper',
+            disabledWrapper: 'ac-wrapper ac-disabled-wrapper',
+            readOnlyWrapper: 'ac-wrapper ac-read-only-wrapper',
             rightIcon: 'fa fa-search ac-icon',
             loadingRightIcon: 'fa fa-spinner ac-icon ac-loading-icon',
+            disabledRightIcon: 'fa fa-ban ac-icon',
+            readOnlyRightIcon: 'fa fa-info ac-icon',
             paginationWrapper: 'ac-pagination-wrapper',
             paginationLeft: 'ac-pagination-left',
             paginationRight: 'ac-pagination-right',
@@ -1158,6 +1176,9 @@ var StormBox = function (_Parent) {
                 // Add wrapper after anchor
                 this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
 
+                // Clone props and observe set
+                this.relatedReplica();
+
                 // Remove old inputs
                 this.elements.hiddenInput.parentNode.removeChild(this.elements.hiddenInput);
                 this.elements.textInput.parentNode.removeChild(this.elements.textInput);
@@ -1215,6 +1236,9 @@ var StormBox = function (_Parent) {
                 // Add wrapper after anchor
                 this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
 
+                // Clone props and observe set
+                this.relatedReplica();
+
                 // Remove items from DOM
                 this.elements.hiddenInput.forEach(function (element) {
                     return element.parentNode.removeChild(element);
@@ -1253,7 +1277,7 @@ var StormBox = function (_Parent) {
 
 exports.default = StormBox;
 
-},{"../core/Core":12,"../mixins/Events":14,"../mixins/Finding":15,"../mixins/PanelControl":16,"../mixins/Positioning":17,"../mixins/Selecting":18,"../sources/SelectSource":21,"../util/debounce":23,"../util/dom":24,"./Icon":3,"./Multiple":5,"./Panel":7,"./PresentText":8,"extend":1}],11:[function(require,module,exports){
+},{"../core/Core":12,"../mixins/Events":14,"../mixins/Finding":15,"../mixins/Interface":16,"../mixins/PanelControl":17,"../mixins/Positioning":18,"../mixins/Replica":19,"../mixins/Selecting":20,"../sources/SelectSource":23,"../util/debounce":25,"../util/dom":26,"./Icon":3,"./Multiple":5,"./Panel":7,"./PresentText":8,"extend":1}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1299,7 +1323,7 @@ var WarningView = function () {
 
 exports.default = WarningView;
 
-},{"../util/dom":24}],12:[function(require,module,exports){
+},{"../util/dom":26}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1577,7 +1601,7 @@ exports.default = Core;
 
 window.isFrom = Core.isFrom;
 
-},{"../components/StormBox":10,"../util/dom":24}],13:[function(require,module,exports){
+},{"../components/StormBox":10,"../util/dom":26}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1632,7 +1656,7 @@ if (typeof window !== 'undefined') {
     window.StormBoxWidget = _StormBox2.default;
 }
 
-},{"./components/StormBox":10,"./sources/AjaxSource":19,"./sources/ArraySource":20,"./sources/SelectSource":21,"./sources/Source":22}],14:[function(require,module,exports){
+},{"./components/StormBox":10,"./sources/AjaxSource":21,"./sources/ArraySource":22,"./sources/SelectSource":23,"./sources/Source":24}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1852,7 +1876,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{"../components/StormBox":10,"../util/events":25,"../util/keys":26}],15:[function(require,module,exports){
+},{"../components/StormBox":10,"../util/events":27,"../util/keys":28}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2015,8 +2039,157 @@ exports.default = function (Parent) {
         }
 
         _createClass(_class, [{
+            key: 'enable',
+            value: function enable() {
+                var _ref = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+                var _ref$childrenApply = _ref.childrenApply;
+                var childrenApply = _ref$childrenApply === undefined ? true : _ref$childrenApply;
+
+                if (!this.disabled) {
+                    return;
+                }
+                this.disabled = false;
+                // If still readOnly ignore reconstruction
+                if (this.readOnly) {
+                    return;
+                }
+                this.elements.wrapper.setAttribute('tabindex', '0');
+                this.elements.wrapper.className = this.style.wrapper;
+                this.components.icon.element.className = this.style.rightIcon;
+                console.log('enabled', this);
+                childrenApply && console.warn('children stay unchanged');
+            }
+        }, {
+            key: 'disable',
+            value: function disable() {
+                var _ref2 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+                var _ref2$childrenApply = _ref2.childrenApply;
+                var childrenApply = _ref2$childrenApply === undefined ? true : _ref2$childrenApply;
+
+                if (this.disabled) {
+                    return;
+                }
+                this.disabled = true;
+                this.elements.wrapper.removeAttribute('tabindex');
+                this.closePanel();
+                this.elements.wrapper.className = this.style.disabledWrapper;
+                this.components.icon.element.className = this.style.disabledRightIcon;
+                console.log('disabled', this);
+                childrenApply && console.warn('children stay unchanged');
+            }
+        }, {
+            key: 'canReadAndWrite',
+            value: function canReadAndWrite() {
+                var _ref3 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+                var _ref3$childrenApply = _ref3.childrenApply;
+                var childrenApply = _ref3$childrenApply === undefined ? true : _ref3$childrenApply;
+
+                if (!this.readOnly) {
+                    return;
+                }
+                this.readOnly = false;
+                // If still disabled ignore reconstruction
+                if (this.disabled) {
+                    return;
+                }
+                this.elements.wrapper.setAttribute('tabindex', '0');
+                this.elements.wrapper.className = this.style.wrapper;
+                this.components.icon.element.className = this.style.rightIcon;
+                console.log('can read and write', this);
+                childrenApply && console.warn('children stay unchanged');
+            }
+        }, {
+            key: 'canRead',
+            value: function canRead() {
+                var _ref4 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+                var _ref4$childrenApply = _ref4.childrenApply;
+                var childrenApply = _ref4$childrenApply === undefined ? true : _ref4$childrenApply;
+
+                if (this.readOnly) {
+                    return;
+                }
+                this.readOnly = true;
+                this.elements.wrapper.removeAttribute('tabindex');
+                this.closePanel();
+                this.elements.wrapper.className = this.style.readOnlyWrapper;
+                this.components.icon.element.className = this.style.readOnlyRightIcon;
+                console.log('can read', this);
+                childrenApply && console.warn('children stay unchanged');
+            }
+        }, {
+            key: 'required',
+            value: function required() {
+                var _ref5 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+                var _ref5$childrenApply = _ref5.childrenApply;
+                var childrenApply = _ref5$childrenApply === undefined ? true : _ref5$childrenApply;
+
+                if (!this.emptyItem || this.multiple) {
+                    return;
+                }
+                this.emptyItem = false;
+                this.closePanel();
+                console.log('can read', this);
+                childrenApply && console.warn('children stay unchanged');
+            }
+        }, {
+            key: 'optional',
+            value: function optional() {
+                var _ref6 = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+
+                var _ref6$childrenApply = _ref6.childrenApply;
+                var childrenApply = _ref6$childrenApply === undefined ? true : _ref6$childrenApply;
+
+                if (this.emptyItem) {
+                    return;
+                }
+                this.emptyItem = true;
+                this.closePanel();
+                console.log('can read', this);
+                childrenApply && console.warn('children stay unchanged');
+            }
+        }]);
+
+        return _class;
+    }(Parent);
+};
+
+},{}],17:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+exports.default = function (Parent) {
+    return function (_Parent) {
+        _inherits(_class, _Parent);
+
+        function _class() {
+            _classCallCheck(this, _class);
+
+            return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+        }
+
+        _createClass(_class, [{
             key: 'openPanel',
             value: function openPanel() {
+                if (this.disabled || this.readOnly) {
+                    return;
+                }
+
                 this.open = true;
                 this.valueOnOpen = this.value;
                 this.elements.wrapper.className = this.style.openWrapper;
@@ -2065,7 +2238,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{}],17:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2117,7 +2290,108 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _StormBox = require('../components/StormBox');
+
+var _StormBox2 = _interopRequireDefault(_StormBox);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+exports.default = function (Parent) {
+    return function (_Parent) {
+        _inherits(_class, _Parent);
+
+        function _class() {
+            _classCallCheck(this, _class);
+
+            return _possibleConstructorReturn(this, Object.getPrototypeOf(_class).apply(this, arguments));
+        }
+
+        _createClass(_class, [{
+            key: 'relatedReplica',
+            value: function relatedReplica() {
+                if (!_StormBox2.default.isArray(this.elements.textInput)) {
+                    this.observe(this.elements.textInput);
+                }
+
+                if (!_StormBox2.default.isArray(this.elements.hiddenInput)) {
+                    this.observe(this.elements.hiddenInput);
+                }
+
+                if (this.anchorElement != this.elements.textInput && this.anchorElement != this.elements.hiddenInput) {
+                    this.observe(this.anchorElement);
+                }
+            }
+        }, {
+            key: 'observe',
+            value: function observe(element) {
+                this.replica(element);
+                var selfStormBox = this;
+
+                Object.defineProperties(element, {
+                    disabled: {
+                        set: function set(value) {
+                            if (value) {
+                                selfStormBox.disable({ childrenApply: false });
+                            } else {
+                                selfStormBox.enable({ childrenApply: false });
+                            }
+                        }
+                    },
+                    readOnly: {
+                        set: function set(value) {
+                            if (value) {
+                                selfStormBox.canRead({ childrenApply: false });
+                            } else {
+                                selfStormBox.canReadAndWrite({ childrenApply: false });
+                            }
+                        }
+                    },
+                    required: {
+                        set: function set(value) {
+                            if (value) {
+                                selfStormBox.required({ childrenApply: false });
+                            } else {
+                                selfStormBox.optional({ childrenApply: false });
+                            }
+                        }
+                    }
+                });
+            }
+        }, {
+            key: 'replica',
+            value: function replica(element) {
+                if (element.disabled || element.hasAttribute('disabled')) {
+                    this.disable({ childrenApply: false });
+                }
+                if (element.readOnly || element.hasAttribute('readonly')) {
+                    this.canRead({ childrenApply: false });
+                }
+                if (element.required || element.hasAttribute('required')) {
+                    this.required({ childrenApply: false });
+                }
+            }
+        }]);
+
+        return _class;
+    }(Parent);
+};
+
+},{"../components/StormBox":10}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2260,7 +2534,7 @@ exports.default = function (Parent) {
     }(Parent);
 };
 
-},{"../components/StormBox":10}],19:[function(require,module,exports){
+},{"../components/StormBox":10}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2296,10 +2570,15 @@ function nestedSerialize(params) {
 
 var AjaxSource = function () {
     function AjaxSource(url) {
+        var headerXMLHttpRequest = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
+        var beforeSend = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+
         _classCallCheck(this, AjaxSource);
 
         this.url = url;
         this.request = null;
+        this.headerXMLHttpRequest = headerXMLHttpRequest;
+        this.beforeSend = beforeSend;
     }
 
     _createClass(AjaxSource, [{
@@ -2308,6 +2587,10 @@ var AjaxSource = function () {
             this.request = new XMLHttpRequest();
             var paramUrl = nestedSerialize(params);
             this.request.open('GET', this.url + '?' + paramUrl, true);
+            if (this.headerXMLHttpRequest) {
+                this.request.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            }
+            this.beforeSend && this.beforeSend(this.request);
         }
     }, {
         key: 'abort',
@@ -2372,7 +2655,7 @@ var AjaxSource = function () {
 
 exports.default = AjaxSource;
 
-},{"./Source":22}],20:[function(require,module,exports){
+},{"./Source":24}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2418,7 +2701,7 @@ var ArraySource = function () {
 
 exports.default = ArraySource;
 
-},{"./Source":22}],21:[function(require,module,exports){
+},{"./Source":24}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2456,7 +2739,7 @@ var SelectSource = function () {
 
 exports.default = SelectSource;
 
-},{"./Source":22}],22:[function(require,module,exports){
+},{"./Source":24}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2491,7 +2774,7 @@ var Source = function () {
 
 exports.default = Source;
 
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2514,7 +2797,7 @@ function debounce(func, wait, immediate) {
     };
 };
 
-},{}],24:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2628,7 +2911,7 @@ function button(props) {
     return elem.apply(undefined, ['button', props].concat(children));
 };
 
-},{"extend":1}],25:[function(require,module,exports){
+},{"extend":1}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2656,7 +2939,7 @@ function on(eventName, callback) {
     return this;
 }
 
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {

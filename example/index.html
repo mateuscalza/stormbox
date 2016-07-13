@@ -53,7 +53,7 @@
         <p>StormBox with Multiple Items.</p>
         <label>
             <p>Select children</p>
-            <span id="children_anchor"></span>
+            <input type="hidden" id="children_anchor">
         </label>
     </fieldset>
 
@@ -79,7 +79,7 @@
         }
     });
 
-    new StormBoxWidget({
+    var occupation = new StormBoxWidget({
         hiddenInput: StormBoxWidget.byId('occupation'),
         textInput: StormBoxWidget.byId('text_occupation'),
         source: new StormBoxWidget.ArraySource([

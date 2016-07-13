@@ -1,4 +1,4 @@
-import AutoComplete from '../components/StormBox';
+import StormBox from '../components/StormBox';
 
 export default Parent => class extends Parent {
 
@@ -79,7 +79,7 @@ export default Parent => class extends Parent {
                 }
             }
 
-            AutoComplete.projectElementSettings(element, others[index], this.softErrors);
+            StormBox.projectElementSettings(element, others[index], this.softErrors);
             if (indexInUsed === -1) {
                 // Set as used field
                 this.usedOtherFields[this.usedOtherFields.length] = others[index].field;
@@ -94,7 +94,7 @@ export default Parent => class extends Parent {
         for (let index = 0; index < revertLength; index++) {
             // Find element and project element to revert to oldest
             let element = document.querySelector(`[name="${fieldsToRevert[index]}"]`);
-            AutoComplete.projectElementSettings(element, {}, this.softErrors);
+            StormBox.projectElementSettings(element, {}, this.softErrors);
         }
     }
 
