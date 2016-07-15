@@ -2037,6 +2037,7 @@ exports.default = function (Parent) {
                         } else if (!_this2.open && (!_this2.autoFind || results && results.data && results.data.length > 1)) {
                             _this2.cancelOthers();
                             _this2.openPanel();
+                            _this2.ignoreBlur = false;
                         }
                         _this2.findingEnd();
                     }).catch(function (error) {
@@ -2089,7 +2090,9 @@ exports.default = function (Parent) {
                 }).filter(function (autoComplete) {
                     return typeof autoComplete !== 'undefined';
                 }).forEach(function (autoComplete) {
-                    return autoComplete.abort() && autoComplete.closePanel();
+                    autoComplete.abort();
+                    autoComplete.closePanel();
+                    autoComplete.ignoreBlur = false;
                 });
             }
         }, {
