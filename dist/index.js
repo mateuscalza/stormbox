@@ -1,4 +1,10 @@
-(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.StormBox = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+/*!
+ * StormBox Responsive Autocomplete v3.0.0
+ * Created by Mateus Calza.
+ * With Inovadora Sistemas support.
+ *
+ * Licensed MIT.
+ */(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.StormBox = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
 var hasOwn = Object.prototype.hasOwnProperty;
@@ -1182,6 +1188,7 @@ var StormBox = function (_use) {
         value: function prepareElements() {
             // Turn wrapper focusable
             this.elements.wrapper.setAttribute('tabindex', '0');
+            this.elements.wrapper.autoComplete = this;
             if (!this.multiple) {
                 // Store hiddenInput value
                 this.value = this.elements.hiddenInput.value;
@@ -1993,8 +2000,7 @@ exports.default = function (Parent) {
 
                 return new Promise(function () {
                     if (_this2.finding) {
-                        _this2.source.abort();
-                        _this2.findingEnd();
+                        _this2.abort();
                     }
                     var query = _this2.components.panel.components.searchInput.value();
                     if (query.length < _this2.minLength && !_this2.forcedSearch) {
@@ -2029,6 +2035,7 @@ exports.default = function (Parent) {
                                 value: results.data[0].value
                             });
                         } else if (!_this2.open && (!_this2.autoFind || results && results.data && results.data.length > 1)) {
+                            _this2.cancelOthers();
                             _this2.openPanel();
                         }
                         _this2.findingEnd();
@@ -2045,6 +2052,7 @@ exports.default = function (Parent) {
                                 value: results.data[0].value
                             });
                         } else if (!_this2.open && (!_this2.autoFind || results && results.data && results.data.length > 1)) {
+                            _this2.cancelOthers();
                             _this2.openPanel();
                         }
                         _this2.findingEnd();
@@ -2073,11 +2081,31 @@ exports.default = function (Parent) {
                 });
             }
         }, {
+            key: 'cancelOthers',
+            value: function cancelOthers() {
+                var others = document.querySelectorAll('[data-ac-loading],[data-ac-open]');
+                Array.prototype.slice.call(others).map(function (element) {
+                    return element.autoComplete;
+                }).filter(function (autoComplete) {
+                    return typeof autoComplete !== 'undefined';
+                }).forEach(function (autoComplete) {
+                    return autoComplete.abort() && autoComplete.closePanel();
+                });
+            }
+        }, {
+            key: 'abort',
+            value: function abort() {
+                this.source.abort();
+                this.findingEnd();
+            }
+        }, {
             key: 'findingStart',
             value: function findingStart() {
                 // Set flag
                 this.typing = false;
                 this.finding = true;
+                // Loading info on element
+                this.elements.wrapper.setAttribute('data-ac-loading', 'true');
                 // Start spin
                 this.components.icon.loadingStart();
             }
@@ -2086,6 +2114,8 @@ exports.default = function (Parent) {
             value: function findingEnd() {
                 // Set flag
                 this.finding = false;
+                // Loading info on element
+                this.elements.wrapper.removeAttribute('data-ac-loading');
                 // Stop spin
                 this.components.icon.loadingStop();
             }
@@ -2253,6 +2283,7 @@ exports.default = function (Parent) {
                 }
 
                 this.open = true;
+                this.elements.wrapper.setAttribute('data-ac-open', 'true');
                 this.valueOnOpen = this.value;
                 this.elements.wrapper.className = this.style.openWrapper;
                 this.components.panel.element.style.display = 'inline-block';
@@ -2284,6 +2315,9 @@ exports.default = function (Parent) {
                 // Update layout composition
                 this.layoutChange();
                 this.updateDirection();
+
+                // Open info
+                this.elements.wrapper.removeAttribute('data-ac-open');
             }
         }, {
             key: 'togglePanel',

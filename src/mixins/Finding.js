@@ -44,6 +44,7 @@ export default Parent => class extends Parent {
                     } else if (!this.open && (!this.autoFind || (results && results.data && results.data.length > 1))) {
                         this.cancelOthers();
                         this.openPanel();
+                        this.ignoreBlur = false;
                     }
                     this.findingEnd();
                 })
@@ -94,7 +95,11 @@ export default Parent => class extends Parent {
         Array.prototype.slice.call(others)
             .map(element => element.autoComplete)
             .filter(autoComplete => typeof autoComplete !== 'undefined')
-            .forEach(autoComplete => autoComplete.abort() && autoComplete.closePanel());
+            .forEach(autoComplete => {
+                autoComplete.abort();
+                autoComplete.closePanel();
+                autoComplete.ignoreBlur = false;
+            });
     }
 
     abort() {
