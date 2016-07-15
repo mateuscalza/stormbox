@@ -189,6 +189,7 @@ export default class StormBox extends use(
     prepareElements() {
         // Turn wrapper focusable
         this.elements.wrapper.setAttribute('tabindex', '0');
+        this.elements.wrapper.autoComplete = this;
         if (!this.multiple) {
             // Store hiddenInput value
             this.value = this.elements.hiddenInput.value;

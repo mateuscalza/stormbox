@@ -3,8 +3,7 @@ export default Parent => class extends Parent {
     find() {
         return new Promise(() => {
             if (this.finding) {
-                this.source.abort();
-                this.findingEnd();
+                this.abort();
             }
             const query = this.components.panel.components.searchInput.value();
             if (query.length < this.minLength && !this.forcedSearch) {
@@ -43,6 +42,7 @@ export default Parent => class extends Parent {
                             value: results.data[0].value
                         });
                     } else if (!this.open && (!this.autoFind || (results && results.data && results.data.length > 1))) {
+                        this.cancelOthers();
                         this.openPanel();
                     }
                     this.findingEnd();
@@ -60,6 +60,7 @@ export default Parent => class extends Parent {
                             value: results.data[0].value
                         });
                     } else if (!this.open && (!this.autoFind || (results && results.data && results.data.length > 1))) {
+                        this.cancelOthers();
                         this.openPanel();
                     }
                     this.findingEnd();
@@ -88,10 +89,25 @@ export default Parent => class extends Parent {
             });
     }
 
+    cancelOthers() {
+        const others = document.querySelectorAll(`[data-ac-loading],[data-ac-open]`);
+        Array.prototype.slice.call(others)
+            .map(element => element.autoComplete)
+            .filter(autoComplete => typeof autoComplete !== 'undefined')
+            .forEach(autoComplete => autoComplete.abort() && autoComplete.closePanel());
+    }
+
+    abort() {
+        this.source.abort();
+        this.findingEnd();
+    }
+
     findingStart() {
         // Set flag
         this.typing = false;
         this.finding = true;
+        // Loading info on element
+        this.elements.wrapper.setAttribute('data-ac-loading', 'true');
         // Start spin
         this.components.icon.loadingStart();
     }
@@ -99,6 +115,8 @@ export default Parent => class extends Parent {
     findingEnd() {
         // Set flag
         this.finding = false;
+        // Loading info on element
+        this.elements.wrapper.removeAttribute('data-ac-loading');
         // Stop spin
         this.components.icon.loadingStop();
     }

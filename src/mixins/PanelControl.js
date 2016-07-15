@@ -6,6 +6,7 @@ export default Parent => class extends Parent {
         }
 
         this.open = true;
+        this.elements.wrapper.setAttribute('data-ac-open', 'true');
         this.valueOnOpen = this.value;
         this.elements.wrapper.className = this.style.openWrapper;
         this.components.panel.element.style.display = 'inline-block';
@@ -36,6 +37,9 @@ export default Parent => class extends Parent {
         // Update layout composition
         this.layoutChange();
         this.updateDirection();
+        
+        // Open info
+        this.elements.wrapper.removeAttribute('data-ac-open');
     }
 
     togglePanel() {

@@ -2466,8 +2466,6 @@ exports.default = function (Parent) {
                     this.setOrClearOtherFields(others);
                 } else {
                     var currentIndex = void 0;
-                    console.log('this.distinct', this.distinct);
-
                     if (this.distinct && (currentIndex = this.value.indexOf(String(value))) !== -1) {
                         this.value.splice(currentIndex, 1);
                         this.content.splice(currentIndex, 1);
