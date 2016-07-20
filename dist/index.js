@@ -1204,7 +1204,7 @@ var StormBox = function (_use) {
                 this.elements.label = StormBox.findLabel(this.anchorElement) || null;
 
                 // Add wrapper after anchor
-                this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.elements.textInput.nextSibling);
+                this.anchorElement.parentNode.insertBefore(this.elements.wrapper, this.anchorElement.nextSibling);
 
                 // Clone props and observe set
                 this.relatedReplica();
@@ -2365,7 +2365,7 @@ exports.default = function (Parent) {
         _createClass(_class, [{
             key: 'topSpace',
             value: function topSpace() {
-                return this.elements.wrapper.offsetTop - window.scrollY;
+                return this.elements.wrapper.getBoundingClientRect().top;
             }
         }, {
             key: 'bottomSpace',
