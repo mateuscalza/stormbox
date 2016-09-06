@@ -1,6 +1,6 @@
 {
   "name": "stormbox",
-  "description": "StormBox Responsive Autocomplete: pure JS, without jQuery, object-oriented.",
+  "description": "StormBox Responsive Autocomplete: pure JS (Vanilla), without jQuery.",
   "main": "dist/index.js",
   "scripts": {
     "build": "npm run build:debug && npm run build:min",
@@ -19,7 +19,6 @@
     "responsive",
     "autocomplete",
     "combobox",
-    "es7",
     "es6",
     "pure",
     "javascript",
