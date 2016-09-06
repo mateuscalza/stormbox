@@ -1,5 +1,5 @@
 # StormBox Responsive AutoComplete
-Pure JS, with ES7 features, without jQuery, object-oriented.
+StormBox Responsive Autocomplete: pure JS (Vanilla), without jQuery.
 
 > **Caution!** This widget is under construction.
 
