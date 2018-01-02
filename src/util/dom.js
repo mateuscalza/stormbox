@@ -25,10 +25,6 @@ export function li(props, ...children) {
     return elem('li', props, ...children);
 };
 
-export function strong(props, ...children) {
-    return elem('strong', props, ...children);
-};
-
 export function a(props, ...children) {
     return elem('a', props, ...children);
 };
