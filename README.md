@@ -1,8 +1,6 @@
 # StormBox Responsive AutoComplete
 StormBox Responsive Autocomplete: pure JS (Vanilla), without jQuery.
 
-> **Caution!** This widget is under construction.
-
 ## Demo
 Avaible on CodePen:
 [http://codepen.io/calza/full/oLZNjJ/](http://codepen.io/calza/full/oLZNjJ/)
